@@ -1,3 +1,16 @@
+// Gonçalo Rodrigues Maranhão, ICG-UA
+
+// There are specific references to websites that I used in order to make 
+// some functions, logic and functionalities throughout the code.
+// I didn't copy anything 100% from those sources, mostly because I used them in a different context
+// and because, most of the time, I needed something simpler
+
+// In general most of the help I got came from:
+// -> https://threejs.org
+// -> https://discourse.threejs.org
+// -> https://discourse.threejs.org/t/collection-of-examples-from-discourse-threejs-org/4315
+// -> https://stackoverflow.com/
+
 import * as THREE from './js/three.module.js';
 import { PointerLockControls } from './js/PointerLockControls.js';
 
@@ -19,10 +32,12 @@ const controls = new PointerLockControls(camera, renderer.domElement);
 
 // listeners for mouse
 document.addEventListener('click', () => {
+
   controls.lock();
 });
 
 controls.addEventListener('unlock', () => {
+
   // talvez queira fazer alguma coisa aqui quando o rato estiver unlocked??
 });
 
@@ -36,12 +51,14 @@ const keys = {
 
 // listeners for keys
 document.addEventListener('keydown', (event) => {
+
   if (keys.hasOwnProperty(event.code)) {
       keys[event.code] = true;
   }
 });
 
 document.addEventListener('keyup', (event) => {
+
   if (keys.hasOwnProperty(event.code)) {
       keys[event.code] = false;
   }
@@ -49,6 +66,7 @@ document.addEventListener('keyup', (event) => {
 
 // window resize event listener
 window.addEventListener('resize', () => {
+
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
 
@@ -60,11 +78,12 @@ window.addEventListener('resize', () => {
 //
 // function to handle the movement
 function updatePosition() {
+
     const speed = 0.1;
     const direction = new THREE.Vector3();
 
     camera.getWorldDirection(direction);
-    direction.y = 0; // Remove the vertical component to stay on the ground
+    direction.y = 0; // remove the vertical component to stay on the ground
     direction.normalize();
 
     if (keys.KeyW) {
@@ -85,14 +104,19 @@ function updatePosition() {
 
 // animate function
 function animate() {
+
   requestAnimationFrame(animate);
 
   updatePosition();
 
   renderer.render(scene, camera);
 }
-
+// ----------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------ LIGHTING -----------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------
+
 // add lighting
 const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
 scene.add(ambientLight);
@@ -102,7 +126,11 @@ const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
 pointLight.position.set(0, 2, 0);
 scene.add(pointLight);
 
+// ----------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------ TEXTURES -----------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------
 
 // load textures
 const textureLoader = new THREE.TextureLoader();
@@ -115,8 +143,11 @@ const darkWoodMaterial = new THREE.MeshPhongMaterial({ map: darkWoodTexture });
 const floorTexture = textureLoader.load('./assets/textures/plank_flooring_02_diff_1k.jpg');
 const floorMaterial = new THREE.MeshPhongMaterial({ map: floorTexture });
 
+// ----------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------ VARIABLES -----------------------------------------------------
-
+// ----------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------ entrance room vars -----------------------------------------------------
 
@@ -140,6 +171,8 @@ const ceilingPositionZ = 0;
 // var to make the handles of the door closer together
 const handleOffset = 0.4;
 
+const wallMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
+
 // this is to make the wall behind the door transparent
 // so that when I open the door I can't see the wall
 // const transparentMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, opacity: 0, transparent: true });
@@ -147,28 +180,63 @@ const handleOffset = 0.4;
 
 
 
-
+// ----------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------ ENTRANCE ROOM ----------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------
 
+// based on -> https://jsfiddle.net/ebeit303/BuNb2/
 // create walls 
-// adding material to make the wall behind the door transparent
-function createWall(x, y, z,rotationY, width, height, depth, material ) {
-  const wall = new THREE.Mesh(
-    new THREE.BoxGeometry(width, height, depth),
-    material
-  );
+function createWallWithDoorHole(x, y, z, rotationY, material, width, height, depth, doorWidth, doorHeight) {
+
+  const wallShape = new THREE.Shape();
+  wallShape.moveTo(0, 0);
+  wallShape.lineTo(0, height);
+  wallShape.lineTo(width, height);
+  wallShape.lineTo(width, 0);
+  wallShape.lineTo(0, 0);
+
+  const doorHoleShape = new THREE.Path();
+  const doorHoleX = (width - doorWidth) / 2;
+  const doorHoleY = 0;
+  doorHoleShape.moveTo(doorHoleX, doorHoleY);
+  doorHoleShape.lineTo(doorHoleX, doorHoleY + doorHeight);
+  doorHoleShape.lineTo(doorHoleX + doorWidth, doorHoleY + doorHeight);
+  doorHoleShape.lineTo(doorHoleX + doorWidth, doorHoleY);
+  doorHoleShape.lineTo(doorHoleX, doorHoleY);
+
+  wallShape.holes.push(doorHoleShape);
+
+  const geometry = new THREE.ExtrudeGeometry(wallShape, {
+      depth: depth,
+      bevelEnabled: false, // to make sure it fits the door
+  });
+
+  const wall = new THREE.Mesh(geometry, material);
   wall.position.set(x, y, z);
   wall.rotation.y = rotationY;
   scene.add(wall);
 }
-// front wall
-createWall(0, ceilingPositionY / 2, -floorWidth / 2, 0, floorWidth, ceilingPositionY, 0.1,);
-// back wall 
-createWall(0, ceilingPositionY / 2, floorWidth / 2, 0, floorWidth, ceilingPositionY, 0.1);
+
+//createWallWithDoorHole(0, 0, 0, 0, wallMaterial, 20, 10, 1, 4, 7);
+
+ // front wall
+ createWallWithDoorHole(-floorWidth / 2, 0, -floorWidth / 2, 0, wallMaterial, 
+                       floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight+0.1);
+
 // left wall 
-createWall(-floorWidth / 2, ceilingPositionY / 2, 0, 0, 0.1, ceilingPositionY, floorWidth);
+createWallWithDoorHole(-floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, wallMaterial,
+                       floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight + 0.1);
+
 // right wall 
-createWall(floorWidth / 2, ceilingPositionY / 2, 0, 0, 0.1, ceilingPositionY, floorWidth); 
+createWallWithDoorHole(floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, wallMaterial,
+                       floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight + 0.1);
+
+// back wall, no hole
+createWallWithDoorHole(floorWidth / 2, 0, floorWidth / 2, Math.PI, wallMaterial,
+                       floorWidth, ceilingPositionY, 0.1, 0, 0);
+
 
 
 // create ceiling
@@ -193,6 +261,7 @@ scene.add(floor);
 
 // create door with two separate parts because of how I want the opening animation
 function createDoor(x, y, z, rotationY, material, width, height, depth) {
+
   const leftDoor = new THREE.Mesh(
       new THREE.BoxGeometry(width, height, depth),
       material
@@ -209,8 +278,14 @@ function createDoor(x, y, z, rotationY, material, width, height, depth) {
   const leftDoorHandle = createDoorHandle(-width / 32 + handleOffset, height / 32, depth / 2 + 0.01, 0, handleMaterial);
   const rightDoorHandle = createDoorHandle(width / 32 - handleOffset, height / 32, depth / 2 + 0.01, 0, handleMaterial);
 
+  const leftDoorHandleBack = createDoorHandle(-width / 32 + handleOffset, height / 32, -depth / 2 - 0.01, 0, handleMaterial);
+  const rightDoorHandleBack = createDoorHandle(width / 32 - handleOffset, height / 32, -depth / 2 - 0.01, 0, handleMaterial);
+
   leftDoor.add(leftDoorHandle);
   rightDoor.add(rightDoorHandle);
+
+  leftDoor.add(leftDoorHandleBack);
+  rightDoor.add(rightDoorHandleBack);
 
   const doorGroup = new THREE.Group();
   doorGroup.add(leftDoor);
@@ -218,6 +293,7 @@ function createDoor(x, y, z, rotationY, material, width, height, depth) {
   doorGroup.position.set(x, y, z);
   doorGroup.rotation.y = rotationY;
   doorGroup.isDoor = true;
+
   scene.add(doorGroup);
 }
 
@@ -235,6 +311,7 @@ createDoor(0, 0.13, -floorWidth / 2, 0,
 
 // create door handle
 function createDoorHandle(x, y, z, rotationY, material) {
+
   const handleRadius = 0.05;
   const handleLength = 1;
 
@@ -250,6 +327,7 @@ function createDoorHandle(x, y, z, rotationY, material) {
 
 // open and close the door
 function openDoor(doorGroup) {
+
   const leftDoor = doorGroup.children[0];
   const rightDoor = doorGroup.children[1];
   const targetRotation = Math.PI / 2;
@@ -263,6 +341,7 @@ function openDoor(doorGroup) {
   const initialRightRotation = isOpen ? Math.PI / 2 : 0;
 
     function animateDoor() {
+
       const elapsed = performance.now() - startTime;
       const progress = elapsed / animationDuration;
 
@@ -299,6 +378,7 @@ function openDoor(doorGroup) {
 // this raycaster logic is based on Adam Sullovey logic -> https://codepen.io/adamsullovey/pen/BoJrbb
 // detect door interaction
 document.addEventListener('keydown', (event) => {
+
   if (event.code === 'KeyE') {
     const doorRaycaster = new THREE.Raycaster();
     doorRaycaster.setFromCamera(new THREE.Vector2(0, 0), camera);
@@ -316,9 +396,11 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-
+// ----------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------ -----------------------------------------------------
-
+// ----------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------
 
 animate();
 
