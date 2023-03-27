@@ -136,7 +136,7 @@ scene.add(pointLight);
 const textureLoader = new THREE.TextureLoader();
 
 // entrance room front Door
-const darkWoodTexture = textureLoader.load('./assets/textures/dark_wood_diff_4k.jpg');
+const darkWoodTexture = textureLoader.load('./assets/textures/castle_brick_07_diff_1k.jpg');
 const darkWoodMaterial = new THREE.MeshPhongMaterial({ map: darkWoodTexture });
 
 // entrance room floor
