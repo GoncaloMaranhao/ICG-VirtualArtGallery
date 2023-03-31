@@ -171,7 +171,13 @@ const ceilingPositionZ = 0;
 // var to make the handles of the door closer together
 const handleOffset = 0.4;
 
+const windowWidth = 2;
+const windowHeight = 2;
+const windowSpacing = 0.5;
+
 const wallMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
+
+const ceilingMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
 
 // this is to make the wall behind the door transparent
 // so that when I open the door I can't see the wall
@@ -240,13 +246,81 @@ createWallWithDoorHole(floorWidth / 2, 0, floorWidth / 2, Math.PI, wallMaterial,
 
 
 // create ceiling
-const ceiling = new THREE.Mesh(
+
+/*const ceiling = new THREE.Mesh(
   new THREE.BoxGeometry(ceilingWidth, ceilingHeight, ceilingDepth),
   new THREE.MeshPhongMaterial({ color: 0xffffff })
+);*/
+
+function createCeiling(x, y, z, material, width, height, depth, windowWidth, windowHeight, windowSpacing) {
+  const ceilingShape = new THREE.Shape();
+
+  ceilingShape.moveTo(0, 0);
+  ceilingShape.lineTo(0, width);
+  ceilingShape.lineTo(depth, width);
+  ceilingShape.lineTo(depth, 0);
+  ceilingShape.lineTo(0, 0);
+
+  const windowHoleShape = new THREE.Path();
+  
+  const firstWindowPosition = 0.2; // Change this value to adjust the position of the first window
+  const windowsStartPosition = (width / 2) - firstWindowPosition - windowWidth;
+  const windowOffsetX = depth / 4; // Change this value to adjust the windows' position along the x-axis
+
+  for (let i = 0; i < 3; i++) {
+  const windowHoleX = windowOffsetX;
+  const windowHoleY = windowsStartPosition + i * (windowWidth + windowSpacing);
+  windowHoleShape.moveTo(windowHoleX + windowHeight, windowHoleY);
+  windowHoleShape.lineTo(windowHoleX, windowHoleY);
+  windowHoleShape.lineTo(windowHoleX, windowHoleY + windowWidth);
+  windowHoleShape.lineTo(windowHoleX + windowHeight, windowHoleY + windowWidth);
+  windowHoleShape.lineTo(windowHoleX + windowHeight, windowHoleY);
+}
+
+
+  ceilingShape.holes.push(windowHoleShape);
+
+  const geometry = new THREE.ExtrudeGeometry(ceilingShape, {
+    depth: height,
+    bevelEnabled: false,
+  });
+
+  const ceiling = new THREE.Mesh(geometry, material);
+  ceiling.rotation.x = Math.PI / 2;
+  ceiling.position.set(x, y, z);
+  scene.add(ceiling);
+}
+
+// Create the ceiling with window holes
+createCeiling(
+  -ceilingWidth / 2,
+  ceilingPositionY,
+  -ceilingDepth / 2,
+  ceilingMaterial,
+  ceilingWidth,
+  ceilingHeight,
+  ceilingDepth,
+  windowWidth,
+  windowHeight,
+  windowSpacing
 );
 
-ceiling.position.set(ceilingPositionX, ceilingPositionY, ceilingPositionZ);
-scene.add(ceiling);
+
+
+
+// Create the ceiling with window holes
+createCeiling(
+  -ceilingWidth / 2,
+  ceilingPositionY,
+  -ceilingDepth / 2,
+  ceilingMaterial,
+  ceilingWidth,
+  ceilingHeight,
+  ceilingDepth,
+  windowWidth,
+  windowHeight,
+  windowSpacing
+);
 
 // create floor
 const floor = new THREE.Mesh(
