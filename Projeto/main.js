@@ -1,18 +1,8 @@
-// Gonçalo Rodrigues Maranhão, ICG-UA
-
-// There are specific references to websites that I used in order to make 
-// some functions, logic and functionalities throughout the code.
-// I didn't copy anything 100% from those sources, mostly because I used them in a different context
-// and because, most of the time, I needed something simpler
-
-// In general most of the help I got came from:
-// -> https://threejs.org
-// -> https://discourse.threejs.org
-// -> https://discourse.threejs.org/t/collection-of-examples-from-discourse-threejs-org/4315
-// -> https://stackoverflow.com/
-
 import * as THREE from './js/three.module.js';
 import { PointerLockControls } from './js/PointerLockControls.js';
+import { openDoor } from './animations.js';
+import { updatePosition } from "./playerMovement.js";
+
 
 // create a scene
 const scene = new THREE.Scene();
@@ -41,81 +31,19 @@ controls.addEventListener('unlock', () => {
   // talvez queira fazer alguma coisa aqui quando o rato estiver unlocked??
 });
 
-// keys for movement
-const keys = {
-  KeyW: false,
-  KeyA: false,
-  KeyS: false,
-  KeyD: false,
-};
-
-// listeners for keys
-document.addEventListener('keydown', (event) => {
-
-  if (keys.hasOwnProperty(event.code)) {
-      keys[event.code] = true;
-  }
-});
-
-document.addEventListener('keyup', (event) => {
-
-  if (keys.hasOwnProperty(event.code)) {
-      keys[event.code] = false;
-  }
-});
-
-// window resize event listener
-window.addEventListener('resize', () => {
-
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  });
-
-
-// this function is based and the logic of moving in first person is based
-//
-// function to handle the movement
-function updatePosition() {
-
-    const speed = 0.1;
-    const direction = new THREE.Vector3();
-
-    camera.getWorldDirection(direction);
-    direction.y = 0; // remove the vertical component to stay on the ground
-    direction.normalize();
-
-    if (keys.KeyW) {
-        camera.position.addScaledVector(direction, speed);
-    }
-    if (keys.KeyS) {
-        camera.position.addScaledVector(direction, -speed);
-    }
-    if (keys.KeyD) {
-        direction.cross(camera.up);
-        camera.position.addScaledVector(direction, speed);
-    }
-    if (keys.KeyA) {
-        direction.cross(camera.up);
-        camera.position.addScaledVector(direction, -speed);
-    }
-}
 
 // animate function
 function animate() {
 
   requestAnimationFrame(animate);
 
-  updatePosition();
+  updatePosition(camera);
 
   renderer.render(scene, camera);
 }
-// ----------------------------------------------------------------------------------------------------------------------------
-// ----------------------------------------------------------------------------------------------------------------------------
+
 // ------------------------------------------------------------ LIGHTING -----------------------------------------------------
-// ----------------------------------------------------------------------------------------------------------------------------
-// ----------------------------------------------------------------------------------------------------------------------------
+
 
 // add lighting
 const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
@@ -126,11 +54,6 @@ const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
 pointLight.position.set(0, 2, 0);
 scene.add(pointLight);
 
-// ----------------------------------------------------------------------------------------------------------------------------
-// ----------------------------------------------------------------------------------------------------------------------------
-// ------------------------------------------------------------ TEXTURES -----------------------------------------------------
-// ----------------------------------------------------------------------------------------------------------------------------
-// ----------------------------------------------------------------------------------------------------------------------------
 
 // load textures
 const textureLoader = new THREE.TextureLoader();
@@ -143,13 +66,10 @@ const darkWoodMaterial = new THREE.MeshPhongMaterial({ map: darkWoodTexture });
 const floorTexture = textureLoader.load('./assets/textures/plank_flooring_02_diff_1k.jpg');
 const floorMaterial = new THREE.MeshPhongMaterial({ map: floorTexture });
 
-// ----------------------------------------------------------------------------------------------------------------------------
-// ----------------------------------------------------------------------------------------------------------------------------
-// ------------------------------------------------------------ VARIABLES -----------------------------------------------------
-// ----------------------------------------------------------------------------------------------------------------------------
-// ----------------------------------------------------------------------------------------------------------------------------
 
-// ------------------------------------------------------------ entrance room vars -----------------------------------------------------
+// window texture
+const windowTexture = textureLoader.load('./assets/textures/red_sandstone_pavement_diff_1k.jpg');
+
 
 const doorWidth = 1.75;
 const doorHeight = 2.5;
@@ -173,27 +93,12 @@ const handleOffset = 0.4;
 
 const windowWidth = 2;
 const windowHeight = 2;
-const windowSpacing = 0.5;
+const windowSpacing = 1.5;
 
 const wallMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
 
 const ceilingMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
 
-// this is to make the wall behind the door transparent
-// so that when I open the door I can't see the wall
-// const transparentMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, opacity: 0, transparent: true });
-
-
-
-
-// ----------------------------------------------------------------------------------------------------------------------------
-// ----------------------------------------------------------------------------------------------------------------------------
-// ------------------------------------------------------------ ENTRANCE ROOM ----------------------------------------
-// ----------------------------------------------------------------------------------------------------------------------------
-// ----------------------------------------------------------------------------------------------------------------------------
-
-// based on -> https://jsfiddle.net/ebeit303/BuNb2/
-// create walls 
 function createWallWithDoorHole(x, y, z, rotationY, material, width, height, depth, doorWidth, doorHeight) {
 
   const wallShape = new THREE.Shape();
@@ -225,7 +130,6 @@ function createWallWithDoorHole(x, y, z, rotationY, material, width, height, dep
   scene.add(wall);
 }
 
-//createWallWithDoorHole(0, 0, 0, 0, wallMaterial, 20, 10, 1, 4, 7);
 
  // front wall
  createWallWithDoorHole(-floorWidth / 2, 0, -floorWidth / 2, 0, wallMaterial, 
@@ -245,14 +149,16 @@ createWallWithDoorHole(floorWidth / 2, 0, floorWidth / 2, Math.PI, wallMaterial,
 
 
 
-// create ceiling
+function createWindow(x, y, z, width, height, texture) {
+  const windowGeometry = new THREE.PlaneGeometry(width, height);
+  const windowMaterial = new THREE.MeshPhongMaterial({ map: texture, transparent: true, side: THREE.DoubleSide });
+  const windowMesh = new THREE.Mesh(windowGeometry, windowMaterial);
+  windowMesh.position.set(x, y, z);
+  windowMesh.rotation.x = Math.PI / 2;
+  return windowMesh;
+}
 
-/*const ceiling = new THREE.Mesh(
-  new THREE.BoxGeometry(ceilingWidth, ceilingHeight, ceilingDepth),
-  new THREE.MeshPhongMaterial({ color: 0xffffff })
-);*/
-
-function createCeiling(x, y, z, material, width, height, depth, windowWidth, windowHeight, windowSpacing) {
+function createCeilingWithWindows(x, y, z, material, width, height, depth, windowWidth, windowHeight, windowSpacing) {
   const ceilingShape = new THREE.Shape();
 
   ceilingShape.moveTo(0, 0);
@@ -262,21 +168,22 @@ function createCeiling(x, y, z, material, width, height, depth, windowWidth, win
   ceilingShape.lineTo(0, 0);
 
   const windowHoleShape = new THREE.Path();
-  
-  const firstWindowPosition = 0.2; // Change this value to adjust the position of the first window
+
+  const firstWindowPosition = 3; // position of the first window
   const windowsStartPosition = (width / 2) - firstWindowPosition - windowWidth;
-  const windowOffsetX = depth / 4; // Change this value to adjust the windows' position along the x-axis
+  const windowOffsetX = depth / 4; // windows' position along the x-axis
 
   for (let i = 0; i < 3; i++) {
-  const windowHoleX = windowOffsetX;
-  const windowHoleY = windowsStartPosition + i * (windowWidth + windowSpacing);
-  windowHoleShape.moveTo(windowHoleX + windowHeight, windowHoleY);
-  windowHoleShape.lineTo(windowHoleX, windowHoleY);
-  windowHoleShape.lineTo(windowHoleX, windowHoleY + windowWidth);
-  windowHoleShape.lineTo(windowHoleX + windowHeight, windowHoleY + windowWidth);
-  windowHoleShape.lineTo(windowHoleX + windowHeight, windowHoleY);
-}
-
+    const windowHoleX = windowOffsetX;
+    const windowHoleY = windowsStartPosition + i * (windowWidth + windowSpacing);
+    windowHoleShape.moveTo(windowHoleX + windowHeight, windowHoleY);
+    windowHoleShape.lineTo(windowHoleX, windowHoleY);
+    windowHoleShape.lineTo(windowHoleX, windowHoleY + windowWidth);
+    windowHoleShape.lineTo(windowHoleX + windowHeight, windowHoleY + windowWidth);
+    windowHoleShape.lineTo(windowHoleX + windowHeight, windowHoleY);
+    const windowMesh = createWindow(-width / 2 + windowHoleX + windowHeight / 2, ceilingPositionY - height / 2, -depth / 2 + windowsStartPosition + i * (windowWidth + windowSpacing) + windowWidth / 2, windowHeight, windowWidth, windowTexture);
+    scene.add(windowMesh);
+  }
 
   ceilingShape.holes.push(windowHoleShape);
 
@@ -292,24 +199,7 @@ function createCeiling(x, y, z, material, width, height, depth, windowWidth, win
 }
 
 // Create the ceiling with window holes
-createCeiling(
-  -ceilingWidth / 2,
-  ceilingPositionY,
-  -ceilingDepth / 2,
-  ceilingMaterial,
-  ceilingWidth,
-  ceilingHeight,
-  ceilingDepth,
-  windowWidth,
-  windowHeight,
-  windowSpacing
-);
-
-
-
-
-// Create the ceiling with window holes
-createCeiling(
+createCeilingWithWindows(
   -ceilingWidth / 2,
   ceilingPositionY,
   -ceilingDepth / 2,
@@ -325,7 +215,6 @@ createCeiling(
 // create floor
 const floor = new THREE.Mesh(
   new THREE.BoxGeometry(floorWidth, floorHeight, floorDepth),
-  //new THREE.MeshPhongMaterial({ color: 0xaaaaaa })
   floorMaterial
   );
 
@@ -333,20 +222,28 @@ floor.position.set(0, 0.05, 0);
 scene.add(floor);
 
 
-// create door with two separate parts because of how I want the opening animation
 function createDoor(x, y, z, rotationY, material, width, height, depth) {
 
   const leftDoor = new THREE.Mesh(
       new THREE.BoxGeometry(width, height, depth),
       material
   );
-  leftDoor.position.set(-width / 2, height / 2, 0);
 
   const rightDoor = new THREE.Mesh(
       new THREE.BoxGeometry(width, height, depth),
       material
   );
-  rightDoor.position.set(width / 2, height / 2, 0);
+  
+  // I'm creating Pivot points because I want to open/close the doors around the hinge
+  const leftDoorPivot = new THREE.Object3D();
+  leftDoorPivot.position.set(-width , 0, 0);
+  leftDoorPivot.add(leftDoor);
+  leftDoor.position.set(width / 2, height/2, 0);
+
+  const rightDoorPivot = new THREE.Object3D();
+  rightDoorPivot.position.set(width, 0, 0);
+  rightDoorPivot.add(rightDoor);
+  rightDoor.position.set(-width / 2, height/2, 0);
 
   const handleMaterial = new THREE.MeshPhongMaterial({ color: 0x800080 });
   const leftDoorHandle = createDoorHandle(-width / 32 + handleOffset, height / 32, depth / 2 + 0.01, 0, handleMaterial);
@@ -362,8 +259,8 @@ function createDoor(x, y, z, rotationY, material, width, height, depth) {
   rightDoor.add(rightDoorHandleBack);
 
   const doorGroup = new THREE.Group();
-  doorGroup.add(leftDoor);
-  doorGroup.add(rightDoor);
+  doorGroup.add(leftDoorPivot);
+  doorGroup.add(rightDoorPivot);
   doorGroup.position.set(x, y, z);
   doorGroup.rotation.y = rotationY;
   doorGroup.isDoor = true;
@@ -399,57 +296,7 @@ function createDoorHandle(x, y, z, rotationY, material) {
 }
 
 
-// open and close the door
-function openDoor(doorGroup) {
 
-  const leftDoor = doorGroup.children[0];
-  const rightDoor = doorGroup.children[1];
-  const targetRotation = Math.PI / 2;
-  const animationDuration = 1000;
-  const startTime = performance.now(); // returns a timestamp in ms
-
-  // check door status
-  const isOpen = leftDoor.rotation.y <= -0.1;
-
-  const initialLeftRotation = isOpen ? -Math.PI / 2 : 0;
-  const initialRightRotation = isOpen ? Math.PI / 2 : 0;
-
-    function animateDoor() {
-
-      const elapsed = performance.now() - startTime;
-      const progress = elapsed / animationDuration;
-
-      if (progress < 1) {
-        if (isOpen) {
-          // close 
-          leftDoor.rotation.y = initialLeftRotation + progress * Math.PI / 2;
-          rightDoor.rotation.y = initialRightRotation - progress * Math.PI / 2;
-        } else {
-          // open
-          leftDoor.rotation.y = initialLeftRotation - progress * Math.PI / 2;
-          rightDoor.rotation.y = initialRightRotation + progress * Math.PI / 2;
-        }
-        requestAnimationFrame(animateDoor);
-
-      } else {
-        if (isOpen) {
-          // close 
-          leftDoor.rotation.y = 0;
-          rightDoor.rotation.y = 0;
-        } else {
-          // open 
-          leftDoor.rotation.y = -Math.PI / 2;
-          rightDoor.rotation.y = Math.PI / 2;
-        }
-      }
-    }
-
-  animateDoor();
-  requestAnimationFrame(animateDoor);
-}
-
-
-// this raycaster logic is based on Adam Sullovey logic -> https://codepen.io/adamsullovey/pen/BoJrbb
 // detect door interaction
 document.addEventListener('keydown', (event) => {
 
@@ -461,26 +308,16 @@ document.addEventListener('keydown', (event) => {
 
     if (intersects.length > 0) {
       const firstIntersectedObject = intersects[0].object;
-
-      if (firstIntersectedObject.parent.isDoor) {
-          openDoor(firstIntersectedObject.parent);
+    
+      if (firstIntersectedObject.parent.parent.isDoor) {
+        openDoor(firstIntersectedObject.parent.parent);
       }
     }
+    
 
   }
 });
 
-// ----------------------------------------------------------------------------------------------------------------------------
-// ----------------------------------------------------------------------------------------------------------------------------
-// ------------------------------------------------------------ -----------------------------------------------------
-// ----------------------------------------------------------------------------------------------------------------------------
-// ----------------------------------------------------------------------------------------------------------------------------
 
 animate();
 
-// axes helper - to remove in final delivery
-const axesHelper = new THREE.AxesHelper(5);
-axesHelper.material.linewidth = 5;
-scene.add(axesHelper);
-
-axesHelper.position.set(0,2,0);
