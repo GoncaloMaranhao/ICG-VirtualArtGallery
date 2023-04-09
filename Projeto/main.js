@@ -158,59 +158,25 @@ function createWindow(x, y, z, width, height, texture) {
   return windowMesh;
 }
 
-function createCeilingWithWindows(x, y, z, material, width, height, depth, windowWidth, windowHeight, windowSpacing) {
-  const ceilingShape = new THREE.Shape();
-
-  ceilingShape.moveTo(0, 0);
-  ceilingShape.lineTo(0, width);
-  ceilingShape.lineTo(depth, width);
-  ceilingShape.lineTo(depth, 0);
-  ceilingShape.lineTo(0, 0);
-
-  const windowHoleShape = new THREE.Path();
-
-  const firstWindowPosition = 3; // position of the first window
-  const windowsStartPosition = (width / 2) - firstWindowPosition - windowWidth;
-  const windowOffsetX = depth / 4; // windows' position along the x-axis
-
-  for (let i = 0; i < 3; i++) {
-    const windowHoleX = windowOffsetX;
-    const windowHoleY = windowsStartPosition + i * (windowWidth + windowSpacing);
-    windowHoleShape.moveTo(windowHoleX + windowHeight, windowHoleY);
-    windowHoleShape.lineTo(windowHoleX, windowHoleY);
-    windowHoleShape.lineTo(windowHoleX, windowHoleY + windowWidth);
-    windowHoleShape.lineTo(windowHoleX + windowHeight, windowHoleY + windowWidth);
-    windowHoleShape.lineTo(windowHoleX + windowHeight, windowHoleY);
-    const windowMesh = createWindow(-width / 2 + windowHoleX + windowHeight / 2, ceilingPositionY - height / 2, -depth / 2 + windowsStartPosition + i * (windowWidth + windowSpacing) + windowWidth / 2, windowHeight, windowWidth, windowTexture);
-    scene.add(windowMesh);
-  }
-
-  ceilingShape.holes.push(windowHoleShape);
-
-  const geometry = new THREE.ExtrudeGeometry(ceilingShape, {
-    depth: height,
-    bevelEnabled: false,
-  });
-
+function createCeiling(x, y, z, material, width, height, depth) {
+  const geometry = new THREE.BoxGeometry(width, height, depth);
   const ceiling = new THREE.Mesh(geometry, material);
-  ceiling.rotation.x = Math.PI / 2;
   ceiling.position.set(x, y, z);
   scene.add(ceiling);
 }
 
-// Create the ceiling with window holes
-createCeilingWithWindows(
-  -ceilingWidth / 2,
+
+// create ceiling
+createCeiling(
+  0,
   ceilingPositionY,
-  -ceilingDepth / 2,
+  0,
   ceilingMaterial,
   ceilingWidth,
   ceilingHeight,
-  ceilingDepth,
-  windowWidth,
-  windowHeight,
-  windowSpacing
+  ceilingDepth
 );
+
 
 // create floor
 const floor = new THREE.Mesh(
