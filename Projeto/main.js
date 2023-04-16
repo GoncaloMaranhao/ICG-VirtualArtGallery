@@ -103,6 +103,10 @@ function createWallWithDoorHole(x, y, z, rotationY, color, width, height, depth,
 createWallWithDoorHole(-floorWidth / 2, 0, -floorWidth / 2, 0, 0xff0000, 
                        floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight+0.1);
 
+// front wall, for presentation
+createWallWithDoorHole(-floorWidth / 2, 0, -floorWidth, 0, 0xff0000, 
+                       floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight+0.1);
+
 // left wall 
 createWallWithDoorHole(-floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x00ff00,
                        floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight + 0.1);
@@ -113,6 +117,10 @@ createWallWithDoorHole(floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x0000ff,
 
 // back wall, no hole
 createWallWithDoorHole(floorWidth / 2, 0, floorWidth / 2, Math.PI, 0x123456,
+                       floorWidth, ceilingPositionY, 0.1, 0, 0);
+
+// back wall, no hole, for presentation
+createWallWithDoorHole(floorWidth / 2, 0, floorWidth , Math.PI, 0x123456,
                        floorWidth, ceilingPositionY, 0.1, 0, 0);
 
 const ceilingMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
