@@ -3,24 +3,17 @@ import { PointerLockControls } from './js/PointerLockControls.js';
 import { openDoor } from './animations.js';
 import { updatePosition } from "./playerMovement.js";
 
-
-// create a scene
 const scene = new THREE.Scene();
 
-// create a WebGLRenderer and add to the DOM
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// create a camera
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.y = 1.7;
 
-// create controls
 const controls = new PointerLockControls(camera, renderer.domElement);
 
-
-// listeners for mouse
 document.addEventListener('click', () => {
 
   controls.lock();
@@ -32,49 +25,33 @@ controls.addEventListener('unlock', () => {
 });
 
 
-// animate function
+
 function animate() {
 
   requestAnimationFrame(animate);
-
   updatePosition(camera);
-
   renderer.render(scene, camera);
 }
 
-// ------------------------------------------------------------ LIGHTING -----------------------------------------------------
-
-
-// add lighting
 const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
 scene.add(ambientLight);
 
-// add a point light
 const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
 pointLight.position.set(0, 2, 0);
 scene.add(pointLight);
 
-
-// load textures
 const textureLoader = new THREE.TextureLoader();
 
-// entrance room front Door
 const darkWoodTexture = textureLoader.load('./assets/textures/castle_brick_07_diff_1k.jpg');
 const darkWoodMaterial = new THREE.MeshPhongMaterial({ map: darkWoodTexture });
 
-// entrance room floor
 const floorTexture = textureLoader.load('./assets/textures/plank_flooring_02_diff_1k.jpg');
 const floorMaterial = new THREE.MeshPhongMaterial({ map: floorTexture });
-
-
-// window texture
-const windowTexture = textureLoader.load('./assets/textures/red_sandstone_pavement_diff_1k.jpg');
 
 
 const doorWidth = 1.75;
 const doorHeight = 2.5;
 const doorDepth = 0.2;
-
 
 const floorWidth = 20;
 const floorHeight = 0.1;
@@ -84,22 +61,13 @@ const ceilingWidth = floorWidth;
 const ceilingHeight = 0.1;
 const ceilingDepth = floorDepth;
 
-const ceilingPositionX = 0;
 const ceilingPositionY = 7;
-const ceilingPositionZ = 0;
 
-// var to make the handles of the door closer together
 const handleOffset = 0.4;
 
-const windowWidth = 2;
-const windowHeight = 2;
-const windowSpacing = 1.5;
+function createWallWithDoorHole(x, y, z, rotationY, color, width, height, depth, doorWidth, doorHeight) {
 
-const wallMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
-
-const ceilingMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
-
-function createWallWithDoorHole(x, y, z, rotationY, material, width, height, depth, doorWidth, doorHeight) {
+  const wallMaterial = new THREE.MeshLambertMaterial({ color: color });
 
   const wallShape = new THREE.Shape();
   wallShape.moveTo(0, 0);
@@ -121,42 +89,33 @@ function createWallWithDoorHole(x, y, z, rotationY, material, width, height, dep
 
   const geometry = new THREE.ExtrudeGeometry(wallShape, {
       depth: depth,
-      bevelEnabled: false, // to make sure it fits the door
+      bevelEnabled: false,
   });
 
-  const wall = new THREE.Mesh(geometry, material);
+  const wall = new THREE.Mesh(geometry, wallMaterial);
   wall.position.set(x, y, z);
   wall.rotation.y = rotationY;
   scene.add(wall);
 }
 
 
- // front wall
- createWallWithDoorHole(-floorWidth / 2, 0, -floorWidth / 2, 0, wallMaterial, 
+// front wall
+createWallWithDoorHole(-floorWidth / 2, 0, -floorWidth / 2, 0, 0xff0000, 
                        floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight+0.1);
 
 // left wall 
-createWallWithDoorHole(-floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, wallMaterial,
+createWallWithDoorHole(-floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x00ff00,
                        floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight + 0.1);
 
 // right wall 
-createWallWithDoorHole(floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, wallMaterial,
+createWallWithDoorHole(floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x0000ff,
                        floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight + 0.1);
 
 // back wall, no hole
-createWallWithDoorHole(floorWidth / 2, 0, floorWidth / 2, Math.PI, wallMaterial,
+createWallWithDoorHole(floorWidth / 2, 0, floorWidth / 2, Math.PI, 0x123456,
                        floorWidth, ceilingPositionY, 0.1, 0, 0);
 
-
-
-function createWindow(x, y, z, width, height, texture) {
-  const windowGeometry = new THREE.PlaneGeometry(width, height);
-  const windowMaterial = new THREE.MeshPhongMaterial({ map: texture, transparent: true, side: THREE.DoubleSide });
-  const windowMesh = new THREE.Mesh(windowGeometry, windowMaterial);
-  windowMesh.position.set(x, y, z);
-  windowMesh.rotation.x = Math.PI / 2;
-  return windowMesh;
-}
+const ceilingMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
 
 function createCeiling(x, y, z, material, width, height, depth) {
   const geometry = new THREE.BoxGeometry(width, height, depth);
@@ -165,8 +124,6 @@ function createCeiling(x, y, z, material, width, height, depth) {
   scene.add(ceiling);
 }
 
-
-// create ceiling
 createCeiling(
   0,
   ceilingPositionY,
@@ -177,8 +134,6 @@ createCeiling(
   ceilingDepth
 );
 
-
-// create floor
 const floor = new THREE.Mesh(
   new THREE.BoxGeometry(floorWidth, floorHeight, floorDepth),
   floorMaterial
@@ -200,7 +155,6 @@ function createDoor(x, y, z, rotationY, material, width, height, depth) {
       material
   );
   
-  // I'm creating Pivot points because I want to open/close the doors around the hinge
   const leftDoorPivot = new THREE.Object3D();
   leftDoorPivot.position.set(-width , 0, 0);
   leftDoorPivot.add(leftDoor);
@@ -246,7 +200,6 @@ createDoor(floorWidth / 2,    0.13, 0, -Math.PI / 2,
 createDoor(0, 0.13, -floorWidth / 2, 0, 
           darkWoodMaterial, doorWidth, doorHeight, doorDepth); 
 
-// create door handle
 function createDoorHandle(x, y, z, rotationY, material) {
 
   const handleRadius = 0.05;
@@ -261,9 +214,6 @@ function createDoorHandle(x, y, z, rotationY, material) {
   return handle;
 }
 
-
-
-// detect door interaction
 document.addEventListener('keydown', (event) => {
 
   if (event.code === 'KeyE') {
@@ -283,7 +233,6 @@ document.addEventListener('keydown', (event) => {
 
   }
 });
-
 
 animate();
 

@@ -7,7 +7,6 @@ export const keys = {
     KeyD: false,
   };
   
-  // listeners for keys
   document.addEventListener("keydown", (event) => {
     if (keys.hasOwnProperty(event.code)) {
       keys[event.code] = true;
@@ -20,15 +19,12 @@ export const keys = {
     }
   });
   
-  // this function is based and the logic of moving in first person is based
-  //
-  // function to handle the movement
   export function updatePosition(camera) {
     const speed = 0.1;
     const direction = new THREE.Vector3();
   
     camera.getWorldDirection(direction);
-    direction.y = 0; // remove the vertical component to stay on the ground
+    direction.y = 0; 
     direction.normalize();
   
     if (keys.KeyW) {
