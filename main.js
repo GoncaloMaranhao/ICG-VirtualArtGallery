@@ -25,7 +25,6 @@ controls.addEventListener('unlock', () => {
 });
 
 
-
 function animate() {
   requestAnimationFrame(animate);
 
@@ -41,9 +40,6 @@ function animate() {
   updatePosition(camera);
   renderer.render(scene, camera);
 }
-
-
-
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
 scene.add(ambientLight);
@@ -171,7 +167,6 @@ const floor = new THREE.Mesh(
   );
 
 floor.position.set(0, 0.05, 0);
-floor.name = "floor";
 scene.add(floor);
 
 
@@ -267,26 +262,21 @@ document.addEventListener('keydown', (event) => {
 });
 
 function createPainting(x, y, z, width, height, frameThickness, imagePath) {
-  // Create the frame
   const frameGeometry = new THREE.BoxGeometry(width + 2 * frameThickness, height + 2 * frameThickness, frameThickness);
   const frameMaterial = new THREE.MeshPhongMaterial({ color: 0x654321 }); // Change the color according to your preference
   const frame = new THREE.Mesh(frameGeometry, frameMaterial);
 
-  // Create the painting canvas
   const canvasGeometry = new THREE.PlaneGeometry(width, height);
   const canvasTexture = textureLoader.load(imagePath);
   const canvasMaterial = new THREE.MeshPhongMaterial({ map: canvasTexture });
   const canvas = new THREE.Mesh(canvasGeometry, canvasMaterial);
 
-  // Position the canvas slightly in front of the frame
   canvas.position.z = frameThickness / 2 + 0.01;
 
-  // Create a group for the painting and add the frame and canvas
   const paintingGroup = new THREE.Group();
   paintingGroup.add(frame);
   paintingGroup.add(canvas);
 
-  // Position the painting on the wall
   paintingGroup.position.set(x, y, z);
 
   scene.add(paintingGroup);
@@ -320,7 +310,6 @@ createPainting(-5, 2, -floorWidth / 2 + 0.1, 2, 3, 0.1, './assets/textures/15109
 
   document.addEventListener('keydown', (event) => {
     if (event.key === 'z') {
-      // Rotate the cube around the desired axis
       cube.rotation.y += rotationAngle;
     }
   });
