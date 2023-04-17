@@ -27,11 +27,23 @@ controls.addEventListener('unlock', () => {
 
 
 function animate() {
-
   requestAnimationFrame(animate);
+
+  if (isHoldingObject) {
+    const newPosition = camera.position.clone();
+    const cameraDirection = new THREE.Vector3();
+    camera.getWorldDirection(cameraDirection);
+    newPosition.add(cameraDirection.multiply(objectOffset));
+    newPosition.y += 0.5;
+    cube.position.copy(newPosition);
+  }
+
   updatePosition(camera);
   renderer.render(scene, camera);
 }
+
+
+
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
 scene.add(ambientLight);
@@ -64,6 +76,17 @@ const ceilingDepth = floorDepth;
 const ceilingPositionY = 7;
 
 const handleOffset = 0.4;
+
+let isHoldingObject = false;
+const objectOffset = new THREE.Vector3(0, 0.5, -1);
+
+
+const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0xffff00 });
+const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+cube.position.set(0, 0.5, -3);
+scene.add(cube);
+
 
 function createWallWithDoorHole(x, y, z, rotationY, color, width, height, depth, doorWidth, doorHeight) {
 
@@ -148,6 +171,7 @@ const floor = new THREE.Mesh(
   );
 
 floor.position.set(0, 0.05, 0);
+floor.name = "floor";
 scene.add(floor);
 
 
@@ -241,6 +265,66 @@ document.addEventListener('keydown', (event) => {
 
   }
 });
+
+function createPainting(x, y, z, width, height, frameThickness, imagePath) {
+  // Create the frame
+  const frameGeometry = new THREE.BoxGeometry(width + 2 * frameThickness, height + 2 * frameThickness, frameThickness);
+  const frameMaterial = new THREE.MeshPhongMaterial({ color: 0x654321 }); // Change the color according to your preference
+  const frame = new THREE.Mesh(frameGeometry, frameMaterial);
+
+  // Create the painting canvas
+  const canvasGeometry = new THREE.PlaneGeometry(width, height);
+  const canvasTexture = textureLoader.load(imagePath);
+  const canvasMaterial = new THREE.MeshPhongMaterial({ map: canvasTexture });
+  const canvas = new THREE.Mesh(canvasGeometry, canvasMaterial);
+
+  // Position the canvas slightly in front of the frame
+  canvas.position.z = frameThickness / 2 + 0.01;
+
+  // Create a group for the painting and add the frame and canvas
+  const paintingGroup = new THREE.Group();
+  paintingGroup.add(frame);
+  paintingGroup.add(canvas);
+
+  // Position the painting on the wall
+  paintingGroup.position.set(x, y, z);
+
+  scene.add(paintingGroup);
+}
+
+createPainting(-5, 2, -floorWidth / 2 + 0.1, 2, 3, 0.1, './assets/textures/151090.jpg');
+
+
+  document.addEventListener('keydown', (event) => {
+  
+    if (event.code === 'KeyT') {
+      if (!isHoldingObject) {
+        const pickUpDistance = 2;
+  
+        const cubeDistance = cube.position.distanceTo(camera.position);
+        if (cubeDistance < pickUpDistance) {
+          isHoldingObject = true;
+        }
+      }
+    }
+  
+    if (event.code === 'KeyU') {
+      if (isHoldingObject) {
+        isHoldingObject = false;
+        cube.position.y = cube.geometry.parameters.height / 2 + floorHeight;
+      }
+    }
+  });
+  
+  const rotationAngle = Math.PI / 4;
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'z') {
+      // Rotate the cube around the desired axis
+      cube.rotation.y += rotationAngle;
+    }
+  });
+  
 
 animate();
 
