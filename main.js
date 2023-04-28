@@ -1,7 +1,9 @@
 import * as THREE from './js/three.module.js';
 import { PointerLockControls } from './js/PointerLockControls.js';
-import { openDoor } from './animations.js';
-import { updatePosition } from "./playerMovement.js";
+import { openDoor } from './misc/animations.js';
+import { updatePosition } from "./misc/playerMovement.js";
+import { createWallWithDoorHole, createCeiling, 
+         createDoor, createPainting} from './misc/various.js';
 
 const scene = new THREE.Scene();
 
@@ -46,7 +48,7 @@ const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
 
 const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
 pointLight.position.set(0, 2, 0);
-//scene.add(pointLight);
+scene.add(pointLight);
 
 const textureLoader = new THREE.TextureLoader();
 
@@ -55,7 +57,6 @@ const darkWoodMaterial = new THREE.MeshPhongMaterial({ map: darkWoodTexture });
 
 const floorTexture = textureLoader.load('./assets/textures/castle_brick_07_diff_1k.jpg');
 const floorMaterial = new THREE.MeshPhongMaterial({ map: floorTexture });
-
 
 const doorWidth = 1.75;
 const doorHeight = 2.5;
@@ -70,7 +71,7 @@ const ceilingHeight = 0.1;
 const ceilingDepth = floorDepth;
 
 const ceilingPositionY = 7;
-const handleOffset = 0.4;
+
 
 let isHoldingObject = false;
 const objectOffset = new THREE.Vector3(0, 0.5, -1);
@@ -91,77 +92,26 @@ const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
 cube.position.set(0, 0.5, -3);
 scene.add(cube);
 
-function createWallWithDoorHole(x, y, z, rotationY, color, width, height, depth, doorWidth, doorHeight) {
-
-  const wallMaterial = new THREE.MeshLambertMaterial({ color: color });
-
-  const wallShape = new THREE.Shape();
-  wallShape.moveTo(0, 0);
-  wallShape.lineTo(0, height);
-  wallShape.lineTo(width, height);
-  wallShape.lineTo(width, 0);
-  wallShape.lineTo(0, 0);
-
-  const doorHoleShape = new THREE.Path();
-  const doorHoleX = (width - doorWidth) / 2;
-  const doorHoleY = 0;
-  doorHoleShape.moveTo(doorHoleX, doorHoleY);
-  doorHoleShape.lineTo(doorHoleX, doorHoleY + doorHeight);
-  doorHoleShape.lineTo(doorHoleX + doorWidth, doorHoleY + doorHeight);
-  doorHoleShape.lineTo(doorHoleX + doorWidth, doorHoleY);
-  doorHoleShape.lineTo(doorHoleX, doorHoleY);
-
-  wallShape.holes.push(doorHoleShape);
-
-  const geometry = new THREE.ExtrudeGeometry(wallShape, {
-      depth: depth,
-      bevelEnabled: false,
-  });
-
-  const wall = new THREE.Mesh(geometry, wallMaterial);
-  wall.position.set(x, y, z);
-  wall.rotation.y = rotationY;
-  wall.castShadow = true;
-  wall.receiveShadow = true;
-  scene.add(wall);
-}
-
 // front wall
-createWallWithDoorHole(-floorWidth / 2, 0, -floorWidth / 2, 0, 0xff0000, 
+createWallWithDoorHole(scene, -floorWidth / 2, 0, -floorWidth / 2, 0, 0xff0000, 
                        floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight+0.1);
 
 // left wall 
-createWallWithDoorHole(-floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x00ff00,
+createWallWithDoorHole(scene, -floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x00ff00,
                        floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight + 0.1);
 
 // right wall 
-createWallWithDoorHole(floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x0000ff,
+createWallWithDoorHole(scene, floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x0000ff,
                        floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight + 0.1);
 
 // back wall, no hole
-createWallWithDoorHole(floorWidth / 2, 0, floorWidth / 2, Math.PI, 0x123456,
+createWallWithDoorHole(scene, floorWidth / 2, 0, floorWidth / 2, Math.PI, 0x123456,
                        floorWidth, ceilingPositionY, 0.1, 0, 0);
 
 const ceilingMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
 
-function createCeiling(x, y, z, material, width, height, depth) {
-  const geometry = new THREE.BoxGeometry(width, height, depth);
-  const ceiling = new THREE.Mesh(geometry, material);
-  ceiling.position.set(x, y, z);
-  ceiling.receiveShadow = true;
-  ceiling.castShadow = true;
-  scene.add(ceiling);
-}
-
-createCeiling(
-  - floorWidth / 4,
-  ceilingPositionY,
-  0,
-  ceilingMaterial,
-  ceilingWidth,
-  ceilingHeight,
-  ceilingDepth
-);
+createCeiling(scene, - floorWidth / 4, ceilingPositionY, 0, ceilingMaterial,
+              ceilingWidth, ceilingHeight, ceilingDepth );
 
 const floor = new THREE.Mesh(
   new THREE.BoxGeometry(floorWidth, floorHeight, floorDepth),
@@ -173,80 +123,19 @@ floor.receiveShadow = true;
 scene.add(floor);
 
 
-function createDoor(x, y, z, rotationY, material, width, height, depth) {
-
-  const leftDoor = new THREE.Mesh(
-      new THREE.BoxGeometry(width, height, depth),
-      material
-  );
-  leftDoor.castShadow = true;
-  leftDoor.receiveShadow = true;
-
-  const rightDoor = new THREE.Mesh(
-      new THREE.BoxGeometry(width, height, depth),
-      material
-  );
-  rightDoor.castShadow = true;
-  rightDoor.receiveShadow = true;
-  
-  const leftDoorPivot = new THREE.Object3D();
-  leftDoorPivot.position.set(-width , 0, 0);
-  leftDoorPivot.add(leftDoor);
-  leftDoor.position.set(width / 2, height/2, 0);
-
-  const rightDoorPivot = new THREE.Object3D();
-  rightDoorPivot.position.set(width, 0, 0);
-  rightDoorPivot.add(rightDoor);
-  rightDoor.position.set(-width / 2, height/2, 0);
-
-  const handleMaterial = new THREE.MeshPhongMaterial({ color: 0x800080 });
-  const leftDoorHandle = createDoorHandle(-width / 32 + handleOffset, height / 32, depth / 2 + 0.01, 0, handleMaterial);
-  const rightDoorHandle = createDoorHandle(width / 32 - handleOffset, height / 32, depth / 2 + 0.01, 0, handleMaterial);
-
-  const leftDoorHandleBack = createDoorHandle(-width / 32 + handleOffset, height / 32, -depth / 2 - 0.01, 0, handleMaterial);
-  const rightDoorHandleBack = createDoorHandle(width / 32 - handleOffset, height / 32, -depth / 2 - 0.01, 0, handleMaterial);
-
-  leftDoor.add(leftDoorHandle);
-  rightDoor.add(rightDoorHandle);
-
-  leftDoor.add(leftDoorHandleBack);
-  rightDoor.add(rightDoorHandleBack);
-
-  const doorGroup = new THREE.Group();
-  doorGroup.add(leftDoorPivot);
-  doorGroup.add(rightDoorPivot);
-  doorGroup.position.set(x, y, z);
-  doorGroup.rotation.y = rotationY;
-  doorGroup.isDoor = true;
-
-  scene.add(doorGroup);
-}
-
 // left door
-createDoor(-floorWidth / 2, 0.13, 0, Math.PI / 2, 
+createDoor(scene, -floorWidth / 2, 0.13, 0, Math.PI / 2, 
           darkWoodMaterial, doorWidth, doorHeight, doorDepth); 
 
 // right door
-createDoor(floorWidth / 2,    0.13, 0, -Math.PI / 2, 
+createDoor(scene, floorWidth / 2,    0.13, 0, -Math.PI / 2, 
           darkWoodMaterial, doorWidth, doorHeight, doorDepth); 
 
 // front door
-createDoor(0, 0.13, -floorWidth / 2, 0, 
+createDoor(scene, 0, 0.13, -floorWidth / 2, 0, 
           darkWoodMaterial, doorWidth, doorHeight, doorDepth); 
 
-function createDoorHandle(x, y, z, rotationY, material) {
 
-  const handleRadius = 0.05;
-  const handleLength = 1;
-
-  const handle = new THREE.Mesh(
-    new THREE.CylinderGeometry(handleRadius, handleRadius, handleLength, 32),
-    material
-  );
-  handle.rotation.y = rotationY;
-  handle.position.set(x, y, z);
-  return handle;
-}
 
 document.addEventListener('keydown', (event) => {
 
@@ -266,30 +155,9 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-function createPainting(x, y, z, width, height, frameThickness, imagePath) {
-  const frameGeometry = new THREE.BoxGeometry(width + 2 * frameThickness, height + 2 * frameThickness, frameThickness);
-  const frameMaterial = new THREE.MeshPhongMaterial({ color: 0x654321 }); 
-  const frame = new THREE.Mesh(frameGeometry, frameMaterial);
-  frame.receiveShadow = true;
-  frame.castShadow = true;
 
-  const canvasGeometry = new THREE.PlaneGeometry(width, height);
-  const canvasTexture = textureLoader.load(imagePath);
-  const canvasMaterial = new THREE.MeshPhongMaterial({ map: canvasTexture });
-  const canvas = new THREE.Mesh(canvasGeometry, canvasMaterial);
-  canvas.receiveShadow = true;
-  canvas.castShadow = true;
 
-  canvas.position.z = frameThickness / 2 + 0.01;
-
-  const paintingGroup = new THREE.Group();
-  paintingGroup.add(frame);
-  paintingGroup.add(canvas);
-  paintingGroup.position.set(x, y, z);
-  scene.add(paintingGroup);
-}
-
-createPainting(-5, 2, -floorWidth / 2 + 0.1, 2, 3, 0.1, './assets/textures/151090.jpg');
+createPainting(scene, -5, 2, -floorWidth / 2 + 0.1, 2, 3, 0.1, './assets/textures/151090.jpg');
 
 document.addEventListener('keydown', (event) => {
 
