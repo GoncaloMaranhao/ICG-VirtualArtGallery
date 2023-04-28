@@ -1,4 +1,4 @@
-function openDoor(doorGroup) {
+export function openDoor(doorGroup) {
 
   const leftDoorPivot = doorGroup.children[0];
   const rightDoorPivot = doorGroup.children[1];
@@ -40,4 +40,4 @@ function openDoor(doorGroup) {
   requestAnimationFrame(animateDoor);
 }
 
-export { openDoor };
+

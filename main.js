@@ -1,11 +1,11 @@
-import * as THREE from './js/three.module.js';
-import { PointerLockControls } from './js/PointerLockControls.js';
-import { openDoor } from './misc/animations.js';
-import { updatePosition } from "./misc/playerMovement.js";
+import * as THREE from './threejs/three.module.js';
+import { PointerLockControls } from './threejs/PointerLockControls.js';
+import { updatePosition } from "./helpers/playerMovement.js";
 import { createWallWithDoorHole, createCeiling, 
-         createDoor, createPainting} from './misc/various.js';
+         createDoor, createPainting} from './helpers/entranceRoom.js';
+import './helpers/eventListeners.js';
 
-const scene = new THREE.Scene();
+export const scene = new THREE.Scene();
 
 const renderer = new THREE.WebGLRenderer();
 renderer.shadowMap.enabled = true;
@@ -13,7 +13,7 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Optional: use soft shadows
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+export const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.y = 1.7;
 
 const controls = new PointerLockControls(camera, renderer.domElement);
@@ -25,7 +25,6 @@ document.addEventListener('click', () => {
 
 controls.addEventListener('unlock', () => {
 });
-
 
 function animate() {
   requestAnimationFrame(animate);
@@ -71,7 +70,6 @@ const ceilingHeight = 0.1;
 const ceilingDepth = floorDepth;
 
 const ceilingPositionY = 7;
-
 
 let isHoldingObject = false;
 const objectOffset = new THREE.Vector3(0, 0.5, -1);
@@ -122,7 +120,6 @@ floor.position.set(0, 0.05, 0);
 floor.receiveShadow = true;
 scene.add(floor);
 
-
 // left door
 createDoor(scene, -floorWidth / 2, 0.13, 0, Math.PI / 2, 
           darkWoodMaterial, doorWidth, doorHeight, doorDepth); 
@@ -135,58 +132,8 @@ createDoor(scene, floorWidth / 2,    0.13, 0, -Math.PI / 2,
 createDoor(scene, 0, 0.13, -floorWidth / 2, 0, 
           darkWoodMaterial, doorWidth, doorHeight, doorDepth); 
 
-
-
-document.addEventListener('keydown', (event) => {
-
-  if (event.code === 'KeyE') {
-    const doorRaycaster = new THREE.Raycaster();
-    doorRaycaster.setFromCamera(new THREE.Vector2(0, 0), camera);
-
-    const intersects = doorRaycaster.intersectObjects(scene.children, true);
-
-    if (intersects.length > 0) {
-      const firstIntersectedObject = intersects[0].object;
-    
-      if (firstIntersectedObject.parent.parent.isDoor) {
-        openDoor(firstIntersectedObject.parent.parent);
-      }
-    }
-  }
-});
-
-
-
 createPainting(scene, -5, 2, -floorWidth / 2 + 0.1, 2, 3, 0.1, './assets/textures/151090.jpg');
 
-document.addEventListener('keydown', (event) => {
-
-  if (event.code === 'KeyT') {
-    if (!isHoldingObject) {
-      const pickUpDistance = 2;
-
-      const cubeDistance = cube.position.distanceTo(camera.position);
-      if (cubeDistance < pickUpDistance) {
-        isHoldingObject = true;
-      }
-    }
-  }
-
-  if (event.code === 'KeyU') {
-    if (isHoldingObject) {
-      isHoldingObject = false;
-      cube.position.y = cube.geometry.parameters.height / 2 + floorHeight;
-    }
-  }
-});
-  
-const rotationAngle = Math.PI / 4;
-
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'z') {
-    cube.rotation.y += rotationAngle;
-  }
-});
-  
+//--------------------------_Sunny Room ----------------------
 animate();
 

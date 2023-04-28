@@ -1,4 +1,4 @@
-import * as THREE from '../js/three.module.js';
+import * as THREE from '../threejs/three.module.js';
 
 export function createFloor(floorWidth, floorHeight, floorDepth, floorMaterial) {
   const floor = new THREE.Mesh(
