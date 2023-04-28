@@ -6,6 +6,8 @@ import { updatePosition } from "./playerMovement.js";
 const scene = new THREE.Scene();
 
 const renderer = new THREE.WebGLRenderer();
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Optional: use soft shadows
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
@@ -20,8 +22,6 @@ document.addEventListener('click', () => {
 });
 
 controls.addEventListener('unlock', () => {
-
-  // talvez queira fazer alguma coisa aqui quando o rato estiver unlocked??
 });
 
 
@@ -42,18 +42,18 @@ function animate() {
 }
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
-scene.add(ambientLight);
+//scene.add(ambientLight);
 
 const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
 pointLight.position.set(0, 2, 0);
-scene.add(pointLight);
+//scene.add(pointLight);
 
 const textureLoader = new THREE.TextureLoader();
 
 const darkWoodTexture = textureLoader.load('./assets/textures/castle_brick_07_diff_1k.jpg');
 const darkWoodMaterial = new THREE.MeshPhongMaterial({ map: darkWoodTexture });
 
-const floorTexture = textureLoader.load('./assets/textures/plank_flooring_02_diff_1k.jpg');
+const floorTexture = textureLoader.load('./assets/textures/castle_brick_07_diff_1k.jpg');
 const floorMaterial = new THREE.MeshPhongMaterial({ map: floorTexture });
 
 
@@ -65,24 +65,31 @@ const floorWidth = 20;
 const floorHeight = 0.1;
 const floorDepth = floorWidth;
 
-const ceilingWidth = floorWidth;
+const ceilingWidth = floorWidth / 2;
 const ceilingHeight = 0.1;
 const ceilingDepth = floorDepth;
 
 const ceilingPositionY = 7;
-
 const handleOffset = 0.4;
 
 let isHoldingObject = false;
 const objectOffset = new THREE.Vector3(0, 0.5, -1);
 
+const spotLight = new THREE.SpotLight(0xffffff, 1);
+spotLight.position.set(0, ceilingHeight + 10, 0);
+spotLight.angle = Math.PI / 2.5; 
+spotLight.penumbra = 0.1;
+spotLight.castShadow = true;
+spotLight.shadow.mapSize.width = 1024;
+spotLight.shadow.mapSize.height = 1024;
+spotLight.shadow.bias = -0.005; // fix shadow acne or peter-panning issue
+scene.add(spotLight);
 
 const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
 const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0xffff00 });
 const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
 cube.position.set(0, 0.5, -3);
 scene.add(cube);
-
 
 function createWallWithDoorHole(x, y, z, rotationY, color, width, height, depth, doorWidth, doorHeight) {
 
@@ -114,16 +121,13 @@ function createWallWithDoorHole(x, y, z, rotationY, color, width, height, depth,
   const wall = new THREE.Mesh(geometry, wallMaterial);
   wall.position.set(x, y, z);
   wall.rotation.y = rotationY;
+  wall.castShadow = true;
+  wall.receiveShadow = true;
   scene.add(wall);
 }
 
-
 // front wall
 createWallWithDoorHole(-floorWidth / 2, 0, -floorWidth / 2, 0, 0xff0000, 
-                       floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight+0.1);
-
-// front wall, for presentation
-createWallWithDoorHole(-floorWidth / 2, 0, -floorWidth, 0, 0xff0000, 
                        floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight+0.1);
 
 // left wall 
@@ -138,21 +142,19 @@ createWallWithDoorHole(floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x0000ff,
 createWallWithDoorHole(floorWidth / 2, 0, floorWidth / 2, Math.PI, 0x123456,
                        floorWidth, ceilingPositionY, 0.1, 0, 0);
 
-// back wall, no hole, for presentation
-createWallWithDoorHole(floorWidth / 2, 0, floorWidth , Math.PI, 0x123456,
-                       floorWidth, ceilingPositionY, 0.1, 0, 0);
-
 const ceilingMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
 
 function createCeiling(x, y, z, material, width, height, depth) {
   const geometry = new THREE.BoxGeometry(width, height, depth);
   const ceiling = new THREE.Mesh(geometry, material);
   ceiling.position.set(x, y, z);
+  ceiling.receiveShadow = true;
+  ceiling.castShadow = true;
   scene.add(ceiling);
 }
 
 createCeiling(
-  0,
+  - floorWidth / 4,
   ceilingPositionY,
   0,
   ceilingMaterial,
@@ -167,6 +169,7 @@ const floor = new THREE.Mesh(
   );
 
 floor.position.set(0, 0.05, 0);
+floor.receiveShadow = true;
 scene.add(floor);
 
 
@@ -176,11 +179,15 @@ function createDoor(x, y, z, rotationY, material, width, height, depth) {
       new THREE.BoxGeometry(width, height, depth),
       material
   );
+  leftDoor.castShadow = true;
+  leftDoor.receiveShadow = true;
 
   const rightDoor = new THREE.Mesh(
       new THREE.BoxGeometry(width, height, depth),
       material
   );
+  rightDoor.castShadow = true;
+  rightDoor.receiveShadow = true;
   
   const leftDoorPivot = new THREE.Object3D();
   leftDoorPivot.position.set(-width , 0, 0);
@@ -256,64 +263,62 @@ document.addEventListener('keydown', (event) => {
         openDoor(firstIntersectedObject.parent.parent);
       }
     }
-    
-
   }
 });
 
 function createPainting(x, y, z, width, height, frameThickness, imagePath) {
   const frameGeometry = new THREE.BoxGeometry(width + 2 * frameThickness, height + 2 * frameThickness, frameThickness);
-  const frameMaterial = new THREE.MeshPhongMaterial({ color: 0x654321 }); // Change the color according to your preference
+  const frameMaterial = new THREE.MeshPhongMaterial({ color: 0x654321 }); 
   const frame = new THREE.Mesh(frameGeometry, frameMaterial);
+  frame.receiveShadow = true;
+  frame.castShadow = true;
 
   const canvasGeometry = new THREE.PlaneGeometry(width, height);
   const canvasTexture = textureLoader.load(imagePath);
   const canvasMaterial = new THREE.MeshPhongMaterial({ map: canvasTexture });
   const canvas = new THREE.Mesh(canvasGeometry, canvasMaterial);
+  canvas.receiveShadow = true;
+  canvas.castShadow = true;
 
   canvas.position.z = frameThickness / 2 + 0.01;
 
   const paintingGroup = new THREE.Group();
   paintingGroup.add(frame);
   paintingGroup.add(canvas);
-
   paintingGroup.position.set(x, y, z);
-
   scene.add(paintingGroup);
 }
 
 createPainting(-5, 2, -floorWidth / 2 + 0.1, 2, 3, 0.1, './assets/textures/151090.jpg');
 
+document.addEventListener('keydown', (event) => {
 
-  document.addEventListener('keydown', (event) => {
-  
-    if (event.code === 'KeyT') {
-      if (!isHoldingObject) {
-        const pickUpDistance = 2;
-  
-        const cubeDistance = cube.position.distanceTo(camera.position);
-        if (cubeDistance < pickUpDistance) {
-          isHoldingObject = true;
-        }
+  if (event.code === 'KeyT') {
+    if (!isHoldingObject) {
+      const pickUpDistance = 2;
+
+      const cubeDistance = cube.position.distanceTo(camera.position);
+      if (cubeDistance < pickUpDistance) {
+        isHoldingObject = true;
       }
     }
-  
-    if (event.code === 'KeyU') {
-      if (isHoldingObject) {
-        isHoldingObject = false;
-        cube.position.y = cube.geometry.parameters.height / 2 + floorHeight;
-      }
-    }
-  });
-  
-  const rotationAngle = Math.PI / 4;
+  }
 
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'z') {
-      cube.rotation.y += rotationAngle;
+  if (event.code === 'KeyU') {
+    if (isHoldingObject) {
+      isHoldingObject = false;
+      cube.position.y = cube.geometry.parameters.height / 2 + floorHeight;
     }
-  });
+  }
+});
   
+const rotationAngle = Math.PI / 4;
 
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'z') {
+    cube.rotation.y += rotationAngle;
+  }
+});
+  
 animate();
 
