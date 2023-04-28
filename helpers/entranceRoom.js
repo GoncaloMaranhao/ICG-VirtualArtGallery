@@ -1,16 +1,17 @@
 import * as THREE from '../threejs/three.module.js';
 
-export function createFloor(floorWidth, floorHeight, floorDepth, floorMaterial) {
+export function createFloor(floorWidth, floorHeight, floorDepth, floorMaterial, position) {
   const floor = new THREE.Mesh(
     new THREE.BoxGeometry(floorWidth, floorHeight, floorDepth),
     floorMaterial
   );
 
-  floor.position.set(0, 0.05, 0);
-  //floor.receiveShadow = true;
+  floor.position.set(position.x, position.y, position.z);
+  floor.receiveShadow = true;
 
   return floor;
 }
+
 
 export function createWallWithDoorHole(scene, x, y, z, rotationY, color, width, height, depth, doorWidth, doorHeight) {
   const wallMaterial = new THREE.MeshLambertMaterial({ color: color });
