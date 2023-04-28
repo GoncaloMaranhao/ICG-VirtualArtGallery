@@ -111,7 +111,7 @@ const sunnyRoomWidth = 19.5;
 const sunnyRoomHeight = floorWidth;
 const sunnyRoomDepth = floorDepth;
 const segments = 16;
-const sunnyRoom = createSunnyRoom(sunnyRoomWidth / 2, sunnyRoomHeight, sunnyRoomDepth, segments);
+const sunnyRoom = createSunnyRoom(sunnyRoomWidth, sunnyRoomHeight, sunnyRoomDepth, segments, doorWidth, doorHeight);
 sunnyRoom.position.set(floorWidth / 2,0 ,floorWidth / 2 ); // Position the sunny room next to the entrance room
 scene.add(sunnyRoom);
 

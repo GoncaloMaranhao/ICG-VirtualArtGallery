@@ -7,7 +7,7 @@ export function createFloor(floorWidth, floorHeight, floorDepth, floorMaterial, 
   );
 
   floor.position.set(position.x, position.y, position.z);
-  //floor.receiveShadow = true;
+  floor.receiveShadow = true;
 
   return floor;
 }
