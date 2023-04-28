@@ -7,11 +7,10 @@ export function createFloor(floorWidth, floorHeight, floorDepth, floorMaterial, 
   );
 
   floor.position.set(position.x, position.y, position.z);
-  floor.receiveShadow = true;
+  //floor.receiveShadow = true;
 
   return floor;
 }
-
 
 export function createWallWithDoorHole(scene, x, y, z, rotationY, color, width, height, depth, doorWidth, doorHeight) {
   const wallMaterial = new THREE.MeshLambertMaterial({ color: color });
@@ -58,7 +57,6 @@ export function createCeiling(scene, x, y, z, material, width, height, depth) {
 const handleOffset = 0.4;
 
 export function createDoor(scene, x, y, z, rotationY, material, width, height, depth) {
-
   const leftDoor = new THREE.Mesh(
       new THREE.BoxGeometry(width, height, depth),
       material
@@ -91,9 +89,8 @@ export function createDoor(scene, x, y, z, rotationY, material, width, height, d
   const rightDoorHandleBack = createDoorHandle(width / 32 - handleOffset, height / 32, -depth / 2 - 0.01, 0, handleMaterial);
 
   leftDoor.add(leftDoorHandle);
-  rightDoor.add(rightDoorHandle);
-
   leftDoor.add(leftDoorHandleBack);
+  rightDoor.add(rightDoorHandle);
   rightDoor.add(rightDoorHandleBack);
 
   const doorGroup = new THREE.Group();
@@ -106,7 +103,7 @@ export function createDoor(scene, x, y, z, rotationY, material, width, height, d
   scene.add(doorGroup);
 }
 
-export function createDoorHandle(x, y, z, rotationY, material) {
+function createDoorHandle(x, y, z, rotationY, material) {
 
   const handleRadius = 0.05;
   const handleLength = 1;
@@ -135,7 +132,6 @@ export function createPainting(scene, x, y, z, width, height, frameThickness, im
   const canvas = new THREE.Mesh(canvasGeometry, canvasMaterial);
   canvas.receiveShadow = true;
   canvas.castShadow = true;
-
   canvas.position.z = frameThickness / 2 + 0.01;
 
   const paintingGroup = new THREE.Group();

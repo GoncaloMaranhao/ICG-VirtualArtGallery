@@ -4,6 +4,7 @@ import { initializePlayerMovement } from './helpers/playerMovement.js';
 import { updatePosition } from "./helpers/playerMovement.js";
 import { createWallWithDoorHole, createCeiling, 
          createDoor, createPainting, createFloor} from './helpers/entranceRoom.js';
+import { createSunnyRoom } from './helpers/sunnyRoom.js';
 
 export const scene = new THREE.Scene();
 
@@ -74,7 +75,11 @@ createPainting(scene, -5, 2, -floorWidth / 2 + 0.1, 2, 3, 0.1, './assets/texture
 
 const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
 pointLight.position.set(0, 2, 0);
-//scene.add(pointLight);
+scene.add(pointLight);
+
+const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 100);
+sunnyPointLight.position.set(floorWidth, 2, 0);
+scene.add(sunnyPointLight);
 
 const spotLight = new THREE.SpotLight(0xffffff, 1);
 spotLight.position.set(0, ceilingHeight + 10, 0);
@@ -94,6 +99,25 @@ scene.add(cube);
 
 //--------------------------_Sunny Room_----------------------
 
+const sunnyfloorPosition = { x: floorWidth, y: 0.05, z: 0 };
+const sunnyFloor = createFloor(floorWidth, floorHeight, floorDepth, floorMaterial, sunnyfloorPosition);
+scene.add(sunnyFloor);
+
+// front wall 
+//createWallWithDoorHole(scene, floorWidth + (floorWidth / 2), 0, floorWidth / 2, Math.PI / 2, 0x00ffff,
+//                       floorWidth, ceilingPositionY, 0.1, 0, 0);
+
+const sunnyRoomWidth = 19.5;
+const sunnyRoomHeight = floorWidth;
+const sunnyRoomDepth = floorDepth;
+const segments = 16;
+const sunnyRoom = createSunnyRoom(sunnyRoomWidth / 2, sunnyRoomHeight, sunnyRoomDepth, segments);
+sunnyRoom.position.set(floorWidth / 2,0 ,floorWidth / 2 ); // Position the sunny room next to the entrance room
+scene.add(sunnyRoom);
+
+
+
+//---------------------Animate------------------
 
 function animate() {
   requestAnimationFrame(animate);

@@ -1,7 +1,7 @@
 # ICG
 Rep related to the class of ICG - Introduction to Computer Graphics, in University of Aveiro.
 
-The main branch contains my Virtual Art Gallery project of the class.
+The main branch contains my Virtual Art Gallery project of the class done with version 150 of three.js. The files in the threejs folder are not mine, they were downloaded from three.js git https://github.com/mrdoob/three.js/.
 
 You can access the project here:
 
