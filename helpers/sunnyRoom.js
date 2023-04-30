@@ -13,7 +13,6 @@ function createVaultedWallWithDoorHole(width, height, depth, segments, doorWidth
     const vertices = [];
     const indices = [];
   
-    // Add vertices for the wall with a hole for the door
     points.forEach((point) => {
       if (point.x > 0 && point.x < doorWidth && point.y < doorHeight) {
         return;
@@ -21,8 +20,7 @@ function createVaultedWallWithDoorHole(width, height, depth, segments, doorWidth
       vertices.push(point.x, point.y, 0);
       vertices.push(point.x, point.y, depth);
     });
-  
-    // Create faces for the wall
+
     for (let i = 0; i < vertices.length / 3 - 2; i += 2) {
       indices.push(i, i + 1, i + 2);
       indices.push(i + 1, i + 3, i + 2);
@@ -30,8 +28,6 @@ function createVaultedWallWithDoorHole(width, height, depth, segments, doorWidth
   
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
     geometry.setIndex(indices);
-  
-    // Update face normals and vertex normals
     geometry.computeVertexNormals();
   
     const material = new THREE.MeshStandardMaterial({ color: 0xffffff, side: THREE.DoubleSide });
