@@ -5,6 +5,7 @@ import { updatePosition } from "./helpers/playerMovement.js";
 import { createWallWithDoorHole, createCeiling, 
          createDoor, createPainting, createFloor} from './helpers/entranceRoom.js';
 import { createSunnyRoom } from './helpers/sunnyRoom.js';
+import { createSimpleWall } from './helpers/general.js';
 
 export const scene = new THREE.Scene();
 
@@ -28,7 +29,8 @@ const darkWoodMaterial = new THREE.MeshPhongMaterial({ map: darkWoodTexture });
 
 const floorTexture = textureLoader.load('./assets/textures/castle_brick_07_diff_1k.jpg');
 const floorMaterial = new THREE.MeshPhongMaterial({ map: floorTexture });
-const floorWidth = 20;
+
+const floorWidth = 25;
 const floorHeight = 0.1;
 const floorDepth = floorWidth;
 const floorPosition = { x: 0, y: 0.05, z: 0 };
@@ -64,7 +66,7 @@ createWallWithDoorHole(scene, -floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0
                        floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight + 0.1);
 // right wall 
 createWallWithDoorHole(scene, floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x0000ff,
-                       floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight + 0.1);
+                       floorWidth, 26.0 + 0.1, 0.1, doorWidth * 2, doorHeight + 0.1);
 // back wall, no hole
 createWallWithDoorHole(scene, floorWidth / 2, 0, floorWidth / 2, Math.PI, 0x123456,
                        floorWidth, ceilingPositionY, 0.1, 0, 0);
@@ -77,9 +79,6 @@ const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
 pointLight.position.set(0, 2, 0);
 scene.add(pointLight);
 
-const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 100);
-sunnyPointLight.position.set(floorWidth, 2, 0);
-scene.add(sunnyPointLight);
 
 const spotLight = new THREE.SpotLight(0xffffff, 1);
 spotLight.position.set(0, ceilingHeight + 10, 0);
@@ -94,27 +93,56 @@ scene.add(spotLight);
 const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
 const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0xffff00 });
 const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-cube.position.set(0, 0.5, -3);
+cube.position.set(0, 1, 3);
 scene.add(cube);
 
 //--------------------------_Sunny Room_----------------------
 
-const sunnyfloorPosition = { x: floorWidth, y: 0.05, z: 0 };
-const sunnyFloor = createFloor(floorWidth, floorHeight, floorDepth, floorMaterial, sunnyfloorPosition);
+const sunnyFloorTexture = textureLoader.load('./assets/textures/red_sandstone_pavement_diff_1k.jpg');
+const sunnyFloorMaterial = new THREE.MeshPhongMaterial({ map: sunnyFloorTexture });
+
+
+const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 100);
+sunnyPointLight.position.set(floorWidth, 2, 0);
+scene.add(sunnyPointLight);
+
+const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 100);
+sunnyPointLight2.position.set(floorWidth + 10, 2, 0);
+scene.add(sunnyPointLight2);
+
+const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 100);
+sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
+scene.add(sunnyPointLight3);
+
+
+
+/*
+// small addon to back wall (door) of sunny room to cover the extra vaulted wall, not an elegant solution  
+createWallWithDoorHole(scene, floorWidth / 2, 0, -floorWidth / 2, Math.PI / 2, 0x0000ff,
+                       floorWidth / 8, ceilingPositionY, 0.1, 0, 0);
+
+// front wall
+createWallWithDoorHole(scene, floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x1234ff,
+                       floorWidth, 26.0 + 0.1, 0.1, 0, 0); */
+
+const sunnyFloorWidth = 40;
+const sunnyFloorHeight = 0.1;
+const sunnyFloorDepth = sunnyFloorWidth;
+
+const sunnyfloorPosition = { x: floorWidth + 7.5, y: 0.05, z: 0 };
+const sunnyFloor = createFloor(sunnyFloorWidth, sunnyFloorHeight, sunnyFloorDepth, sunnyFloorMaterial, sunnyfloorPosition);
 scene.add(sunnyFloor);
 
-// front wall 
-//createWallWithDoorHole(scene, floorWidth + (floorWidth / 2), 0, floorWidth / 2, Math.PI / 2, 0x00ffff,
-//                       floorWidth, ceilingPositionY, 0.1, 0, 0);
-
+const sunnyBackWallPosition = {x: floorWidth / 2, y: 0, z: -floorWidth / 2};
+const sunnyBackWall = createSimpleWall(sunnyBackWallPosition, )
+                       
 const sunnyRoomWidth = 19.5;
 const sunnyRoomHeight = floorWidth;
-const sunnyRoomDepth = floorDepth;
+const sunnyRoomDepth = floorDepth * 2;
 const segments = 16;
 const sunnyRoom = createSunnyRoom(sunnyRoomWidth, sunnyRoomHeight, sunnyRoomDepth, segments, doorWidth, doorHeight);
-sunnyRoom.position.set(floorWidth / 2,0 ,floorWidth / 2 ); // Position the sunny room next to the entrance room
+sunnyRoom.position.set(floorWidth / 2,0 ,floorWidth / 2 );
 scene.add(sunnyRoom);
-
 
 
 //---------------------Animate------------------

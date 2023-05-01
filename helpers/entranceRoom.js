@@ -1,5 +1,7 @@
 import * as THREE from '../threejs/three.module.js';
 
+const textureLoader = new THREE.TextureLoader();
+
 export function createFloor(floorWidth, floorHeight, floorDepth, floorMaterial, position) {
   const floor = new THREE.Mesh(
     new THREE.BoxGeometry(floorWidth, floorHeight, floorDepth),
@@ -116,8 +118,6 @@ function createDoorHandle(x, y, z, rotationY, material) {
   handle.position.set(x, y, z);
   return handle;
 }
-
-const textureLoader = new THREE.TextureLoader();
 
 export function createPainting(scene, x, y, z, width, height, frameThickness, imagePath) {
   const frameGeometry = new THREE.BoxGeometry(width + 2 * frameThickness, height + 2 * frameThickness, frameThickness);
