@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 
-function createVaultedWallWithDoorHole(width, height, depth, segments, doorWidth, doorHeight) {
+function createVaultedWall(width, height, depth, segments, doorWidth, doorHeight) {
 
-  const widthScale = 2;
+  const widthScale = 0;
   const heightScale = 1.5;
 
   width += widthScale;
@@ -38,6 +38,8 @@ function createVaultedWallWithDoorHole(width, height, depth, segments, doorWidth
 
   const material = new THREE.MeshStandardMaterial({ color: 0xffffff, side: THREE.DoubleSide });
   const mesh = new THREE.Mesh(geometry, material);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
 
   return mesh;
 }
@@ -46,7 +48,7 @@ export function createSunnyRoom(width, height, depth, segments, doorWidth, doorH
   const group = new THREE.Group();
 
   const wallWidth = width * 2;
-  const wall = createVaultedWallWithDoorHole(height, depth, wallWidth, segments, doorWidth, doorHeight);
+  const wall = createVaultedWall(height, depth, wallWidth, segments, doorWidth, doorHeight);
   wall.rotation.y = Math.PI / 2;
   wall.position.x = 0;
   group.add(wall);
