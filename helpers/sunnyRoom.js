@@ -36,7 +36,7 @@ function createVaultedWall(width, height, depth, segments, doorWidth, doorHeight
   geometry.setIndex(indices);
   geometry.computeVertexNormals();
 
-  const material = new THREE.MeshStandardMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+  const material = new THREE.MeshPhongMaterial({ color: 0xffffff, side: THREE.DoubleSide });
   const mesh = new THREE.Mesh(geometry, material);
   mesh.castShadow = true;
   mesh.receiveShadow = true;
@@ -63,6 +63,9 @@ export function createFresco(scene, position, width, height, texturePath) {
   const frescoGeometry = new THREE.PlaneGeometry(width, height);
   const fresco = new THREE.Mesh(frescoGeometry, frescoMaterial);
 
+  fresco.castShadow = true;
+  fresco.receiveShadow = true;
+  
   fresco.position.set(position.x, position.y, position.z);
   scene.add(fresco);
 }
@@ -71,18 +74,22 @@ export function createWindow(position, width, height, depth, frameColor, rotatio
   const windowFrameGeometry = new THREE.BoxGeometry(width, height, depth);
 
   if (!frameMaterial) {
-    frameMaterial = new THREE.MeshStandardMaterial({ color: frameColor, side: THREE.DoubleSide });
+    frameMaterial = new THREE.MeshPhongMaterial({ color: frameColor, side: THREE.DoubleSide });
   }
 
   const windowFrame = new THREE.Mesh(windowFrameGeometry, frameMaterial);
+  windowFrame.castShadow = true;
+  windowFrame.receiveShadow = true;
 
   const windowPaneGeometry = new THREE.BoxGeometry(width * 0.9, height * 0.9, depth * 0.1);
 
   if (paneMaterial) {
     const windowPane = new THREE.Mesh(windowPaneGeometry, paneMaterial);
+    windowPane.castShadow = true;
+    windowPane.receiveShadow = true;
     windowFrame.add(windowPane);
   }
-
+  
   windowFrame.position.set(position.x, position.y, position.z);
   windowFrame.rotation.y = rotationY;
 
@@ -114,7 +121,7 @@ shape.holes.push(circularHolePath);
 const geometry = new THREE.ExtrudeGeometry(shape, { depth: wallDepth, bevelEnabled: false });
 
 if (!material) {
-material = new THREE.MeshStandardMaterial({ color, side: THREE.DoubleSide });
+material = new THREE.MeshPhongMaterial({ color, side: THREE.DoubleSide });
 }
 
 const mesh = new THREE.Mesh(geometry, material);
@@ -123,32 +130,7 @@ mesh.rotation.y = rotationY;
 mesh.castShadow = true;
 mesh.receiveShadow = true;
 
+
 return mesh;
 }
-
-export function createWindow(position, width, height, depth, frameColor, rotationY, frameMaterial, paneMaterial) {
-  const windowFrameGeometry = new THREE.BoxGeometry(width, height, depth);
-
-  if (!frameMaterial) {
-    frameMaterial = new THREE.MeshStandardMaterial({ color: frameColor, side: THREE.DoubleSide });
-  }
-
-  const windowFrame = new THREE.Mesh(windowFrameGeometry, frameMaterial);
-
-  const windowPaneGeometry = new THREE.BoxGeometry(width * 0.9, height * 0.9, depth * 0.1);
-
-  if (paneMaterial) {
-    const windowPane = new THREE.Mesh(windowPaneGeometry, paneMaterial);
-    windowFrame.add(windowPane);
-  }
-
-  windowFrame.position.set(position.x, position.y, position.z);
-  windowFrame.rotation.y = rotationY;
-
-  return windowFrame;
-}
-
-
-
-
 

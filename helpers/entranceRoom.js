@@ -7,9 +7,10 @@ export function createFloor(floorWidth, floorHeight, floorDepth, floorMaterial, 
     new THREE.BoxGeometry(floorWidth, floorHeight, floorDepth),
     floorMaterial
   );
-
-  floor.position.set(position.x, position.y, position.z);
+  floor.castShadow = true;
   floor.receiveShadow = true;
+  
+  floor.position.set(position.x, position.y, position.z);
 
   return floor;
 }

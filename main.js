@@ -4,7 +4,7 @@ import { initializePlayerMovement } from './helpers/playerMovement.js';
 import { updatePosition } from "./helpers/playerMovement.js";
 import { createWallWithDoorHole, createCeiling, 
          createDoor, createPainting, createFloor} from './helpers/entranceRoom.js';
-import { createSunnyRoom, createWallWithTwoWindows  } from './helpers/sunnyRoom.js';
+import { createSunnyRoom, createWallWithTwoWindows, createWindow  } from './helpers/sunnyRoom.js';
 
 export const scene = new THREE.Scene();
 
@@ -28,6 +28,8 @@ const darkWoodMaterial = new THREE.MeshPhongMaterial({ map: darkWoodTexture });
 
 const floorTexture = textureLoader.load('./assets/textures/castle_brick_07_diff_1k.jpg');
 const floorMaterial = new THREE.MeshPhongMaterial({ map: floorTexture });
+floorMaterial.castShadow = true;
+floorMaterial.receiveShadow = true;
 
 const floorWidth = 25;
 const floorHeight = 0.1;
@@ -97,23 +99,25 @@ scene.add(cube);
 
 //--------------------------_Sunny Room_----------------------
 
+// const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 100);
+// sunnyPointLight.castShadow = true;
+// sunnyPointLight.receiveShadow = true;
+// sunnyPointLight.position.set(floorWidth, 2, 0);
+// sunnyPointLight.shadow.bias = -0.005;
+// scene.add(sunnyPointLight);
+
+// const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 100);
+// sunnyPointLight2.position.set(floorWidth + 10, 2, 0);
+// scene.add(sunnyPointLight2);
+
+// const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 100);
+// sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
+// scene.add(sunnyPointLight3);
+
 const sunnyFloorTexture = textureLoader.load('./assets/textures/red_sandstone_pavement_diff_1k.jpg');
 const sunnyFloorMaterial = new THREE.MeshPhongMaterial({ map: sunnyFloorTexture });
-
-const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 100);
-sunnyPointLight.castShadow = true;
-sunnyPointLight.receiveShadow = true;
-sunnyPointLight.position.set(floorWidth, 2, 0);
-sunnyPointLight.shadow.bias = -0.005;
-scene.add(sunnyPointLight);
-
-const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 100);
-sunnyPointLight2.position.set(floorWidth + 10, 2, 0);
-scene.add(sunnyPointLight2);
-
-const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 100);
-sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
-scene.add(sunnyPointLight3);
+sunnyFloorMaterial.castShadow = true;
+sunnyFloorMaterial.receiveShadow = true;
 
 const sunnyFloorWidth = 40;
 const sunnyFloorHeight = 0.1;
@@ -131,9 +135,6 @@ const sunnyRoom = createSunnyRoom(sunnyRoomWidth, sunnyRoomHeight, sunnyRoomDept
 sunnyRoom.position.set(floorWidth / 2,0 ,floorWidth / 2 );
 scene.add(sunnyRoom);
 
-// const sunnyBackWallPosition = {x: floorWidth * 2 , y: floorWidth / 2, z: -floorWidth / 32};
-// const sunnyBackWall = createSimpleWall(sunnyBackWallPosition, sunnyFloorWidth / 1.5, ceilingPositionY + 19.1, 0.4, 0x123456, Math.PI / 2);
-// scene.add(sunnyBackWall);
 
 const wallPosition = { x: 49.5, y: 0.05 , z: 0 };
 const wallWidth = sunnyFloorWidth / 1.5;
@@ -145,7 +146,7 @@ const rectWindowHeight = 5;
 const rectWindowPosition = { x: 0, y: ceilingPositionY + 2 };
 
 const circularWindowRadius = 2;
-const circularWindowPosition = { x: 0, y: ceilingPositionY + 13 };
+const circularWindowPosition = { x: 0, y: 18 };
 
 const wallColor = 0x654321;
 const wallRotationY = Math.PI / 2; 
@@ -155,14 +156,62 @@ scene.add(createWallWithTwoWindows(wallPosition, wallWidth, wallHeight, wallDept
                                    circularWindowRadius, circularWindowPosition, 
                                    wallColor, wallRotationY, null));
 
-                                   
+const paneMaterial = new THREE.MeshPhongMaterial({
+ color: 0xFFFFFF, 
+ transparent: true, 
+ opacity: 0
+});
+
+const windowPosition = { x: 49.5, y: ceilingPositionY + 2, z: 0 };
+const windowWidth = rectWindowWidth - 0.1;
+const windowHeight = rectWindowHeight - 0.1;
+const windowDepth = wallDepth - 0.1;
+const windowFrameColor = 0x652233
+const windowRotationY = Math.PI / 2; 
+scene.add(createWindow(windowPosition, windowWidth, windowHeight, windowDepth, windowFrameColor, windowRotationY, null, paneMaterial));
+
+const spotLightSunnyRoom = new THREE.SpotLight(0xFFFFFF, 1, 0, Math.PI); 
+spotLightSunnyRoom.position.set(47, ceilingPositionY + 2, 0);
+spotLightSunnyRoom.target.position.set(49.4, 0, 0); 
+spotLightSunnyRoom.castShadow = true;
+spotLightSunnyRoom.shadow.bias = -0.001;
+scene.add(spotLightSunnyRoom);
+scene.add(spotLightSunnyRoom.target);
+
+
+// Invisible box for sunny Room light
+const sunnyRoomBoundary = new THREE.Box3(
+  new THREE.Vector3(sunnyFloorWidth/2, 0, sunnyFloorDepth / 2),
+  new THREE.Vector3(sunnyFloorWidth * 1.5, sunnyRoomHeight / 2, sunnyFloorDepth* 1.5)
+);
+
+let translationVector = new THREE.Vector3(-5, 0.1, -25);
+sunnyRoomBoundary.min.add(translationVector);
+sunnyRoomBoundary.max.add(translationVector);
+
+const sunnyRoomBoundaryHelper = new THREE.Box3Helper(sunnyRoomBoundary, 0xff0000);
+scene.add(sunnyRoomBoundaryHelper);
+
 //---------------------Animate------------------
+
+function isInsideSunnyRoom(camera, boundary) {
+  const cameraPosition = camera.position;
+  return boundary.containsPoint(cameraPosition);
+}
 
 function animate() {
   requestAnimationFrame(animate);
+  
+  if (isInsideSunnyRoom(camera, sunnyRoomBoundary)) {
+    spotLightSunnyRoom.intensity = 1;
+  } else {
+    spotLightSunnyRoom.intensity = 0;
+  }
+  
   updatePosition(camera);
   renderer.render(scene, camera);
 }
+
 
 animate();
 
