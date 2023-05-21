@@ -4,8 +4,7 @@ import { initializePlayerMovement } from './helpers/playerMovement.js';
 import { updatePosition } from "./helpers/playerMovement.js";
 import { createWallWithDoorHole, createCeiling, 
          createDoor, createPainting, createFloor} from './helpers/entranceRoom.js';
-import { createSunnyRoom } from './helpers/sunnyRoom.js';
-import { createSimpleWall } from './helpers/general.js';
+import { createSunnyRoom, createWallWithTwoWindows  } from './helpers/sunnyRoom.js';
 
 export const scene = new THREE.Scene();
 
@@ -87,7 +86,7 @@ spotLight.penumbra = 0.1;
 spotLight.castShadow = true;
 spotLight.shadow.mapSize.width = 1024;
 spotLight.shadow.mapSize.height = 1024;
-spotLight.shadow.bias = -0.005; // fix shadow acne or peter-panning issue
+spotLight.shadow.bias = -0.005;
 scene.add(spotLight);
 
 const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
@@ -101,19 +100,20 @@ scene.add(cube);
 const sunnyFloorTexture = textureLoader.load('./assets/textures/red_sandstone_pavement_diff_1k.jpg');
 const sunnyFloorMaterial = new THREE.MeshPhongMaterial({ map: sunnyFloorTexture });
 
-
 const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 100);
 sunnyPointLight.castShadow = true;
+sunnyPointLight.receiveShadow = true;
 sunnyPointLight.position.set(floorWidth, 2, 0);
+sunnyPointLight.shadow.bias = -0.005;
 scene.add(sunnyPointLight);
 
-// const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 100);
-// sunnyPointLight2.position.set(floorWidth + 10, 2, 0);
-// scene.add(sunnyPointLight2);
+const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 100);
+sunnyPointLight2.position.set(floorWidth + 10, 2, 0);
+scene.add(sunnyPointLight2);
 
-// const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 100);
-// sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
-// scene.add(sunnyPointLight3);
+const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 100);
+sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
+scene.add(sunnyPointLight3);
 
 const sunnyFloorWidth = 40;
 const sunnyFloorHeight = 0.1;
@@ -123,10 +123,6 @@ const sunnyfloorPosition = { x: floorWidth + 7.5, y: 0.05, z: 0 };
 const sunnyFloor = createFloor(sunnyFloorWidth, sunnyFloorHeight, sunnyFloorDepth, sunnyFloorMaterial, sunnyfloorPosition);
 scene.add(sunnyFloor);
 
-const sunnyBackWallPosition = {x: floorWidth * 2 , y: floorWidth / 2, z: -floorWidth / 32};
-const sunnyBackWall = createSimpleWall(sunnyBackWallPosition, sunnyFloorWidth / 1.5, ceilingPositionY + 19.1, 0.4, 0x123456, Math.PI / 2);
-scene.add(sunnyBackWall);
-
 const sunnyRoomWidth = 19.5;
 const sunnyRoomHeight = floorWidth;
 const sunnyRoomDepth = floorDepth * 2;
@@ -135,7 +131,31 @@ const sunnyRoom = createSunnyRoom(sunnyRoomWidth, sunnyRoomHeight, sunnyRoomDept
 sunnyRoom.position.set(floorWidth / 2,0 ,floorWidth / 2 );
 scene.add(sunnyRoom);
 
+// const sunnyBackWallPosition = {x: floorWidth * 2 , y: floorWidth / 2, z: -floorWidth / 32};
+// const sunnyBackWall = createSimpleWall(sunnyBackWallPosition, sunnyFloorWidth / 1.5, ceilingPositionY + 19.1, 0.4, 0x123456, Math.PI / 2);
+// scene.add(sunnyBackWall);
 
+const wallPosition = { x: 49.5, y: 0.05 , z: 0 };
+const wallWidth = sunnyFloorWidth / 1.5;
+const wallHeight = ceilingPositionY + 19.1;
+const wallDepth = 0.4;
+
+const rectWindowWidth = 10;
+const rectWindowHeight = 5;
+const rectWindowPosition = { x: 0, y: ceilingPositionY + 2 };
+
+const circularWindowRadius = 2;
+const circularWindowPosition = { x: 0, y: ceilingPositionY + 13 };
+
+const wallColor = 0x654321;
+const wallRotationY = Math.PI / 2; 
+
+scene.add(createWallWithTwoWindows(wallPosition, wallWidth, wallHeight, wallDepth, 
+                                   rectWindowWidth, rectWindowHeight, rectWindowPosition, 
+                                   circularWindowRadius, circularWindowPosition, 
+                                   wallColor, wallRotationY, null));
+
+                                   
 //---------------------Animate------------------
 
 function animate() {

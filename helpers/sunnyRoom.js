@@ -55,3 +55,100 @@ export function createSunnyRoom(width, height, depth, segments, doorWidth, doorH
 
   return group;
 }
+
+export function createFresco(scene, position, width, height, texturePath) {
+  const textureLoader = new THREE.TextureLoader();
+  const frescoTexture = textureLoader.load(texturePath);
+  const frescoMaterial = new THREE.MeshPhongMaterial({ map: frescoTexture });
+  const frescoGeometry = new THREE.PlaneGeometry(width, height);
+  const fresco = new THREE.Mesh(frescoGeometry, frescoMaterial);
+
+  fresco.position.set(position.x, position.y, position.z);
+  scene.add(fresco);
+}
+
+export function createWindow(position, width, height, depth, frameColor, rotationY, frameMaterial, paneMaterial) {
+  const windowFrameGeometry = new THREE.BoxGeometry(width, height, depth);
+
+  if (!frameMaterial) {
+    frameMaterial = new THREE.MeshStandardMaterial({ color: frameColor, side: THREE.DoubleSide });
+  }
+
+  const windowFrame = new THREE.Mesh(windowFrameGeometry, frameMaterial);
+
+  const windowPaneGeometry = new THREE.BoxGeometry(width * 0.9, height * 0.9, depth * 0.1);
+
+  if (paneMaterial) {
+    const windowPane = new THREE.Mesh(windowPaneGeometry, paneMaterial);
+    windowFrame.add(windowPane);
+  }
+
+  windowFrame.position.set(position.x, position.y, position.z);
+  windowFrame.rotation.y = rotationY;
+
+  return windowFrame;
+}
+
+export function createWallWithTwoWindows(position, wallWidth, wallHeight, wallDepth, 
+  rectWindowWidth, rectWindowHeight, rectWindowPosition, 
+  circularWindowRadius, circularWindowPosition, 
+  color, rotationY, material) {
+
+const shape = new THREE.Shape();
+shape.moveTo(-wallWidth / 2, 0);
+shape.lineTo(wallWidth / 2, 0);
+shape.lineTo(wallWidth / 2, wallHeight);
+shape.lineTo(-wallWidth / 2, wallHeight);
+
+const rectHolePath = new THREE.Path();
+rectHolePath.moveTo(rectWindowPosition.x - rectWindowWidth / 2, rectWindowPosition.y - rectWindowHeight / 2);
+rectHolePath.lineTo(rectWindowPosition.x + rectWindowWidth / 2, rectWindowPosition.y - rectWindowHeight / 2);
+rectHolePath.lineTo(rectWindowPosition.x + rectWindowWidth / 2, rectWindowPosition.y + rectWindowHeight / 2);
+rectHolePath.lineTo(rectWindowPosition.x - rectWindowWidth / 2, rectWindowPosition.y + rectWindowHeight / 2);
+shape.holes.push(rectHolePath);
+
+const circularHolePath = new THREE.Path();
+circularHolePath.absarc(circularWindowPosition.x, circularWindowPosition.y, circularWindowRadius, 0, Math.PI * 2, false);
+shape.holes.push(circularHolePath);
+
+const geometry = new THREE.ExtrudeGeometry(shape, { depth: wallDepth, bevelEnabled: false });
+
+if (!material) {
+material = new THREE.MeshStandardMaterial({ color, side: THREE.DoubleSide });
+}
+
+const mesh = new THREE.Mesh(geometry, material);
+mesh.position.set(position.x, position.y, position.z);
+mesh.rotation.y = rotationY;
+mesh.castShadow = true;
+mesh.receiveShadow = true;
+
+return mesh;
+}
+
+export function createWindow(position, width, height, depth, frameColor, rotationY, frameMaterial, paneMaterial) {
+  const windowFrameGeometry = new THREE.BoxGeometry(width, height, depth);
+
+  if (!frameMaterial) {
+    frameMaterial = new THREE.MeshStandardMaterial({ color: frameColor, side: THREE.DoubleSide });
+  }
+
+  const windowFrame = new THREE.Mesh(windowFrameGeometry, frameMaterial);
+
+  const windowPaneGeometry = new THREE.BoxGeometry(width * 0.9, height * 0.9, depth * 0.1);
+
+  if (paneMaterial) {
+    const windowPane = new THREE.Mesh(windowPaneGeometry, paneMaterial);
+    windowFrame.add(windowPane);
+  }
+
+  windowFrame.position.set(position.x, position.y, position.z);
+  windowFrame.rotation.y = rotationY;
+
+  return windowFrame;
+}
+
+
+
+
+
