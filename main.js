@@ -5,6 +5,7 @@ import { updatePosition } from "./helpers/playerMovement.js";
 import { createWallWithDoorHole, createCeiling, 
          createDoor, createPainting, createFloor} from './helpers/entranceRoom.js';
 import { createSunnyRoom, createWallWithTwoWindows, createWindow  } from './helpers/sunnyRoom.js';
+import { closeDoor } from './helpers/animations.js';
 
 export const scene = new THREE.Scene();
 
@@ -45,7 +46,8 @@ const doorDepth = 0.2;
 createDoor(scene, -floorWidth / 2, 0.13, 0, Math.PI / 2, 
           darkWoodMaterial, doorWidth, doorHeight, doorDepth); 
 // right door
-createDoor(scene, floorWidth / 2,    0.13, 0, -Math.PI / 2, 
+export let sunnyRoomDoor;
+sunnyRoomDoor = createDoor(scene, floorWidth / 2,    0.13, 0, -Math.PI / 2, 
           darkWoodMaterial, doorWidth, doorHeight, doorDepth); 
 // front door
 createDoor(scene, 0, 0.13, -floorWidth / 2, 0, 
@@ -204,6 +206,7 @@ function animate() {
   
   if (isInsideSunnyRoom(camera, sunnyRoomBoundary)) {
     spotLightSunnyRoom.intensity = 1;
+    closeDoor(sunnyRoomDoor);
   } else {
     spotLightSunnyRoom.intensity = 0;
   }
@@ -212,6 +215,6 @@ function animate() {
   renderer.render(scene, camera);
 }
 
-
 animate();
+
 

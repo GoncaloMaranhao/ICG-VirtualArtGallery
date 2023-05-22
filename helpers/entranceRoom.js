@@ -103,7 +103,10 @@ export function createDoor(scene, x, y, z, rotationY, material, width, height, d
   doorGroup.rotation.y = rotationY;
   doorGroup.isDoor = true;
 
+  doorGroup.isClosed = false;
+
   scene.add(doorGroup);
+  return doorGroup;
 }
 
 function createDoorHandle(x, y, z, rotationY, material) {
