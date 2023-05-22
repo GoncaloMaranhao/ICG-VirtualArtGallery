@@ -183,7 +183,6 @@ spotLightSunnyRoom.shadow.bias = -0.001;
 scene.add(spotLightSunnyRoom);
 scene.add(spotLightSunnyRoom.target);
 
-
 // Invisible box for sunny Room light
 const sunnyRoomBoundary = new THREE.Box3(
   new THREE.Vector3(sunnyFloorWidth/2, 0, sunnyFloorDepth / 2),
@@ -197,7 +196,8 @@ sunnyRoomBoundary.max.add(translationVector);
 const sunnyRoomBoundaryHelper = new THREE.Box3Helper(sunnyRoomBoundary, 0xff0000);
 scene.add(sunnyRoomBoundaryHelper);
 
-createGarden(scene, 10, 10);
+const gardenPosition = { x: 30, y: 0.5, z: 0 };
+createGarden(scene, gardenPosition, 8, 4, 100, 0.1, Math.PI / 2);
 
 //---------------------Animate------------------
 

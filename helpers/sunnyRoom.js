@@ -135,26 +135,39 @@ mesh.receiveShadow = true;
 return mesh;
 }
 
-export function createGarden(scene, radius, flowerCount) {
-  const gardenGeometry = new THREE.CircleGeometry(radius, 32);
+export function createGarden(scene, position, outerRadius, innerRadius, flowerCount, thickness, rotationX = Math.PI / 2) {
+  const gardenShape = new THREE.Shape()
+    .moveTo(0, 0)
+    .absarc(0, 0, outerRadius, 0, Math.PI * 2, false);
+
+  const holePath = new THREE.Path()
+    .moveTo(0, 0)
+    .absarc(0, 0, innerRadius, 0, Math.PI * 2, true);
+
+  gardenShape.holes.push(holePath);
+  
+  const gardenGeometry = new THREE.ExtrudeGeometry(gardenShape, { depth: thickness, bevelEnabled: false });
   const gardenMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
   const garden = new THREE.Mesh(gardenGeometry, gardenMaterial);
-  garden.receiveShadow = true;
-  scene.add(garden);
 
+  garden.position.set(position.x, position.y, position.z);
+  garden.rotation.x = rotationX;
+  garden.receiveShadow = true;
+  
+  scene.add(garden);
+  
   const loader = new FBXLoader();
   loader.load('./assets/models/Flowers.fbx',
     (flowerModel) => {
       for (let i = 0; i < flowerCount; i++) {
         let flower = flowerModel.clone();
-        
-        // scale the flower
-        const scale = 0.01; // Change this to the scale factor you need
+          
+        const scale = 0.01; 
         flower.scale.set(scale, scale, scale);
-        
+          
         let angle = Math.random() * Math.PI * 2;
-        let rad = radius * Math.sqrt(Math.random());
-        flower.position.set(rad * Math.cos(angle), 0, rad * Math.sin(angle));
+        let rad = outerRadius - 1.9;
+        flower.position.set(rad * Math.cos(angle) + position.x - 1.5, position.y, rad * Math.sin(angle) + position.z + 0.5);
         scene.add(flower);
       }
     },
@@ -164,6 +177,9 @@ export function createGarden(scene, radius, flowerCount) {
     }
   );
 }
+
+
+
 
 
 
