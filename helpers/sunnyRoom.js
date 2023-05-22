@@ -161,7 +161,13 @@ export function createGarden(scene, position, outerRadius, innerRadius, flowerCo
     (flowerModel) => {
       for (let i = 0; i < flowerCount; i++) {
         let flower = flowerModel.clone();
-          
+        
+        flowerModel.traverse(function (node) {
+          if (node instanceof THREE.Mesh) {
+            node.castShadow = true;
+          }
+        });
+        
         const scale = 0.01; 
         flower.scale.set(scale, scale, scale);
           

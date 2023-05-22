@@ -1,6 +1,7 @@
 import * as THREE from '../threejs/three.module.js';
 import { camera, scene } from '../main.js';
-import { openDoor } from './animations.js';
+import { openDoor, startStatueRotation } from './animations.js';
+
 
 document.addEventListener('keydown', (event) => {
   if (event.code === 'KeyE') {
@@ -19,6 +20,14 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
+
+export function initializeEventListener() {
+  window.addEventListener('keydown', function (event) {
+      if (event.key === 'r') {
+          startStatueRotation();
+      }
+  });
+}
 
 /* Cube rotation
     document.addEventListener('keydown', (event) => {

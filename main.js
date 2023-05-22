@@ -1,12 +1,12 @@
 import * as THREE from './threejs/three.module.js';
 import { FBXLoader } from './threejs/FBXLoader.js';
 import './helpers/eventListeners.js';
-import { initializePlayerMovement } from './helpers/playerMovement.js';
-import { updatePosition } from "./helpers/playerMovement.js";
+import { initializeEventListener } from './helpers/eventListeners.js';
+import { initializePlayerMovement, updatePosition } from './helpers/playerMovement.js';
 import { createWallWithDoorHole, createCeiling, 
          createDoor, createPainting, createFloor} from './helpers/entranceRoom.js';
 import { createGarden, createSunnyRoom, createWallWithTwoWindows, createWindow  } from './helpers/sunnyRoom.js';
-import { closeDoor } from './helpers/animations.js';
+import { closeDoor, setStatue, startStatueRotation, animateStatueRotation } from './helpers/animations.js';
 
 export const scene = new THREE.Scene();
 
@@ -22,8 +22,6 @@ camera.position.y = 1.7;
 initializePlayerMovement(camera, renderer);
 
 const textureLoader = new THREE.TextureLoader();
-
-const loader = new FBXLoader();
 
 //--------------------------_Entrance Room_----------------------
 
@@ -199,7 +197,35 @@ scene.add(sunnyRoomBoundaryHelper);
 const gardenPosition = { x: 30, y: 0.5, z: 0 };
 createGarden(scene, gardenPosition, 8, 4, 100, 0.1, Math.PI / 2);
 
+
+const texture = textureLoader.load('assets/textures/Statue_Remeshed_Diffuse1K.png');
+const material = new THREE.MeshPhongMaterial({ map: texture });
+const loader = new FBXLoader();
+
+let statue;
+loader.load(
+  './assets/models/Statue.fbx',
+  (fbx) => {
+    fbx.scale.set(0.05, 0.05, 0.05);
+    fbx.position.set(30, 0, 3.5);
+    fbx.traverse(function(node) {
+      if (node.isMesh) {
+        node.castShadow = true;
+        node.material = material;
+      }
+    });
+    scene.add(fbx);
+    statue = fbx;
+    setStatue(fbx);
+  },
+  undefined, 
+  (error) => console.error(error)
+);
+
 //---------------------Animate------------------
+
+initializeEventListener();
+
 
 function isInsideSunnyRoom(camera, boundary) {
   const cameraPosition = camera.position;
@@ -208,6 +234,8 @@ function isInsideSunnyRoom(camera, boundary) {
 
 function animate() {
   requestAnimationFrame(animate);
+  animateStatueRotation();
+
   
   if (isInsideSunnyRoom(camera, sunnyRoomBoundary)) {
     spotLightSunnyRoom.intensity = 1;

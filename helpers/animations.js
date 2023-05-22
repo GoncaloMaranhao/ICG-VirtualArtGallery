@@ -84,4 +84,35 @@ export function closeDoor(doorGroup) {
   requestAnimationFrame(animateDoor);
 }
 
+let statue = null;
+let isRotating = false;
+let targetRotation = 0;
+let isRPressed = false;
+
+export function setStatue(object) {
+  statue = object;
+  if (isRPressed) { 
+      startStatueRotation();
+  }
+}
+
+export function startStatueRotation() {
+  if (statue !== null) {
+      targetRotation = statue.rotation.y + Math.PI / 2;
+      isRotating = true;
+  } else {
+      isRPressed = true;
+  }
+}
+
+export function animateStatueRotation() {
+    if (isRotating && statue) {
+        if (Math.abs(statue.rotation.y - targetRotation) < 0.01) {
+            statue.rotation.y = targetRotation;
+            isRotating = false;
+        } else {
+            statue.rotation.y += (targetRotation - statue.rotation.y) * 0.05;
+        }
+    }
+}
 
