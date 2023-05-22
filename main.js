@@ -1,5 +1,6 @@
 import * as THREE from './threejs/three.module.js';
 import { FBXLoader } from './threejs/FBXLoader.js';
+import { GLTFLoader } from '/threejs/GLTFLoader.js';
 import './helpers/eventListeners.js';
 import { initializeEventListener } from './helpers/eventListeners.js';
 import { initializePlayerMovement, updatePosition } from './helpers/playerMovement.js';
@@ -21,7 +22,11 @@ camera.position.y = 1.7;
 
 initializePlayerMovement(camera, renderer);
 
+initializeEventListener();
+
 const textureLoader = new THREE.TextureLoader();
+
+
 
 //--------------------------_Entrance Room_----------------------
 
@@ -100,20 +105,21 @@ const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
 cube.position.set(0, 1, 3);
 scene.add(cube);
 
+
 //--------------------------_Sunny Room_----------------------
 
-const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 100);
+const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 50);
 sunnyPointLight.castShadow = true;
 sunnyPointLight.receiveShadow = true;
 sunnyPointLight.position.set(floorWidth, 2, 0);
 sunnyPointLight.shadow.bias = -0.005;
 scene.add(sunnyPointLight);
 
-const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 100);
+const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 50);
 sunnyPointLight2.position.set(floorWidth + 10, 2, 0);
 scene.add(sunnyPointLight2);
 
-const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 100);
+const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 50);
 sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
 scene.add(sunnyPointLight3);
 
@@ -200,14 +206,15 @@ createGarden(scene, gardenPosition, 8, 4, 100, 0.1, Math.PI / 2);
 
 const texture = textureLoader.load('assets/textures/Statue_Remeshed_Diffuse1K.png');
 const material = new THREE.MeshPhongMaterial({ map: texture });
+
 const loader = new FBXLoader();
 
 let statue;
 loader.load(
-  './assets/models/Statue.fbx',
+  './assets/models/StatuePot.fbx',
   (fbx) => {
     fbx.scale.set(0.05, 0.05, 0.05);
-    fbx.position.set(30, 0, 3.5);
+    fbx.position.set(30, 0, 3.1);
     fbx.traverse(function(node) {
       if (node.isMesh) {
         node.castShadow = true;
@@ -222,10 +229,55 @@ loader.load(
   (error) => console.error(error)
 );
 
+loader.load(
+  './assets/models/smiling_angel.fbx',
+  (fbx) => {
+    fbx.scale.set(0.01, 0.01, 0.01);
+    fbx.position.set(30, 0, -3.5);
+    fbx.traverse(function(node) {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(fbx);
+  },
+  undefined, 
+  (error) => console.error(error)
+);
+
+loader.load(
+  './assets/models/chubbyAngel.fbx',
+  (fbx) => {
+    fbx.scale.set(0.1, 0.1, 0.1);
+    fbx.position.set(27, 0, 0);
+    fbx.traverse(function(node) {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(fbx);
+  },
+  undefined, 
+  (error) => console.error(error)
+);
+
+loader.load(
+  './assets/models/crossStatue.fbx',
+  (fbx) => {
+    fbx.scale.set(0.5, 0.5, 0.5);
+    fbx.position.set(33, -2, 0);
+    fbx.traverse(function(node) {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(fbx);
+  },
+  undefined, 
+  (error) => console.error(error)
+);
+
 //---------------------Animate------------------
-
-initializeEventListener();
-
 
 function isInsideSunnyRoom(camera, boundary) {
   const cameraPosition = camera.position;
