@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { FBXLoader } from '../threejs/FBXLoader.js';
 
 function createVaultedWall(width, height, depth, segments, doorWidth, doorHeight) {
 
@@ -133,4 +134,36 @@ mesh.receiveShadow = true;
 
 return mesh;
 }
+
+export function createGarden(scene, radius, flowerCount) {
+  const gardenGeometry = new THREE.CircleGeometry(radius, 32);
+  const gardenMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
+  const garden = new THREE.Mesh(gardenGeometry, gardenMaterial);
+  garden.receiveShadow = true;
+  scene.add(garden);
+
+  const loader = new FBXLoader();
+  loader.load('./assets/models/Flowers.fbx',
+    (flowerModel) => {
+      for (let i = 0; i < flowerCount; i++) {
+        let flower = flowerModel.clone();
+        
+        // scale the flower
+        const scale = 0.01; // Change this to the scale factor you need
+        flower.scale.set(scale, scale, scale);
+        
+        let angle = Math.random() * Math.PI * 2;
+        let rad = radius * Math.sqrt(Math.random());
+        flower.position.set(rad * Math.cos(angle), 0, rad * Math.sin(angle));
+        scene.add(flower);
+      }
+    },
+    undefined,
+    (err) => {
+      console.error(err);
+    }
+  );
+}
+
+
 

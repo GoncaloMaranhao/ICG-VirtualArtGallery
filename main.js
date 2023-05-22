@@ -1,10 +1,11 @@
 import * as THREE from './threejs/three.module.js';
+import { FBXLoader } from './threejs/FBXLoader.js';
 import './helpers/eventListeners.js';
 import { initializePlayerMovement } from './helpers/playerMovement.js';
 import { updatePosition } from "./helpers/playerMovement.js";
 import { createWallWithDoorHole, createCeiling, 
          createDoor, createPainting, createFloor} from './helpers/entranceRoom.js';
-import { createSunnyRoom, createWallWithTwoWindows, createWindow  } from './helpers/sunnyRoom.js';
+import { createGarden, createSunnyRoom, createWallWithTwoWindows, createWindow  } from './helpers/sunnyRoom.js';
 import { closeDoor } from './helpers/animations.js';
 
 export const scene = new THREE.Scene();
@@ -21,6 +22,8 @@ camera.position.y = 1.7;
 initializePlayerMovement(camera, renderer);
 
 const textureLoader = new THREE.TextureLoader();
+
+const loader = new FBXLoader();
 
 //--------------------------_Entrance Room_----------------------
 
@@ -78,9 +81,9 @@ createWallWithDoorHole(scene, floorWidth / 2, 0, floorWidth / 2, Math.PI, 0x1234
 createPainting(scene, -5, 2, -floorWidth / 2 + 0.1, 2, 3, 0.1, './assets/textures/151090.jpg');
 
 
-// const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
-// pointLight.position.set(0, 2, 0);
-// scene.add(pointLight);
+const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
+pointLight.position.set(0, 2, 0);
+scene.add(pointLight);
 
 
 const spotLight = new THREE.SpotLight(0xffffff, 1);
@@ -101,20 +104,20 @@ scene.add(cube);
 
 //--------------------------_Sunny Room_----------------------
 
-// const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 100);
-// sunnyPointLight.castShadow = true;
-// sunnyPointLight.receiveShadow = true;
-// sunnyPointLight.position.set(floorWidth, 2, 0);
-// sunnyPointLight.shadow.bias = -0.005;
-// scene.add(sunnyPointLight);
+const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 100);
+sunnyPointLight.castShadow = true;
+sunnyPointLight.receiveShadow = true;
+sunnyPointLight.position.set(floorWidth, 2, 0);
+sunnyPointLight.shadow.bias = -0.005;
+scene.add(sunnyPointLight);
 
-// const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 100);
-// sunnyPointLight2.position.set(floorWidth + 10, 2, 0);
-// scene.add(sunnyPointLight2);
+const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 100);
+sunnyPointLight2.position.set(floorWidth + 10, 2, 0);
+scene.add(sunnyPointLight2);
 
-// const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 100);
-// sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
-// scene.add(sunnyPointLight3);
+const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 100);
+sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
+scene.add(sunnyPointLight3);
 
 const sunnyFloorTexture = textureLoader.load('./assets/textures/red_sandstone_pavement_diff_1k.jpg');
 const sunnyFloorMaterial = new THREE.MeshPhongMaterial({ map: sunnyFloorTexture });
@@ -193,6 +196,8 @@ sunnyRoomBoundary.max.add(translationVector);
 
 const sunnyRoomBoundaryHelper = new THREE.Box3Helper(sunnyRoomBoundary, 0xff0000);
 scene.add(sunnyRoomBoundaryHelper);
+
+createGarden(scene, 10, 10);
 
 //---------------------Animate------------------
 
