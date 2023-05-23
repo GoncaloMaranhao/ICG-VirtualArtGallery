@@ -90,9 +90,6 @@ createWallWithDoorHole(scene, floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x
 createWallWithDoorHole(scene, floorWidth / 2, 0, floorWidth / 2, Math.PI, 0x123456,
                        floorWidth, ceilingPositionY, 0.1, 0, 0);
 
-
-createPainting(scene, -5, 2, -floorWidth / 2 + 0.1, 2, 3, 0.1, './assets/textures/151090.jpg');
-
 const spotLight = new THREE.SpotLight(0xffffff, 1);
 spotLight.position.set(0, ceilingHeight + 10, 0);
 spotLight.angle = Math.PI / 2.5; 
@@ -202,6 +199,10 @@ position = new THREE.Vector3(30, 0.1, 0);
 rotation = new THREE.Vector3(0, Math.PI / 2, 0); 
 let window2 = createCircularWindow(radius, position, rotation, color, roseWindowmaterial);
 scene.add(window2);
+
+//---------------------------_SunnyRoomPaintings_----------------------------
+createPainting(scene, 10, 2, -floorWidth / 2 + 0.5, 2, 3, 0.1, './assets/textures/151090.jpg');
+
 
 //---------------------------_SunnyRoomLight_--------------------------------
 

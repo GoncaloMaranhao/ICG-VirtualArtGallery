@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { FBXLoader } from '../threejs/FBXLoader.js';
 
+
 function createVaultedWall(width, height, depth, segments, doorWidth, doorHeight) {
 
   const widthScale = 0;
@@ -44,7 +45,7 @@ function createVaultedWall(width, height, depth, segments, doorWidth, doorHeight
 
   return mesh;
 }
-  
+
 export function createSunnyRoom(width, height, depth, segments, doorWidth, doorHeight) {
   const group = new THREE.Group();
 
