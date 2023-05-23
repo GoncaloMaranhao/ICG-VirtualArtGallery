@@ -89,7 +89,7 @@ let isRotating = false;
 let targetRotation = 0;
 let isRPressed = false;
 let rotationsCount = 0;
-const requiredRotations = 3;
+const requiredRotations = 6;
 
 export function incrementRotations() {
   rotationsCount++;
@@ -99,8 +99,6 @@ export function incrementRotations() {
 export function hasRequiredRotations() {
   return rotationsCount >= requiredRotations;
 }
-
-
 
 export function setStatue(object) {
   statue = object;
@@ -131,7 +129,7 @@ export function animateStatueRotation() {
               window.dispatchEvent(event);
           }
       } else {
-          statue.rotation.y += (targetRotation - statue.rotation.y) * 0.05;
+          statue.rotation.y += (targetRotation - statue.rotation.y) * 0.1;
       }
   }
 }
