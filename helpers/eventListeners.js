@@ -42,12 +42,12 @@ window.addEventListener('keydown', function (event) {
     const raycaster = new THREE.Raycaster();
     const direction = new THREE.Vector2(0, 0);
     raycaster.setFromCamera(direction, camera);
-    const intersects = raycaster.intersectObjects(scene.children, true);  // You may need to specify the array of paintings if not all objects in the scene should be selectable.
+    const intersects = raycaster.intersectObjects(scene.children, true); 
 
     if (intersects.length > 0 && intersects[0].distance < 5) {
-      const painting = intersects[0].object.parent;  // Assuming the intersected object is the canvas, its parent would be the painting group
+      const painting = intersects[0].object.parent;  
       const userData = painting.userData;
-      // Display the painting information
+
       alert(`${userData.name}\n${userData.artist}\n${userData.year}\n${userData.description}`);
     }
   }

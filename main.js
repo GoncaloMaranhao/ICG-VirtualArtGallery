@@ -38,6 +38,8 @@ const fbxLoader = new FBXLoader();
 const gltfLoader = new GLTFLoader();
 gltfLoader.setDRACOLoader(dracoLoader);
 
+export let collidableObjects = [];
+
 //--------------------------_Entrance Room_----------------------
 
 const darkWoodTexture = textureLoader.load('./assets/textures/castle_brick_07_diff_1k.jpg');
@@ -78,8 +80,9 @@ createCeiling(scene, - floorWidth / 4, ceilingPositionY, 0, ceilingMaterial,
               ceilingWidth, ceilingHeight, ceilingDepth );
 
 // front wall
-createWallWithDoorHole(scene, -floorWidth / 2, 0, -floorWidth / 2, 0, 0xff0000, 
+const frontWall = createWallWithDoorHole(scene, -floorWidth / 2, 0, -floorWidth / 2, 0, 0xff0000, 
                        floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight+0.1);
+collidableObjects.push(frontWall);
 // left wall 
 createWallWithDoorHole(scene, -floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x00ff00,
                        floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight + 0.1);
@@ -354,44 +357,44 @@ fbxLoader.load(
   (error) => console.error(error)
 );
 
-fbxLoader.load(
-  './assets/models/chubbyAngel.fbx',
-  (fbx) => {
-    fbx.scale.set(0.15, 0.15, 0.15);
-    fbx.position.set(30, 0, -3);
-    models.push(fbx);
-    fbx.traverse(function(node) {
-      if (node.isMesh) {
-        node.castShadow = true;
-      }
-    });
-    scene.add(fbx);
-  },
-  undefined, 
-  (error) => console.error(error)
-);
+// fbxLoader.load(
+//   './assets/models/chubbyAngel.fbx',
+//   (fbx) => {
+//     fbx.scale.set(0.15, 0.15, 0.15);
+//     fbx.position.set(30, 0, -3);
+//     models.push(fbx);
+//     fbx.traverse(function(node) {
+//       if (node.isMesh) {
+//         node.castShadow = true;
+//       }
+//     });
+//     scene.add(fbx);
+//   },
+//   undefined, 
+//   (error) => console.error(error)
+// );
 
-gltfLoader.load(
-  './assets/models/ScholarStatue.glb',
-  (gltf) => {
-    const model = gltf.scene;
+// gltfLoader.load(
+//   './assets/models/ScholarStatue.glb',
+//   (gltf) => {
+//     const model = gltf.scene;
 
-    model.scale.set(0.002, 0.002, 0.002);
-    model.position.set(33, 0, 0);
+//     model.scale.set(0.002, 0.002, 0.002);
+//     model.position.set(33, 0, 0);
 
-    models.push(model);
+//     models.push(model);
 
-    model.traverse(function(node) {
-      if (node.isMesh) {
-        node.castShadow = true;
-      }
-    });
+//     model.traverse(function(node) {
+//       if (node.isMesh) {
+//         node.castShadow = true;
+//       }
+//     });
 
-    scene.add(model);
-  },
-  undefined, 
-  (error) => console.error(error)
-);
+//     scene.add(model);
+//   },
+//   undefined, 
+//   (error) => console.error(error)
+// );
 
 //---------------------Animate------------------
 

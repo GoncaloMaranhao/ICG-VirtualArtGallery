@@ -46,6 +46,7 @@ export function createWallWithDoorHole(scene, x, y, z, rotationY, color, width, 
   wall.castShadow = true;
   wall.receiveShadow = true;
   scene.add(wall);
+  return wall;
 }
 
 export function createCeiling(scene, x, y, z, material, width, height, depth) {
