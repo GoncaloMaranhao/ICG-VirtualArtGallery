@@ -217,41 +217,41 @@ createGarden(scene, gardenPosition, 8, 4, 100, 0.1, Math.PI / 2);
 
 export let models = [];
 
-// fbxLoader.load(
-//   './assets/models/StatuePot.fbx',
-//   (fbx) => {
-//     fbx.scale.set(0.05, 0.05, 0.05);
-//     fbx.position.set(30, 0, 3.1);
-//     models.push(fbx);
-//     fbx.traverse(function(node) {
-//       if (node.isMesh) {
-//         node.castShadow = true;
-//         node.material = material;
-//       }
-//     });
-//     scene.add(fbx);
-//   },
-//   undefined, 
-//   (error) => console.error(error)
-// );
+fbxLoader.load(
+  './assets/models/StatuePot.fbx',
+  (fbx) => {
+    fbx.scale.set(0.05, 0.05, 0.05);
+    fbx.position.set(30, 0, 3.1);
+    models.push(fbx);
+    fbx.traverse(function(node) {
+      if (node.isMesh) {
+        node.castShadow = true;
+        node.material = material;
+      }
+    });
+    scene.add(fbx);
+  },
+  undefined, 
+  (error) => console.error(error)
+);
 
 
-// fbxLoader.load(
-//   './assets/models/chubbyAngel.fbx',
-//   (fbx) => {
-//     fbx.scale.set(0.15, 0.15, 0.15);
-//     fbx.position.set(27, 0, 0);
-//     models.push(fbx);
-//     fbx.traverse(function(node) {
-//       if (node.isMesh) {
-//         node.castShadow = true;
-//       }
-//     });
-//     scene.add(fbx);
-//   },
-//   undefined, 
-//   (error) => console.error(error)
-// );
+fbxLoader.load(
+  './assets/models/chubbyAngel.fbx',
+  (fbx) => {
+    fbx.scale.set(0.15, 0.15, 0.15);
+    fbx.position.set(27, 0, 0);
+    models.push(fbx);
+    fbx.traverse(function(node) {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(fbx);
+  },
+  undefined, 
+  (error) => console.error(error)
+);
 
 // gltfLoader.load(
 //   './assets/models/ScholarStatue.glb',
@@ -275,23 +275,23 @@ export let models = [];
 //   (error) => console.error(error)
 // );
 
-// fbxLoader.load(
-//   './assets/models/StatuePot.fbx',
-//   (fbx) => {
-//     fbx.scale.set(0.05, 0.05, 0.05);
-//     fbx.position.set(30, 0, 3.1);
-//     models.push(fbx);
-//     fbx.traverse(function(node) {
-//       if (node.isMesh) {
-//         node.castShadow = true;
-//         node.material = material;
-//       }
-//     });
-//     scene.add(fbx);
-//   },
-//   undefined, 
-//   (error) => console.error(error)
-// );
+fbxLoader.load(
+  './assets/models/StatuePot.fbx',
+  (fbx) => {
+    fbx.scale.set(0.05, 0.05, 0.05);
+    fbx.position.set(30, 0, 3.1);
+    models.push(fbx);
+    fbx.traverse(function(node) {
+      if (node.isMesh) {
+        node.castShadow = true;
+        node.material = material;
+      }
+    });
+    scene.add(fbx);
+  },
+  undefined, 
+  (error) => console.error(error)
+);
 
 
 //---------------------Animate------------------
