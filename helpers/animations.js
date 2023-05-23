@@ -88,6 +88,7 @@ let statue = null;
 let isRotating = false;
 let targetRotation = 0;
 let isRPressed = false;
+let canPressR = true;
 let rotationsCount = 0;
 const requiredRotations = 6;
 
@@ -108,12 +109,19 @@ export function setStatue(object) {
 }
 
 export function startStatueRotation(object) {
-  if (object !== null) {
+  if (canPressR) {
+    if (object !== null) {
       targetRotation = object.rotation.y + Math.PI / 2;
-      statue = object; 
+      statue = object;
       isRotating = true;
-  } else {
+    } else {
       isRPressed = true;
+    }
+
+    canPressR = false;
+    setTimeout(() => {
+      canPressR = true;
+    }, 3000);  // this adds a delay of 3 seconds.
   }
 }
 

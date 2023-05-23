@@ -1,4 +1,6 @@
-import * as THREE from 'three';
+import * as THREE from '../threejs/three.module.js';
+
+const textureLoader = new THREE.TextureLoader();
 
 export function createSimpleWall(position, width, height, depth, color, rotationY, material) {
   const geometry = new THREE.BoxGeometry(width, height, depth);
@@ -14,4 +16,26 @@ export function createSimpleWall(position, width, height, depth, color, rotation
   mesh.receiveShadow = true;
 
   return mesh;
+}
+
+export function createPainting(scene, x, y, z, width, height, frameThickness, imagePath) {
+  const frameGeometry = new THREE.BoxGeometry(width + 2 * frameThickness, height + 2 * frameThickness, frameThickness);
+  const frameMaterial = new THREE.MeshPhongMaterial({ color: 0x654321 }); 
+  const frame = new THREE.Mesh(frameGeometry, frameMaterial);
+  frame.receiveShadow = true;
+  frame.castShadow = true;
+
+  const canvasGeometry = new THREE.PlaneGeometry(width, height);
+  const canvasTexture = textureLoader.load(imagePath);
+  const canvasMaterial = new THREE.MeshPhongMaterial({ map: canvasTexture });
+  const canvas = new THREE.Mesh(canvasGeometry, canvasMaterial);
+  canvas.receiveShadow = true;
+  canvas.castShadow = true;
+  canvas.position.z = frameThickness / 2 + 0.01;
+
+  const paintingGroup = new THREE.Group();
+  paintingGroup.add(frame);
+  paintingGroup.add(canvas);
+  paintingGroup.position.set(x, y, z);
+  scene.add(paintingGroup);
 }

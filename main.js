@@ -6,9 +6,10 @@ import './helpers/eventListeners.js';
 import { initializeEventListener } from './helpers/eventListeners.js';
 import { initializePlayerMovement, updatePosition } from './helpers/playerMovement.js';
 import { createWallWithDoorHole, createCeiling, 
-         createDoor, createPainting, createFloor} from './helpers/entranceRoom.js';
+         createDoor, createFloor} from './helpers/entranceRoom.js';
 import { createCircularWindow, createGarden, createSunnyRoom, createWallWithTwoWindows, createWindow  } from './helpers/sunnyRoom.js';
-import { hasRequiredRotations, incrementRotations, closeDoor, startStatueRotation, animateStatueRotation, openDoor } from './helpers/animations.js';
+import { hasRequiredRotations, closeDoor, startStatueRotation, animateStatueRotation, openDoor } from './helpers/animations.js';
+import { createPainting  } from './helpers/general.js';
 
 export const scene = new THREE.Scene();
 
@@ -104,24 +105,26 @@ scene.add(spotLight);
 
 //--------------------------_Sunny Room_----------------------
 
-// const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 50);
-// sunnyPointLight.castShadow = true;
-// sunnyPointLight.receiveShadow = true;
-// sunnyPointLight.position.set(floorWidth, 2, 0);
-// sunnyPointLight.shadow.bias = -0.005;
-// scene.add(sunnyPointLight);
+const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 50);
+sunnyPointLight.castShadow = true;
+sunnyPointLight.receiveShadow = true;
+sunnyPointLight.position.set(floorWidth, 2, 0);
+sunnyPointLight.shadow.bias = -0.005;
+scene.add(sunnyPointLight);
 
-// const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
-// pointLight.position.set(0, 2, 0);
-// scene.add(pointLight);
+const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
+pointLight.position.set(0, 2, 0);
+scene.add(pointLight);
 
-// const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 50);
-// sunnyPointLight2.position.set(floorWidth + 10, 2, 0);
-// scene.add(sunnyPointLight2);
+const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 50);
+sunnyPointLight2.position.set(floorWidth + 10, 2, 0);
+scene.add(sunnyPointLight2);
 
-// const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 50);
-// sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
-// scene.add(sunnyPointLight3);
+const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 50);
+sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
+scene.add(sunnyPointLight3);
+
+//---------------------_SunnyRoomStrucuture_----------------------
 
 const sunnyFloorTexture = textureLoader.load('./assets/textures/red_sandstone_pavement_diff_1k.jpg');
 const sunnyFloorMaterial = new THREE.MeshPhongMaterial({ map: sunnyFloorTexture });
@@ -180,15 +183,27 @@ const windowFrameColor = 0x652233
 const windowRotationY = Math.PI / 2; 
 scene.add(createWindow(windowPosition, windowWidth, windowHeight, windowDepth, windowFrameColor, windowRotationY, null, paneMaterial));
 
-window.addEventListener('statueFacingCorrectDirection', function (event) {
-  if (hasRequiredRotations()) { 
-    spotLightSunnyRoom.intensity = 0;
-    spotLightSunnyRoom2.intensity = 0;
-    spotLightSunnyRoom3.intensity = 1;
-    openDoor(sunnyRoomDoor);
-  }
+let radius = 2;
+let position = new THREE.Vector3(49.5, 18, 0);
+let rotation = new THREE.Vector3(0, 0, Math.PI / 2); 
+let color = 0xff0000;
+
+let roseWindowtexture = new THREE.TextureLoader().load('./assets/textures/roseWindow2.jpg');
+const roseWindowmaterial = new THREE.MeshPhongMaterial({
+  map: roseWindowtexture,
+  transparent: true,
+  side: THREE.DoubleSide
 });
 
+let window1 = createCircularWindow(radius, position, rotation, color, roseWindowmaterial);
+scene.add(window1);
+
+position = new THREE.Vector3(30, 0.1, 0);
+rotation = new THREE.Vector3(0, Math.PI / 2, 0); 
+let window2 = createCircularWindow(radius, position, rotation, color, roseWindowmaterial);
+scene.add(window2);
+
+//---------------------------_SunnyRoomLight_--------------------------------
 
 const spotLightSunnyRoom = new THREE.SpotLight(0xFFFFFF, 1, 0, Math.PI); 
 spotLightSunnyRoom.position.set(47, ceilingPositionY + 2, 0);
@@ -208,14 +223,6 @@ spotLightSunnyRoom3.castShadow = true;
 spotLightSunnyRoom3.shadow.bias = -0.001;
 scene.add(spotLightSunnyRoom3);
 
-const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0xffff00 });
-const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-cube.position.set(13, ceilingPositionY + 2, 0);
-cube.castShadow = true;
-scene.add(cube);
-
-// Invisible box for sunny Room light
 const sunnyRoomBoundary = new THREE.Box3(
   new THREE.Vector3(sunnyFloorWidth/2, 0, sunnyFloorDepth / 2),
   new THREE.Vector3(sunnyFloorWidth * 1.5, sunnyRoomHeight / 2, sunnyFloorDepth* 1.5)
@@ -228,9 +235,31 @@ sunnyRoomBoundary.max.add(translationVector);
 const sunnyRoomBoundaryHelper = new THREE.Box3Helper(sunnyRoomBoundary, 0xff0000);
 scene.add(sunnyRoomBoundaryHelper);
 
+function isInsideSunnyRoom(camera, boundary) {
+  const cameraPosition = camera.position;
+  return boundary.containsPoint(cameraPosition);
+}
+
+//-----------------------------_SunnyRoomStatues_-------------------------
+
+window.addEventListener('statueFacingCorrectDirection', function (event) {
+  if (hasRequiredRotations()) { 
+    spotLightSunnyRoom.intensity = 0;
+    spotLightSunnyRoom2.intensity = 0;
+    spotLightSunnyRoom3.intensity = 1;
+    openDoor(sunnyRoomDoor);
+  }
+});
+
+const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0xffff00 });
+const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+cube.position.set(13, ceilingPositionY + 2, 0);
+cube.castShadow = true;
+scene.add(cube);
+
 const gardenPosition = { x: 30, y: 0.5, z: 0 };
 createGarden(scene, gardenPosition, 8, 4, 100, 0.1, Math.PI / 2);
-
 
 export let models = [];
 
@@ -291,33 +320,7 @@ gltfLoader.load(
   (error) => console.error(error)
 );
 
-
-let radius = 2;
-let position = new THREE.Vector3(49.5, 18, 0);
-let rotation = new THREE.Vector3(0, 0, Math.PI / 2); 
-let color = 0xff0000;
-
-let roseWindowtexture = new THREE.TextureLoader().load('./assets/textures/roseWindow2.jpg');
-const roseWindowmaterial = new THREE.MeshPhongMaterial({
-  map: roseWindowtexture,
-  transparent: true,
-  side: THREE.DoubleSide
-});
-
-let window1 = createCircularWindow(radius, position, rotation, color, roseWindowmaterial);
-scene.add(window1);
-
-position = new THREE.Vector3(30, 0.1, 0);
-rotation = new THREE.Vector3(0, Math.PI / 2, 0); 
-let window2 = createCircularWindow(radius, position, rotation, color, roseWindowmaterial);
-scene.add(window2);
-
 //---------------------Animate------------------
-
-function isInsideSunnyRoom(camera, boundary) {
-  const cameraPosition = camera.position;
-  return boundary.containsPoint(cameraPosition);
-}
 
 function animate() {
   requestAnimationFrame(animate);
