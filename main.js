@@ -224,23 +224,23 @@ createGarden(scene, gardenPosition, 8, 4, 100, 0.1, Math.PI / 2);
 
 export let models = [];
 
-// fbxLoader.load(
-//   './assets/models/StatuePot.fbx',
-//   (fbx) => {
-//     fbx.scale.set(0.05, 0.05, 0.05);
-//     fbx.position.set(30, 0, 3.1);
-//     models.push(fbx);
-//     fbx.traverse(function(node) {
-//       if (node.isMesh) {
-//         node.castShadow = true;
-//         node.material = material;
-//       }
-//     });
-//     scene.add(fbx);
-//   },
-//   undefined, 
-//   (error) => console.error(error)
-// );
+fbxLoader.load(
+  './assets/models/StatuePot.fbx',
+  (fbx) => {
+    fbx.scale.set(0.05, 0.05, 0.05);
+    fbx.position.set(30, 0, 3.1);
+    models.push(fbx);
+    fbx.traverse(function(node) {
+      if (node.isMesh) {
+        node.castShadow = true;
+        node.material = material;
+      }
+    });
+    scene.add(fbx);
+  },
+  undefined, 
+  (error) => console.error(error)
+);
 
 
 // fbxLoader.load(
@@ -260,27 +260,27 @@ export let models = [];
 //   (error) => console.error(error)
 // );
 
-gltfLoader.load(
-  './assets/models/ScholarStatue.glb',
-  (gltf) => {
-    const model = gltf.scene;
+// gltfLoader.load(
+//   './assets/models/ScholarStatue.glb',
+//   (gltf) => {
+//     const model = gltf.scene;
 
-    model.scale.set(0.002, 0.002, 0.002);
-    model.position.set(33, 0, 0);
+//     model.scale.set(0.002, 0.002, 0.002);
+//     model.position.set(33, 0, 0);
 
-    models.push(model);
+//     models.push(model);
 
-    model.traverse(function(node) {
-      if (node.isMesh) {
-        node.castShadow = true;
-      }
-    });
+//     model.traverse(function(node) {
+//       if (node.isMesh) {
+//         node.castShadow = true;
+//       }
+//     });
 
-    scene.add(model);
-  },
-  undefined, 
-  (error) => console.error(error)
-);
+//     scene.add(model);
+//   },
+//   undefined, 
+//   (error) => console.error(error)
+// );
 
 
 let radius = 2;
