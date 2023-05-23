@@ -1,6 +1,6 @@
 import * as THREE from './threejs/three.module.js';
 import { FBXLoader } from './threejs/FBXLoader.js';
-// import { GLTFLoader } from '/threejs/GLTFLoader.js';
+import { GLTFLoader } from './threejs/GLTFLoader.js';
 import { DRACOLoader } from './threejs//DRACOLoader.js';
 import './helpers/eventListeners.js';
 import { initializeEventListener } from './helpers/eventListeners.js';
@@ -34,8 +34,8 @@ const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath('./threejs/draco/draco/');
 
 const fbxLoader = new FBXLoader();
-// const gltfLoader = new GLTFLoader();
-// gltfLoader.setDRACOLoader(dracoLoader);
+const gltfLoader = new GLTFLoader();
+gltfLoader.setDRACOLoader(dracoLoader);
 
 
 
@@ -253,27 +253,27 @@ fbxLoader.load(
   (error) => console.error(error)
 );
 
-// gltfLoader.load(
-//   './assets/models/ScholarStatue.glb',
-//   (gltf) => {
-//     const model = gltf.scene;
+gltfLoader.load(
+  './assets/models/ScholarStatue.glb',
+  (gltf) => {
+    const model = gltf.scene;
 
-//     model.scale.set(0.002, 0.002, 0.002);
-//     model.position.set(33, 0, 0);
+    model.scale.set(0.002, 0.002, 0.002);
+    model.position.set(33, 0, 0);
 
-//     models.push(model);
+    models.push(model);
 
-//     model.traverse(function(node) {
-//       if (node.isMesh) {
-//         node.castShadow = true;
-//       }
-//     });
+    model.traverse(function(node) {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
 
-//     scene.add(model);
-//   },
-//   undefined, 
-//   (error) => console.error(error)
-// );
+    scene.add(model);
+  },
+  undefined, 
+  (error) => console.error(error)
+);
 
 fbxLoader.load(
   './assets/models/StatuePot.fbx',
