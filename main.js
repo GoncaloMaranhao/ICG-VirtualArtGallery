@@ -211,9 +211,26 @@ const rotationPaintingHorizontalTilt = new THREE.Vector3(Math.PI / 16, 0, Math.P
 const rotationPaintingHorizontalTiltInverse = new THREE.Vector3(-Math.PI / 14, Math.PI, Math.PI / 2);
 
 // Back wall
-createPainting(scene, positionPainting, rotationPaintingVertical, 2, 3, 0.1, './assets/textures/151090.jpg');
+createPainting(
+  scene, positionPainting, rotationPaintingVertical, 
+  2, 3, 0.1, './assets/textures/151090.jpg',
+  {
+    name: "The Starry Night",
+    artist: "Vincent van Gogh",
+    year: "1889",
+    description: "The Starry Night is an oil on canvas painting by Dutch Post-Impressionist painter Vincent van Gogh."
+  }
+);
+
 positionPainting.z = positionPaintingZ + 3.5;
-createPainting(scene, positionPainting, rotationPaintingVertical, 2, 3, 0.1, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingVertical, 
+  2, 3, 0.1, './assets/textures/151090.jpg', {
+    name: "Mona Lisa",
+    artist: "Leonardo da Vinci",
+    year: "1517",
+    description: "The Mona Lisa is a half-length portrait painting by Italian artist Leonardo da Vinci."
+  }
+);
 positionPainting.z = positionPaintingZ - 7.5;
 createPainting(scene, positionPainting, rotationPaintingVertical, 2, 3, 0.1, './assets/textures/151090.jpg');
 positionPainting.z = positionPaintingZ - 11;

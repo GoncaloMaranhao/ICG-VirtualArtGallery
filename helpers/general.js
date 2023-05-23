@@ -18,7 +18,7 @@ export function createSimpleWall(position, width, height, depth, color, rotation
   return mesh;
 }
 
-export function createPainting(scene, position, rotation, width, height, frameThickness, imagePath) {
+export function createPainting(scene, position, rotation, width, height, frameThickness, imagePath, paintingInfo) {
   const frameGeometry = new THREE.BoxGeometry(width + 2 * frameThickness, height + 2 * frameThickness, frameThickness);
   const frameMaterial = new THREE.MeshPhongMaterial({ color: 0x654321 }); 
   const frame = new THREE.Mesh(frameGeometry, frameMaterial);
@@ -38,11 +38,6 @@ export function createPainting(scene, position, rotation, width, height, frameTh
   paintingGroup.add(canvas);
   paintingGroup.position.set(position.x, position.y, position.z);
   paintingGroup.rotation.set(rotation.x, rotation.y, rotation.z);
-  paintingGroup.userData = {
-    name: "The Starry Night",
-    artist: "Vincent van Gogh",
-    year: "1889",
-    description: "The Starry Night is an oil on canvas painting by Dutch Post-Impressionist painter Vincent van Gogh."
-  };  
+  paintingGroup.userData = paintingInfo;
   scene.add(paintingGroup);
 }
