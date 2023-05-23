@@ -1,6 +1,6 @@
 import * as THREE from './threejs/three.module.js';
 import { FBXLoader } from './threejs/FBXLoader.js';
-import { GLTFLoader } from '/threejs/GLTFLoader.js';
+// import { GLTFLoader } from '/threejs/GLTFLoader.js';
 import { DRACOLoader } from './threejs//DRACOLoader.js';
 import './helpers/eventListeners.js';
 import { initializeEventListener } from './helpers/eventListeners.js';
@@ -34,8 +34,8 @@ const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath('./threejs/draco/draco/');
 
 const fbxLoader = new FBXLoader();
-const gltfLoader = new GLTFLoader();
-gltfLoader.setDRACOLoader(dracoLoader);
+// const gltfLoader = new GLTFLoader();
+// gltfLoader.setDRACOLoader(dracoLoader);
 
 
 
