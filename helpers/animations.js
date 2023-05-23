@@ -90,7 +90,7 @@ let targetRotation = 0;
 let isRPressed = false;
 let canPressR = true;
 let rotationsCount = 0;
-const requiredRotations = 6;
+const requiredRotations = 3;
 
 export function incrementRotations() {
   rotationsCount++;
@@ -121,7 +121,7 @@ export function startStatueRotation(object) {
     canPressR = false;
     setTimeout(() => {
       canPressR = true;
-    }, 3000);  // this adds a delay of 3 seconds.
+    }, 1000);  // 2s delay
   }
 }
 

@@ -201,7 +201,62 @@ let window2 = createCircularWindow(radius, position, rotation, color, roseWindow
 scene.add(window2);
 
 //---------------------------_SunnyRoomPaintings_----------------------------
-createPainting(scene, 10, 2, -floorWidth / 2 + 0.5, 2, 3, 0.1, './assets/textures/151090.jpg');
+const positionPaintingX = 12.7;
+const positionPaintingY = 2;
+const positionPaintingZ = 3.5;
+const positionPainting = new THREE.Vector3(positionPaintingX, positionPaintingY, positionPaintingZ);
+const rotationPaintingVertical = new THREE.Vector3(0, Math.PI / 2, 0);
+const rotationPaintingVerticalInverse = new THREE.Vector3(0, - Math.PI / 2, 0);
+const rotationPaintingHorizontalTilt = new THREE.Vector3(Math.PI / 16, 0, Math.PI / 2);
+const rotationPaintingHorizontalTiltInverse = new THREE.Vector3(-Math.PI / 14, Math.PI, Math.PI / 2);
+
+// Back wall
+createPainting(scene, positionPainting, rotationPaintingVertical, 2, 3, 0.1, './assets/textures/151090.jpg');
+positionPainting.z = positionPaintingZ + 3.5;
+createPainting(scene, positionPainting, rotationPaintingVertical, 2, 3, 0.1, './assets/textures/151090.jpg');
+positionPainting.z = positionPaintingZ - 7.5;
+createPainting(scene, positionPainting, rotationPaintingVertical, 2, 3, 0.1, './assets/textures/151090.jpg');
+positionPainting.z = positionPaintingZ - 11;
+createPainting(scene, positionPainting, rotationPaintingVertical, 2, 3, 0.1, './assets/textures/151090.jpg');
+positionPainting.y = positionPaintingY + 8;
+positionPainting.z = positionPaintingZ - 4;
+createPainting(scene, positionPainting, rotationPaintingVertical, 10, 9, 0.1, './assets/textures/151090.jpg');
+
+// //Left wall
+// positionPainting.x = positionPaintingX + 6;
+// positionPainting.y = positionPaintingY + 1;
+// positionPainting.z = positionPaintingZ - 15.1;
+// createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 4, 6, 0.1, './assets/textures/151090.jpg');
+// positionPainting.x = positionPaintingX + 13;
+// createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 4, 6, 0.1, './assets/textures/151090.jpg');
+// positionPainting.x = positionPaintingX + 21;
+// createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 4, 6, 0.1, './assets/textures/151090.jpg');
+// positionPainting.x = positionPaintingX + 30;
+// createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 4, 6, 0.1, './assets/textures/151090.jpg');
+
+// //Right Wall
+// positionPainting.x = positionPaintingX + 6;
+// positionPainting.y = positionPaintingY + 1;
+// positionPainting.z = positionPaintingZ + 8.15;
+// createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 4, 6, 0.1, './assets/textures/151090.jpg');
+// positionPainting.x = positionPaintingX + 13;
+// createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 4, 6, 0.1, './assets/textures/151090.jpg');
+// positionPainting.x = positionPaintingX + 21;
+// createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 4, 6, 0.1, './assets/textures/151090.jpg');
+// positionPainting.x = positionPaintingX + 30;
+// createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 4, 6, 0.1, './assets/textures/151090.jpg');
+
+// //Front wall
+// positionPainting.x = positionPaintingX + 36.6;
+// positionPainting.y = positionPaintingY + 1;
+// positionPainting.z = positionPaintingZ + 5;
+// createPainting(scene, positionPainting, rotationPaintingVerticalInverse, 3, 4, 0.1, './assets/textures/151090.jpg');
+// positionPainting.z = positionPaintingZ;
+// createPainting(scene, positionPainting, rotationPaintingVerticalInverse, 3, 4, 0.1, './assets/textures/151090.jpg');
+// positionPainting.z = positionPaintingZ -5;
+// createPainting(scene, positionPainting, rotationPaintingVerticalInverse, 3, 4, 0.1, './assets/textures/151090.jpg');
+// positionPainting.z = positionPaintingZ -10;
+// createPainting(scene, positionPainting, rotationPaintingVerticalInverse, 3, 4, 0.1, './assets/textures/151090.jpg');
 
 
 //---------------------------_SunnyRoomLight_--------------------------------
@@ -252,12 +307,12 @@ window.addEventListener('statueFacingCorrectDirection', function (event) {
   }
 });
 
-const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0xffff00 });
-const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-cube.position.set(13, ceilingPositionY + 2, 0);
-cube.castShadow = true;
-scene.add(cube);
+// const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+// const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0xffff00 });
+// const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+// cube.position.set(13, ceilingPositionY + 2, 0);
+// cube.castShadow = true;
+// scene.add(cube);
 
 const gardenPosition = { x: 30, y: 0.5, z: 0 };
 createGarden(scene, gardenPosition, 8, 4, 100, 0.1, Math.PI / 2);
@@ -322,6 +377,7 @@ gltfLoader.load(
 );
 
 //---------------------Animate------------------
+
 
 function animate() {
   requestAnimationFrame(animate);

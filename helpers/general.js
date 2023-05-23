@@ -18,7 +18,7 @@ export function createSimpleWall(position, width, height, depth, color, rotation
   return mesh;
 }
 
-export function createPainting(scene, x, y, z, width, height, frameThickness, imagePath) {
+export function createPainting(scene, position, rotation, width, height, frameThickness, imagePath) {
   const frameGeometry = new THREE.BoxGeometry(width + 2 * frameThickness, height + 2 * frameThickness, frameThickness);
   const frameMaterial = new THREE.MeshPhongMaterial({ color: 0x654321 }); 
   const frame = new THREE.Mesh(frameGeometry, frameMaterial);
@@ -36,6 +36,7 @@ export function createPainting(scene, x, y, z, width, height, frameThickness, im
   const paintingGroup = new THREE.Group();
   paintingGroup.add(frame);
   paintingGroup.add(canvas);
-  paintingGroup.position.set(x, y, z);
+  paintingGroup.position.set(position.x, position.y, position.z);
+  paintingGroup.rotation.set(rotation.x, rotation.y, rotation.z);
   scene.add(paintingGroup);
 }
