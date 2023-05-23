@@ -88,6 +88,19 @@ let statue = null;
 let isRotating = false;
 let targetRotation = 0;
 let isRPressed = false;
+let rotationsCount = 0;
+const requiredRotations = 3;
+
+export function incrementRotations() {
+  rotationsCount++;
+  console.log(rotationsCount);
+}
+
+export function hasRequiredRotations() {
+  return rotationsCount >= requiredRotations;
+}
+
+
 
 export function setStatue(object) {
   statue = object;
@@ -109,9 +122,10 @@ export function startStatueRotation(object) {
 
 export function animateStatueRotation() {
   if (isRotating && statue) {
-      if (Math.abs(statue.rotation.y - targetRotation) < 0.01) {
-          statue.rotation.y = targetRotation;
-          isRotating = false;
+    if (Math.abs(statue.rotation.y - targetRotation) < 0.01) {
+      statue.rotation.y = targetRotation;
+      isRotating = false;
+      incrementRotations();
           if (Math.abs(statue.rotation.y - 1.57) < 0.01) {
               const event = new CustomEvent('statueFacingCorrectDirection', { detail: statue });
               window.dispatchEvent(event);

@@ -8,7 +8,7 @@ import { initializePlayerMovement, updatePosition } from './helpers/playerMoveme
 import { createWallWithDoorHole, createCeiling, 
          createDoor, createPainting, createFloor} from './helpers/entranceRoom.js';
 import { createCircularWindow, createGarden, createSunnyRoom, createWallWithTwoWindows, createWindow  } from './helpers/sunnyRoom.js';
-import { closeDoor, startStatueRotation, animateStatueRotation, openDoor } from './helpers/animations.js';
+import { hasRequiredRotations, incrementRotations, closeDoor, startStatueRotation, animateStatueRotation, openDoor } from './helpers/animations.js';
 
 export const scene = new THREE.Scene();
 
@@ -181,11 +181,14 @@ const windowRotationY = Math.PI / 2;
 scene.add(createWindow(windowPosition, windowWidth, windowHeight, windowDepth, windowFrameColor, windowRotationY, null, paneMaterial));
 
 window.addEventListener('statueFacingCorrectDirection', function (event) {
-  spotLightSunnyRoom.intensity = 0;
-  spotLightSunnyRoom2.intensity = 0;
-  spotLightSunnyRoom3.intensity = 1;
-  openDoor(sunnyRoomDoor);
+  if (hasRequiredRotations()) { 
+    spotLightSunnyRoom.intensity = 0;
+    spotLightSunnyRoom2.intensity = 0;
+    spotLightSunnyRoom3.intensity = 1;
+    openDoor(sunnyRoomDoor);
+  }
 });
+
 
 const spotLightSunnyRoom = new THREE.SpotLight(0xFFFFFF, 1, 0, Math.PI); 
 spotLightSunnyRoom.position.set(47, ceilingPositionY + 2, 0);
