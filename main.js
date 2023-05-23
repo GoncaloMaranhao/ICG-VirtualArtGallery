@@ -37,8 +37,6 @@ const fbxLoader = new FBXLoader();
 const gltfLoader = new GLTFLoader();
 gltfLoader.setDRACOLoader(dracoLoader);
 
-
-
 //--------------------------_Entrance Room_----------------------
 
 const darkWoodTexture = textureLoader.load('./assets/textures/castle_brick_07_diff_1k.jpg');
@@ -94,10 +92,6 @@ createWallWithDoorHole(scene, floorWidth / 2, 0, floorWidth / 2, Math.PI, 0x1234
 
 createPainting(scene, -5, 2, -floorWidth / 2 + 0.1, 2, 3, 0.1, './assets/textures/151090.jpg');
 
-
-
-
-
 const spotLight = new THREE.SpotLight(0xffffff, 1);
 spotLight.position.set(0, ceilingHeight + 10, 0);
 spotLight.angle = Math.PI / 2.5; 
@@ -108,21 +102,14 @@ spotLight.shadow.mapSize.height = 1024;
 spotLight.shadow.bias = -0.005;
 scene.add(spotLight);
 
-const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0xffff00 });
-const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-cube.position.set(0, 1, 3);
-scene.add(cube);
-
-
 //--------------------------_Sunny Room_----------------------
 
-const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 50);
-sunnyPointLight.castShadow = true;
-sunnyPointLight.receiveShadow = true;
-sunnyPointLight.position.set(floorWidth, 2, 0);
-sunnyPointLight.shadow.bias = -0.005;
-scene.add(sunnyPointLight);
+// const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 50);
+// sunnyPointLight.castShadow = true;
+// sunnyPointLight.receiveShadow = true;
+// sunnyPointLight.position.set(floorWidth, 2, 0);
+// sunnyPointLight.shadow.bias = -0.005;
+// scene.add(sunnyPointLight);
 
 // const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
 // pointLight.position.set(0, 2, 0);
@@ -140,6 +127,7 @@ const sunnyFloorTexture = textureLoader.load('./assets/textures/red_sandstone_pa
 const sunnyFloorMaterial = new THREE.MeshPhongMaterial({ map: sunnyFloorTexture });
 sunnyFloorMaterial.castShadow = true;
 sunnyFloorMaterial.receiveShadow = true;
+
 
 const sunnyFloorWidth = 40;
 const sunnyFloorHeight = 0.1;
@@ -194,11 +182,28 @@ scene.add(createWindow(windowPosition, windowWidth, windowHeight, windowDepth, w
 
 const spotLightSunnyRoom = new THREE.SpotLight(0xFFFFFF, 1, 0, Math.PI); 
 spotLightSunnyRoom.position.set(47, ceilingPositionY + 2, 0);
-spotLightSunnyRoom.target.position.set(49.4, 0, 0); 
 spotLightSunnyRoom.castShadow = true;
 spotLightSunnyRoom.shadow.bias = -0.001;
 scene.add(spotLightSunnyRoom);
-scene.add(spotLightSunnyRoom.target);
+
+const spotLightSunnyRoom2 = new THREE.SpotLight(0xFFFFFF, 1, 0, Math.PI); 
+spotLightSunnyRoom2.position.set(13, ceilingPositionY + 2, 0); 
+spotLightSunnyRoom2.castShadow = true;
+spotLightSunnyRoom2.shadow.bias = -0.001;
+scene.add(spotLightSunnyRoom2);
+
+const spotLightSunnyRoom3 = new THREE.SpotLight(0xFF0000, 1, 0, Math.PI); 
+spotLightSunnyRoom3.position.set(47, 18, 0);
+spotLightSunnyRoom3.castShadow = true;
+spotLightSunnyRoom3.shadow.bias = -0.001;
+scene.add(spotLightSunnyRoom3);
+
+const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0xffff00 });
+const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+cube.position.set(13, ceilingPositionY + 2, 0);
+cube.castShadow = true;
+scene.add(cube);
 
 // Invisible box for sunny Room light
 const sunnyRoomBoundary = new THREE.Box3(
@@ -277,6 +282,7 @@ gltfLoader.load(
   (error) => console.error(error)
 );
 
+
 let radius = 2;
 let position = new THREE.Vector3(49.5, 18, 0);
 let rotation = new THREE.Vector3(0, 0, Math.PI / 2); 
@@ -311,9 +317,11 @@ function animate() {
   
   if (isInsideSunnyRoom(camera, sunnyRoomBoundary)) {
     spotLightSunnyRoom.intensity = 1;
+    spotLightSunnyRoom2.intensity = 1
     closeDoor(sunnyRoomDoor);
   } else {
     spotLightSunnyRoom.intensity = 0;
+    spotLightSunnyRoom2.intensity = 0;
   }
   
   updatePosition(camera);

@@ -57,20 +57,6 @@ export function createSunnyRoom(width, height, depth, segments, doorWidth, doorH
   return group;
 }
 
-export function createFresco(scene, position, width, height, texturePath) {
-  const textureLoader = new THREE.TextureLoader();
-  const frescoTexture = textureLoader.load(texturePath);
-  const frescoMaterial = new THREE.MeshPhongMaterial({ map: frescoTexture });
-  const frescoGeometry = new THREE.PlaneGeometry(width, height);
-  const fresco = new THREE.Mesh(frescoGeometry, frescoMaterial);
-
-  fresco.castShadow = true;
-  fresco.receiveShadow = true;
-  
-  fresco.position.set(position.x, position.y, position.z);
-  scene.add(fresco);
-}
-
 export function createWindow(position, width, height, depth, frameColor, rotationY, frameMaterial, paneMaterial) {
   const windowFrameGeometry = new THREE.BoxGeometry(width, height, depth);
 
@@ -131,7 +117,6 @@ mesh.rotation.y = rotationY;
 mesh.castShadow = true;
 mesh.receiveShadow = true;
 
-
 return mesh;
 }
 
@@ -165,6 +150,7 @@ export function createGarden(scene, position, outerRadius, innerRadius, flowerCo
         flowerModel.traverse(function (node) {
           if (node instanceof THREE.Mesh) {
             node.castShadow = true;
+            node.receiveShadow = true;
           }
         });
         
@@ -199,10 +185,16 @@ export function createCircularWindow(radius, position, rotation, color, material
   return circle;
 }
 
+// export function createFresco(scene, position, width, height, texturePath) {
+//   const textureLoader = new THREE.TextureLoader();
+//   const frescoTexture = textureLoader.load(texturePath);
+//   const frescoMaterial = new THREE.MeshPhongMaterial({ map: frescoTexture });
+//   const frescoGeometry = new THREE.PlaneGeometry(width, height);
+//   const fresco = new THREE.Mesh(frescoGeometry, frescoMaterial);
 
-
-
-
-
-
-
+//   fresco.castShadow = true;
+//   fresco.receiveShadow = true;
+  
+//   fresco.position.set(position.x, position.y, position.z);
+//   scene.add(fresco);
+// }
