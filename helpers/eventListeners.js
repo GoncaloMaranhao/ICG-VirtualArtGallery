@@ -20,7 +20,6 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-
 export function initializeEventListener() {
   const raycaster = new THREE.Raycaster();
   const direction = new THREE.Vector2(0, 0);
@@ -38,33 +37,18 @@ export function initializeEventListener() {
   });
 }
 
+window.addEventListener('keydown', function (event) {
+  if (event.key === 'i') {
+    const raycaster = new THREE.Raycaster();
+    const direction = new THREE.Vector2(0, 0);
+    raycaster.setFromCamera(direction, camera);
+    const intersects = raycaster.intersectObjects(scene.children, true);  // You may need to specify the array of paintings if not all objects in the scene should be selectable.
 
-/* Cube rotation
-    document.addEventListener('keydown', (event) => {
-
-    if (event.code === 'KeyT') {
-      if (!isHoldingObject) {
-        const pickUpDistance = 2;
-  
-        const cubeDistance = cube.position.distanceTo(camera.position);
-        if (cubeDistance < pickUpDistance) {
-          isHoldingObject = true;
-        }
-      }
+    if (intersects.length > 0 && intersects[0].distance < 5) {
+      const painting = intersects[0].object.parent;  // Assuming the intersected object is the canvas, its parent would be the painting group
+      const userData = painting.userData;
+      // Display the painting information
+      alert(`${userData.name}\n${userData.artist}\n${userData.year}\n${userData.description}`);
     }
-  
-    if (event.code === 'KeyU') {
-      if (isHoldingObject) {
-        isHoldingObject = false;
-        cube.position.y = cube.geometry.parameters.height / 2 + floorHeight;
-      }
-    }
-  });
-    
-  const rotationAngle = Math.PI / 4;
-  
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'z') {
-      cube.rotation.y += rotationAngle;
-    }
-  }); */
+  }
+});
