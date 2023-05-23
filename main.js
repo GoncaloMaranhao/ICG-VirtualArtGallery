@@ -80,9 +80,10 @@ createCeiling(scene, - floorWidth / 4, ceilingPositionY, 0, ceilingMaterial,
               ceilingWidth, ceilingHeight, ceilingDepth );
 
 // front wall
-const frontWall = createWallWithDoorHole(scene, -floorWidth / 2, 0, -floorWidth / 2, 0, 0xff0000, 
+const frontWallBounds = createWallWithDoorHole(scene, -floorWidth / 2, 0, -floorWidth / 2, 0, 0xff0000, 
                        floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight+0.1);
-collidableObjects.push(frontWall);
+frontWallBounds.forEach(bounds => collidableObjects.push(bounds));
+
 // left wall 
 createWallWithDoorHole(scene, -floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x00ff00,
                        floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight + 0.1);

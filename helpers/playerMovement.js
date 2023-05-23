@@ -84,11 +84,11 @@ export function checkCollision(position, direction) {
   const tempBox = playerBox.clone();
   tempBox.translate(direction.clone().multiplyScalar(speed));
 
-  for (let object of collidableObjects) {
-      let objectBox = new THREE.Box3().setFromObject(object);
-      if (boxIntersect(tempBox, objectBox)) {
+  for (let bounds of collidableObjects) {
+      if (boxIntersect(tempBox, bounds)) {
           return true;
       }
   }
   return false;
 }
+

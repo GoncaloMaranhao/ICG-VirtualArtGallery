@@ -14,6 +14,21 @@ export function createFloor(floorWidth, floorHeight, floorDepth, floorMaterial, 
   return floor;
 }
 
+function createBoundingBoxWireframe(scene, boundingBox) {
+  const size = boundingBox.getSize(new THREE.Vector3());
+  const center = boundingBox.getCenter(new THREE.Vector3());
+  
+  const geometry = new THREE.BoxGeometry(size.x, size.y, size.z);
+  const wireframeGeometry = new THREE.WireframeGeometry(geometry);
+  const material = new THREE.LineBasicMaterial({ color: 0x0000ff });
+  const wireframe = new THREE.LineSegments(wireframeGeometry, material);
+  
+  wireframe.position.copy(center);
+  
+  scene.add(wireframe);
+  return wireframe;
+}
+
 export function createWallWithDoorHole(scene, x, y, z, rotationY, color, width, height, depth, doorWidth, doorHeight) {
   const wallMaterial = new THREE.MeshLambertMaterial({ color: color });
 
@@ -46,7 +61,21 @@ export function createWallWithDoorHole(scene, x, y, z, rotationY, color, width, 
   wall.castShadow = true;
   wall.receiveShadow = true;
   scene.add(wall);
-  return wall;
+
+  // This if for collision detection, basically I'm removing the door hole from being detected for collision
+  // otherwise even when the door is open I can't go through because the wall itself has collision
+  const wallBounds = [];
+
+  const leftWallBounds = new THREE.Box3(new THREE.Vector3(x, y, z), new THREE.Vector3(x + (width - doorWidth) / 2, y + height, z + depth));
+  const rightWallBounds = new THREE.Box3(new THREE.Vector3(x + (width + doorWidth) / 2, y, z), new THREE.Vector3(x + width, y + height, z + depth));
+
+  createBoundingBoxWireframe(scene, leftWallBounds);
+  createBoundingBoxWireframe(scene, rightWallBounds);
+
+  wallBounds.push(leftWallBounds);
+  wallBounds.push(rightWallBounds);
+
+  return wallBounds;
 }
 
 export function createCeiling(scene, x, y, z, material, width, height, depth) {
