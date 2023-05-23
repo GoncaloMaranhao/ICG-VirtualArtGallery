@@ -8,7 +8,7 @@ import { initializePlayerMovement, updatePosition } from './helpers/playerMoveme
 import { createWallWithDoorHole, createCeiling, 
          createDoor, createPainting, createFloor} from './helpers/entranceRoom.js';
 import { createCircularWindow, createGarden, createSunnyRoom, createWallWithTwoWindows, createWindow  } from './helpers/sunnyRoom.js';
-import { closeDoor, startStatueRotation, animateStatueRotation } from './helpers/animations.js';
+import { closeDoor, startStatueRotation, animateStatueRotation, openDoor } from './helpers/animations.js';
 
 export const scene = new THREE.Scene();
 
@@ -180,6 +180,13 @@ const windowFrameColor = 0x652233
 const windowRotationY = Math.PI / 2; 
 scene.add(createWindow(windowPosition, windowWidth, windowHeight, windowDepth, windowFrameColor, windowRotationY, null, paneMaterial));
 
+window.addEventListener('statueFacingCorrectDirection', function (event) {
+  spotLightSunnyRoom.intensity = 0;
+  spotLightSunnyRoom2.intensity = 0;
+  spotLightSunnyRoom3.intensity = 1;
+  openDoor(sunnyRoomDoor);
+});
+
 const spotLightSunnyRoom = new THREE.SpotLight(0xFFFFFF, 1, 0, Math.PI); 
 spotLightSunnyRoom.position.set(47, ceilingPositionY + 2, 0);
 spotLightSunnyRoom.castShadow = true;
@@ -242,45 +249,44 @@ fbxLoader.load(
   (error) => console.error(error)
 );
 
+fbxLoader.load(
+  './assets/models/chubbyAngel.fbx',
+  (fbx) => {
+    fbx.scale.set(0.15, 0.15, 0.15);
+    fbx.position.set(30, 0, -3);
+    models.push(fbx);
+    fbx.traverse(function(node) {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(fbx);
+  },
+  undefined, 
+  (error) => console.error(error)
+);
 
-// fbxLoader.load(
-//   './assets/models/chubbyAngel.fbx',
-//   (fbx) => {
-//     fbx.scale.set(0.15, 0.15, 0.15);
-//     fbx.position.set(30, 0, -3);
-//     models.push(fbx);
-//     fbx.traverse(function(node) {
-//       if (node.isMesh) {
-//         node.castShadow = true;
-//       }
-//     });
-//     scene.add(fbx);
-//   },
-//   undefined, 
-//   (error) => console.error(error)
-// );
+gltfLoader.load(
+  './assets/models/ScholarStatue.glb',
+  (gltf) => {
+    const model = gltf.scene;
 
-// gltfLoader.load(
-//   './assets/models/ScholarStatue.glb',
-//   (gltf) => {
-//     const model = gltf.scene;
+    model.scale.set(0.002, 0.002, 0.002);
+    model.position.set(33, 0, 0);
 
-//     model.scale.set(0.002, 0.002, 0.002);
-//     model.position.set(33, 0, 0);
+    models.push(model);
 
-//     models.push(model);
+    model.traverse(function(node) {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
 
-//     model.traverse(function(node) {
-//       if (node.isMesh) {
-//         node.castShadow = true;
-//       }
-//     });
-
-//     scene.add(model);
-//   },
-//   undefined, 
-//   (error) => console.error(error)
-// );
+    scene.add(model);
+  },
+  undefined, 
+  (error) => console.error(error)
+);
 
 
 let radius = 2;
@@ -314,19 +320,22 @@ function animate() {
   requestAnimationFrame(animate);
   animateStatueRotation();
 
-  
   if (isInsideSunnyRoom(camera, sunnyRoomBoundary)) {
-    spotLightSunnyRoom.intensity = 1;
-    spotLightSunnyRoom2.intensity = 1
-    closeDoor(sunnyRoomDoor);
+      if(spotLightSunnyRoom3.intensity === 0) {
+          spotLightSunnyRoom.intensity = 1;
+          spotLightSunnyRoom2.intensity = 1;
+          closeDoor(sunnyRoomDoor);
+      }
   } else {
-    spotLightSunnyRoom.intensity = 0;
-    spotLightSunnyRoom2.intensity = 0;
+      spotLightSunnyRoom.intensity = 0;
+      spotLightSunnyRoom2.intensity = 0;
+      spotLightSunnyRoom3.intensity = 0;
   }
-  
+
   updatePosition(camera);
   renderer.render(scene, camera);
 }
+
 
 animate();
 

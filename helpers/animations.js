@@ -108,13 +108,18 @@ export function startStatueRotation(object) {
 
 
 export function animateStatueRotation() {
-    if (isRotating && statue) {
-        if (Math.abs(statue.rotation.y - targetRotation) < 0.01) {
-            statue.rotation.y = targetRotation;
-            isRotating = false;
-        } else {
-            statue.rotation.y += (targetRotation - statue.rotation.y) * 0.05;
-        }
-    }
+  if (isRotating && statue) {
+      if (Math.abs(statue.rotation.y - targetRotation) < 0.01) {
+          statue.rotation.y = targetRotation;
+          isRotating = false;
+          if (Math.abs(statue.rotation.y - 1.57) < 0.01) {
+              const event = new CustomEvent('statueFacingCorrectDirection', { detail: statue });
+              window.dispatchEvent(event);
+          }
+      } else {
+          statue.rotation.y += (targetRotation - statue.rotation.y) * 0.05;
+      }
+  }
 }
+
 

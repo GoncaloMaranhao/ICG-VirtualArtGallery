@@ -1,7 +1,6 @@
 import * as THREE from '../threejs/three.module.js';
 import { camera, scene, models } from '../main.js';
 import { openDoor, startStatueRotation } from './animations.js';
-import { Raycaster, Vector2 } from 'three';
 
 
 document.addEventListener('keydown', (event) => {
