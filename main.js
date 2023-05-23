@@ -7,7 +7,7 @@ import { initializeEventListener } from './helpers/eventListeners.js';
 import { initializePlayerMovement, updatePosition } from './helpers/playerMovement.js';
 import { createWallWithDoorHole, createCeiling, 
          createDoor, createPainting, createFloor} from './helpers/entranceRoom.js';
-import { createGarden, createSunnyRoom, createWallWithTwoWindows, createWindow  } from './helpers/sunnyRoom.js';
+import { createCircularWindow, createGarden, createSunnyRoom, createWallWithTwoWindows, createWindow  } from './helpers/sunnyRoom.js';
 import { closeDoor, startStatueRotation, animateStatueRotation } from './helpers/animations.js';
 
 export const scene = new THREE.Scene();
@@ -95,9 +95,7 @@ createWallWithDoorHole(scene, floorWidth / 2, 0, floorWidth / 2, Math.PI, 0x1234
 createPainting(scene, -5, 2, -floorWidth / 2 + 0.1, 2, 3, 0.1, './assets/textures/151090.jpg');
 
 
-const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
-pointLight.position.set(0, 2, 0);
-scene.add(pointLight);
+
 
 
 const spotLight = new THREE.SpotLight(0xffffff, 1);
@@ -126,13 +124,17 @@ sunnyPointLight.position.set(floorWidth, 2, 0);
 sunnyPointLight.shadow.bias = -0.005;
 scene.add(sunnyPointLight);
 
-const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 50);
-sunnyPointLight2.position.set(floorWidth + 10, 2, 0);
-scene.add(sunnyPointLight2);
+// const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
+// pointLight.position.set(0, 2, 0);
+// scene.add(pointLight);
 
-const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 50);
-sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
-scene.add(sunnyPointLight3);
+// const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 50);
+// sunnyPointLight2.position.set(floorWidth + 10, 2, 0);
+// scene.add(sunnyPointLight2);
+
+// const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 50);
+// sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
+// scene.add(sunnyPointLight3);
 
 const sunnyFloorTexture = textureLoader.load('./assets/textures/red_sandstone_pavement_diff_1k.jpg');
 const sunnyFloorMaterial = new THREE.MeshPhongMaterial({ map: sunnyFloorTexture });
@@ -240,7 +242,7 @@ fbxLoader.load(
   './assets/models/chubbyAngel.fbx',
   (fbx) => {
     fbx.scale.set(0.15, 0.15, 0.15);
-    fbx.position.set(27, 0, 0);
+    fbx.position.set(30, 0, -3);
     models.push(fbx);
     fbx.traverse(function(node) {
       if (node.isMesh) {
@@ -275,24 +277,25 @@ gltfLoader.load(
   (error) => console.error(error)
 );
 
-fbxLoader.load(
-  './assets/models/StatuePot.fbx',
-  (fbx) => {
-    fbx.scale.set(0.05, 0.05, 0.05);
-    fbx.position.set(30, 0, 3.1);
-    models.push(fbx);
-    fbx.traverse(function(node) {
-      if (node.isMesh) {
-        node.castShadow = true;
-        node.material = material;
-      }
-    });
-    scene.add(fbx);
-  },
-  undefined, 
-  (error) => console.error(error)
-);
+let radius = 2;
+let position = new THREE.Vector3(49.5, 18, 0);
+let rotation = new THREE.Vector3(0, 0, Math.PI / 2); 
+let color = 0xff0000;
 
+let roseWindowtexture = new THREE.TextureLoader().load('./assets/textures/roseWindow2.jpg');
+const roseWindowmaterial = new THREE.MeshPhongMaterial({
+  map: roseWindowtexture,
+  transparent: true,
+  side: THREE.DoubleSide
+});
+
+let window1 = createCircularWindow(radius, position, rotation, color, roseWindowmaterial);
+scene.add(window1);
+
+position = new THREE.Vector3(30, 0.1, 0);
+rotation = new THREE.Vector3(0, Math.PI / 2, 0); 
+let window2 = createCircularWindow(radius, position, rotation, color, roseWindowmaterial);
+scene.add(window2);
 
 //---------------------Animate------------------
 

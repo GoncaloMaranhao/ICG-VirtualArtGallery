@@ -184,6 +184,23 @@ export function createGarden(scene, position, outerRadius, innerRadius, flowerCo
   );
 }
 
+export function createCircularWindow(radius, position, rotation, color, material) {
+  const geometry = new THREE.CylinderGeometry(radius, radius, 0.1, 64);
+  if (!material) {
+    material = new THREE.MeshPhongMaterial({ color: color, side: THREE.DoubleSide });
+  }
+
+  const circle = new THREE.Mesh(geometry, material);
+  circle.rotation.set(rotation.x, rotation.y, rotation.z);
+  circle.position.set(position.x, position.y, position.z);
+  circle.castShadow = true;
+  circle.receiveShadow = true;
+
+  return circle;
+}
+
+
+
 
 
 
