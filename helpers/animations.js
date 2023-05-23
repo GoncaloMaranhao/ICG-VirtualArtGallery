@@ -96,14 +96,16 @@ export function setStatue(object) {
   }
 }
 
-export function startStatueRotation() {
-  if (statue !== null) {
-      targetRotation = statue.rotation.y + Math.PI / 2;
+export function startStatueRotation(object) {
+  if (object !== null) {
+      targetRotation = object.rotation.y + Math.PI / 2;
+      statue = object; 
       isRotating = true;
   } else {
       isRPressed = true;
   }
 }
+
 
 export function animateStatueRotation() {
     if (isRotating && statue) {

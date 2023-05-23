@@ -1,6 +1,7 @@
 import * as THREE from '../threejs/three.module.js';
-import { camera, scene } from '../main.js';
+import { camera, scene, models } from '../main.js';
 import { openDoor, startStatueRotation } from './animations.js';
+import { Raycaster, Vector2 } from 'three';
 
 
 document.addEventListener('keydown', (event) => {
@@ -22,12 +23,22 @@ document.addEventListener('keydown', (event) => {
 
 
 export function initializeEventListener() {
+  const raycaster = new THREE.Raycaster();
+  const direction = new THREE.Vector2(0, 0);
+
   window.addEventListener('keydown', function (event) {
-      if (event.key === 'r') {
-          startStatueRotation();
+    if (event.key === 'r') {
+      raycaster.setFromCamera(direction, camera);
+
+      const intersects = raycaster.intersectObjects(models, true);
+
+      if (intersects.length > 0 && intersects[0].distance < 5) {
+        startStatueRotation(intersects[0].object);
       }
+    }
   });
 }
+
 
 /* Cube rotation
     document.addEventListener('keydown', (event) => {

@@ -1,13 +1,14 @@
 import * as THREE from './threejs/three.module.js';
 import { FBXLoader } from './threejs/FBXLoader.js';
 import { GLTFLoader } from '/threejs/GLTFLoader.js';
+import { DRACOLoader } from './threejs//DRACOLoader.js';
 import './helpers/eventListeners.js';
 import { initializeEventListener } from './helpers/eventListeners.js';
 import { initializePlayerMovement, updatePosition } from './helpers/playerMovement.js';
 import { createWallWithDoorHole, createCeiling, 
          createDoor, createPainting, createFloor} from './helpers/entranceRoom.js';
 import { createGarden, createSunnyRoom, createWallWithTwoWindows, createWindow  } from './helpers/sunnyRoom.js';
-import { closeDoor, setStatue, startStatueRotation, animateStatueRotation } from './helpers/animations.js';
+import { closeDoor, startStatueRotation, animateStatueRotation } from './helpers/animations.js';
 
 export const scene = new THREE.Scene();
 
@@ -22,9 +23,19 @@ camera.position.y = 1.7;
 
 initializePlayerMovement(camera, renderer);
 
-initializeEventListener();
+initializeEventListener(camera, startStatueRotation);
 
 const textureLoader = new THREE.TextureLoader();
+
+const texture = textureLoader.load('assets/textures/Statue_Remeshed_Diffuse1K.png');
+const material = new THREE.MeshPhongMaterial({ map: texture });
+
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath('./threejs/draco/draco/');
+
+const fbxLoader = new FBXLoader();
+const gltfLoader = new GLTFLoader();
+gltfLoader.setDRACOLoader(dracoLoader);
 
 
 
@@ -204,17 +215,14 @@ const gardenPosition = { x: 30, y: 0.5, z: 0 };
 createGarden(scene, gardenPosition, 8, 4, 100, 0.1, Math.PI / 2);
 
 
-const texture = textureLoader.load('assets/textures/Statue_Remeshed_Diffuse1K.png');
-const material = new THREE.MeshPhongMaterial({ map: texture });
+export let models = [];
 
-const loader = new FBXLoader();
-
-let statue;
-loader.load(
+fbxLoader.load(
   './assets/models/StatuePot.fbx',
   (fbx) => {
     fbx.scale.set(0.05, 0.05, 0.05);
     fbx.position.set(30, 0, 3.1);
+    models.push(fbx);
     fbx.traverse(function(node) {
       if (node.isMesh) {
         node.castShadow = true;
@@ -222,34 +230,18 @@ loader.load(
       }
     });
     scene.add(fbx);
-    statue = fbx;
-    setStatue(fbx);
   },
   undefined, 
   (error) => console.error(error)
 );
 
-loader.load(
-  './assets/models/smiling_angel.fbx',
-  (fbx) => {
-    fbx.scale.set(0.01, 0.01, 0.01);
-    fbx.position.set(30, 0, -3.5);
-    fbx.traverse(function(node) {
-      if (node.isMesh) {
-        node.castShadow = true;
-      }
-    });
-    scene.add(fbx);
-  },
-  undefined, 
-  (error) => console.error(error)
-);
 
-loader.load(
+fbxLoader.load(
   './assets/models/chubbyAngel.fbx',
   (fbx) => {
-    fbx.scale.set(0.1, 0.1, 0.1);
+    fbx.scale.set(0.15, 0.15, 0.15);
     fbx.position.set(27, 0, 0);
+    models.push(fbx);
     fbx.traverse(function(node) {
       if (node.isMesh) {
         node.castShadow = true;
@@ -261,21 +253,28 @@ loader.load(
   (error) => console.error(error)
 );
 
-loader.load(
-  './assets/models/crossStatue.fbx',
-  (fbx) => {
-    fbx.scale.set(0.5, 0.5, 0.5);
-    fbx.position.set(33, -2, 0);
-    fbx.traverse(function(node) {
+gltfLoader.load(
+  './assets/models/ScholarStatue.glb',
+  (gltf) => {
+    const model = gltf.scene;
+
+    model.scale.set(0.002, 0.002, 0.002);
+    model.position.set(33, 0, 0);
+
+    models.push(model);
+
+    model.traverse(function(node) {
       if (node.isMesh) {
         node.castShadow = true;
       }
     });
-    scene.add(fbx);
+
+    scene.add(model);
   },
   undefined, 
   (error) => console.error(error)
 );
+
 
 //---------------------Animate------------------
 
