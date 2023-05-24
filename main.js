@@ -60,16 +60,23 @@ scene.add(floor);
 const doorWidth = 1.75;
 const doorHeight = 2.5;
 const doorDepth = 0.2;
-// left door
-createDoor(scene, -floorWidth / 2, 0.13, 0, Math.PI / 2, 
+
+const leftDoor = createDoor(scene, -floorWidth / 2, 0.13, 0, Math.PI / 2, 
           darkWoodMaterial, doorWidth, doorHeight, doorDepth); 
-// right door
+          leftDoor.boundingBox = new THREE.Box3().setFromObject(leftDoor);
+          collidableObjects.push(leftDoor);
+
 export let sunnyRoomDoor;
 sunnyRoomDoor = createDoor(scene, floorWidth / 2,    0.13, 0, -Math.PI / 2, 
-          darkWoodMaterial, doorWidth, doorHeight, doorDepth); 
-// front door
-createDoor(scene, 0, 0.13, -floorWidth / 2, 0, 
-          darkWoodMaterial, doorWidth, doorHeight, doorDepth); 
+          darkWoodMaterial, doorWidth, doorHeight, doorDepth);
+          sunnyRoomDoor.boundingBox = new THREE.Box3().setFromObject(sunnyRoomDoor);
+          collidableObjects.push(sunnyRoomDoor);;
+
+
+const frontDoor = createDoor(scene, 0, 0.13, -floorWidth / 2, 0, 
+          darkWoodMaterial, doorWidth, doorHeight, doorDepth);
+
+
           
 const ceilingPositionY = 7;
 const ceilingWidth = floorWidth / 2;
@@ -90,10 +97,12 @@ leftWallBounds.forEach(bounds => collidableObjects.push(bounds));
 
 const rightWallBounds = createRotatedWallWithDoorHole(scene, floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x0000ff,
                        floorWidth, ceilingPositionY + 19.1, 0.1, doorWidth * 2, doorHeight + 0.1);
-                       rightWallBounds.forEach(bounds => collidableObjects.push(bounds));
+rightWallBounds.forEach(bounds => collidableObjects.push(bounds));
+
 // back wall, no hole
 createWallWithDoorHole(scene, floorWidth / 2, 0, floorWidth / 2, Math.PI, 0x123456,
                        floorWidth, ceilingPositionY, 0.1, 0, 0);
+
 
 const spotLight = new THREE.SpotLight(0xffffff, 1);
 spotLight.position.set(0, ceilingHeight + 10, 0);

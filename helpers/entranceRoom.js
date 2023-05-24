@@ -71,11 +71,13 @@ export function createWallWithDoorHole(scene, x, y, z, rotationY, color, width, 
 
   const rotationMatrix = new THREE.Matrix4().makeRotationY(rotationY);
 
+  // Rotate bounding boxes to match the wall's rotation
   leftWallBounds.min.applyMatrix4(rotationMatrix);
   leftWallBounds.max.applyMatrix4(rotationMatrix);
   rightWallBounds.min.applyMatrix4(rotationMatrix);
   rightWallBounds.max.applyMatrix4(rotationMatrix);
 
+  // Translate bounding boxes to the wall's position
   leftWallBounds.translate(new THREE.Vector3(x, 0, 0));
   rightWallBounds.translate(new THREE.Vector3(x, 0, 0));
 
@@ -88,6 +90,11 @@ export function createWallWithDoorHole(scene, x, y, z, rotationY, color, width, 
   return wallBounds;
 }
 
+// This function is basically the same as before but I need to do another one because of collision.
+// The problem is that THREE.Box3 doesn't support "normal" rotation, which means I can't match the rotation «
+// of the left and right wall (that are made in main.js) by rotating the bounding boxes.
+// This function is to create the left and right door (in main.js) and support their collision with the same logic as the previous function.
+// I didn't find a better way to do this, but this is not very elegant.
 export function createRotatedWallWithDoorHole(scene, x, y, z, rotationY, color, width, height, depth, doorWidth, doorHeight) {
   const wallMaterial = new THREE.MeshLambertMaterial({ color: color });
 
@@ -126,11 +133,10 @@ export function createRotatedWallWithDoorHole(scene, x, y, z, rotationY, color, 
   const leftWallBounds = new THREE.Box3(new THREE.Vector3(0, 0, 0), new THREE.Vector3((width - doorWidth) / 2, height, depth));
   const rightWallBounds = new THREE.Box3(new THREE.Vector3((width + doorWidth) / 2, 0, 0), new THREE.Vector3(width, height, depth));
 
-  // Rotate bounding boxes to match the wall's rotation
+
   leftWallBounds.applyMatrix4(new THREE.Matrix4().makeRotationY(rotationY));
   rightWallBounds.applyMatrix4(new THREE.Matrix4().makeRotationY(rotationY));
 
-  // Translate bounding boxes to the wall's position
   leftWallBounds.translate(new THREE.Vector3(x, y, z));
   rightWallBounds.translate(new THREE.Vector3(x, y, z));
 
@@ -142,7 +148,6 @@ export function createRotatedWallWithDoorHole(scene, x, y, z, rotationY, color, 
 
   return wallBounds;
 }
-
 
 export function createCeiling(scene, x, y, z, material, width, height, depth) {
   const geometry = new THREE.BoxGeometry(width, height, depth);

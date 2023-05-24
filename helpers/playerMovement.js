@@ -84,11 +84,20 @@ export function checkCollision(position, direction) {
   const tempBox = playerBox.clone();
   tempBox.translate(direction.clone().multiplyScalar(speed));
 
-  for (let bounds of collidableObjects) {
+  for (let obj of collidableObjects) {
+      let bounds = obj;
+      if ('isDoor' in obj && obj.isDoor) { // Check if object is a door
+          if (obj.isClosed) { // Only check for collisions if door is closed
+              bounds = obj.boundingBox;
+          } else {
+              continue; // Skip this iteration if door is open
+          }
+      }
       if (boxIntersect(tempBox, bounds)) {
           return true;
       }
   }
   return false;
 }
+
 

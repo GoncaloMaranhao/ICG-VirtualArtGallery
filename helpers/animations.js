@@ -10,37 +10,44 @@ export function openDoor(doorGroup) {
   const initialLeftRotation = isOpen ? -Math.PI / 2 : 0;
   const initialRightRotation = isOpen ? Math.PI / 2 : 0;
 
-    function animateDoor() {
+  function animateDoor() {
 
-      const elapsed = performance.now() - startTime;
-      const progress = elapsed / animationDuration;
-
-      if (progress < 1) {
-        doorGroup.isClosed = false;
-        if (isOpen) {
-          leftDoorPivot.rotation.y = initialLeftRotation + progress * Math.PI / 2;
-          rightDoorPivot.rotation.y = initialRightRotation - progress * Math.PI / 2;
-        } else {
-          leftDoorPivot.rotation.y = initialLeftRotation - progress * Math.PI / 2;
-          rightDoorPivot.rotation.y = initialRightRotation + progress * Math.PI / 2;
-        }
-        requestAnimationFrame(animateDoor);
-
+    const elapsed = performance.now() - startTime;
+    const progress = elapsed / animationDuration;
+  
+    if (progress < 1) {
+      doorGroup.isClosed = false;
+      if (isOpen) {
+        leftDoorPivot.rotation.y = initialLeftRotation + progress * Math.PI / 2;
+        rightDoorPivot.rotation.y = initialRightRotation - progress * Math.PI / 2;
       } else {
-        if (isOpen) {
-          leftDoorPivot.rotation.y = 0;
-          rightDoorPivot.rotation.y = 0;
-        } else {
-          leftDoorPivot.rotation.y = -Math.PI / 2;
-          rightDoorPivot.rotation.y = Math.PI / 2;
-        }
+        leftDoorPivot.rotation.y = initialLeftRotation - progress * Math.PI / 2;
+        rightDoorPivot.rotation.y = initialRightRotation + progress * Math.PI / 2;
       }
+      // Update the bounding box
+      doorGroup.boundingBox.setFromObject(doorGroup);
+  
+      requestAnimationFrame(animateDoor);
+    } else {
+      if (isOpen) {
+        leftDoorPivot.rotation.y = 0;
+        rightDoorPivot.rotation.y = 0;
+      } else {
+        leftDoorPivot.rotation.y = -Math.PI / 2;
+        rightDoorPivot.rotation.y = Math.PI / 2;
+      }
+      doorGroup.isClosed = !isOpen; // Update door closed status
+      // Update the bounding box
+      doorGroup.boundingBox.setFromObject(doorGroup);
     }
+  }
 
   animateDoor();
   requestAnimationFrame(animateDoor);
 }
 
+// I need to make another similar function to the one before so that the door automatically 
+// closes when the player entere the sunny room
 export function closeDoor(doorGroup) {
   if(!doorGroup || doorGroup.isClosed) return;
   const leftDoorPivot = doorGroup.children[0];
