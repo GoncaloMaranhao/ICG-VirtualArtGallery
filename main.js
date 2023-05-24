@@ -412,9 +412,9 @@ const room2Bounds = new THREE.Box3(new THREE.Vector3(-70, -15, -90), new THREE.V
 
 const restrictedZones = [room1Bounds, room2Bounds];
 
-const stars = generateStars(100, restrictedZones);
+const stars = generateStars(1000, restrictedZones);
 scene.add(stars);
-const planets = generatePlanets(10, restrictedZones);
+const planets = generatePlanets(100, restrictedZones);
 scene.add(planets);
 
 const sun = generateSun(restrictedZones);
