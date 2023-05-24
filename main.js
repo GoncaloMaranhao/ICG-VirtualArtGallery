@@ -253,41 +253,41 @@ positionPainting.y = positionPaintingY + 8;
 positionPainting.z = positionPaintingZ - 4;
 createPainting(scene, positionPainting, rotationPaintingVertical, 10, 9, 0.1, './assets/textures/151090.jpg');
 
-// //Left wall
-// positionPainting.x = positionPaintingX + 6;
-// positionPainting.y = positionPaintingY + 1;
-// positionPainting.z = positionPaintingZ - 15.1;
-// createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 4, 6, 0.1, './assets/textures/151090.jpg');
-// positionPainting.x = positionPaintingX + 13;
-// createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 4, 6, 0.1, './assets/textures/151090.jpg');
-// positionPainting.x = positionPaintingX + 21;
-// createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 4, 6, 0.1, './assets/textures/151090.jpg');
-// positionPainting.x = positionPaintingX + 30;
-// createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 4, 6, 0.1, './assets/textures/151090.jpg');
+//Left wall
+positionPainting.x = positionPaintingX + 6;
+positionPainting.y = positionPaintingY + 1;
+positionPainting.z = positionPaintingZ - 15.1;
+createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 4, 6, 0.1, './assets/textures/151090.jpg');
+positionPainting.x = positionPaintingX + 13;
+createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 4, 6, 0.1, './assets/textures/151090.jpg');
+positionPainting.x = positionPaintingX + 21;
+createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 4, 6, 0.1, './assets/textures/151090.jpg');
+positionPainting.x = positionPaintingX + 30;
+createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 4, 6, 0.1, './assets/textures/151090.jpg');
 
-// //Right Wall
-// positionPainting.x = positionPaintingX + 6;
-// positionPainting.y = positionPaintingY + 1;
-// positionPainting.z = positionPaintingZ + 8.15;
-// createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 4, 6, 0.1, './assets/textures/151090.jpg');
-// positionPainting.x = positionPaintingX + 13;
-// createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 4, 6, 0.1, './assets/textures/151090.jpg');
-// positionPainting.x = positionPaintingX + 21;
-// createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 4, 6, 0.1, './assets/textures/151090.jpg');
-// positionPainting.x = positionPaintingX + 30;
-// createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 4, 6, 0.1, './assets/textures/151090.jpg');
+//Right Wall
+positionPainting.x = positionPaintingX + 6;
+positionPainting.y = positionPaintingY + 1;
+positionPainting.z = positionPaintingZ + 8.15;
+createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 4, 6, 0.1, './assets/textures/151090.jpg');
+positionPainting.x = positionPaintingX + 13;
+createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 4, 6, 0.1, './assets/textures/151090.jpg');
+positionPainting.x = positionPaintingX + 21;
+createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 4, 6, 0.1, './assets/textures/151090.jpg');
+positionPainting.x = positionPaintingX + 30;
+createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 4, 6, 0.1, './assets/textures/151090.jpg');
 
-// //Front wall
-// positionPainting.x = positionPaintingX + 36.6;
-// positionPainting.y = positionPaintingY + 1;
-// positionPainting.z = positionPaintingZ + 5;
-// createPainting(scene, positionPainting, rotationPaintingVerticalInverse, 3, 4, 0.1, './assets/textures/151090.jpg');
-// positionPainting.z = positionPaintingZ;
-// createPainting(scene, positionPainting, rotationPaintingVerticalInverse, 3, 4, 0.1, './assets/textures/151090.jpg');
-// positionPainting.z = positionPaintingZ -5;
-// createPainting(scene, positionPainting, rotationPaintingVerticalInverse, 3, 4, 0.1, './assets/textures/151090.jpg');
-// positionPainting.z = positionPaintingZ -10;
-// createPainting(scene, positionPainting, rotationPaintingVerticalInverse, 3, 4, 0.1, './assets/textures/151090.jpg');
+//Front wall
+positionPainting.x = positionPaintingX + 36.6;
+positionPainting.y = positionPaintingY + 1;
+positionPainting.z = positionPaintingZ + 5;
+createPainting(scene, positionPainting, rotationPaintingVerticalInverse, 3, 4, 0.1, './assets/textures/151090.jpg');
+positionPainting.z = positionPaintingZ;
+createPainting(scene, positionPainting, rotationPaintingVerticalInverse, 3, 4, 0.1, './assets/textures/151090.jpg');
+positionPainting.z = positionPaintingZ -5;
+createPainting(scene, positionPainting, rotationPaintingVerticalInverse, 3, 4, 0.1, './assets/textures/151090.jpg');
+positionPainting.z = positionPaintingZ -10;
+createPainting(scene, positionPainting, rotationPaintingVerticalInverse, 3, 4, 0.1, './assets/textures/151090.jpg');
 
 
 //---------------------------_SunnyRoomLight_--------------------------------
@@ -368,44 +368,44 @@ fbxLoader.load(
   (error) => console.error(error)
 );
 
-// fbxLoader.load(
-//   './assets/models/chubbyAngel.fbx',
-//   (fbx) => {
-//     fbx.scale.set(0.15, 0.15, 0.15);
-//     fbx.position.set(30, 0, -3);
-//     models.push(fbx);
-//     fbx.traverse(function(node) {
-//       if (node.isMesh) {
-//         node.castShadow = true;
-//       }
-//     });
-//     scene.add(fbx);
-//   },
-//   undefined, 
-//   (error) => console.error(error)
-// );
+fbxLoader.load(
+  './assets/models/chubbyAngel.fbx',
+  (fbx) => {
+    fbx.scale.set(0.15, 0.15, 0.15);
+    fbx.position.set(30, 0, -3);
+    models.push(fbx);
+    fbx.traverse(function(node) {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(fbx);
+  },
+  undefined, 
+  (error) => console.error(error)
+);
 
-// gltfLoader.load(
-//   './assets/models/ScholarStatue.glb',
-//   (gltf) => {
-//     const model = gltf.scene;
+gltfLoader.load(
+  './assets/models/ScholarStatue.glb',
+  (gltf) => {
+    const model = gltf.scene;
 
-//     model.scale.set(0.002, 0.002, 0.002);
-//     model.position.set(33, 0, 0);
+    model.scale.set(0.002, 0.002, 0.002);
+    model.position.set(33, 0, 0);
 
-//     models.push(model);
+    models.push(model);
 
-//     model.traverse(function(node) {
-//       if (node.isMesh) {
-//         node.castShadow = true;
-//       }
-//     });
+    model.traverse(function(node) {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
 
-//     scene.add(model);
-//   },
-//   undefined, 
-//   (error) => console.error(error)
-// );
+    scene.add(model);
+  },
+  undefined, 
+  (error) => console.error(error)
+);
 
 //---------------------Animate------------------
 
