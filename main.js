@@ -3,7 +3,7 @@ import { FBXLoader } from './threejs/FBXLoader.js';
 import { GLTFLoader } from './threejs/GLTFLoader.js';
 import { DRACOLoader } from './threejs//DRACOLoader.js';
 import './helpers/eventListeners.js';
-import { generateStars, generatePlanets } from './helpers/darkRoom.js';
+import { generateStars, generatePlanets, generateSun, animatePlanets } from './helpers/darkRoom.js';
 import { initializeEventListener } from './helpers/eventListeners.js';
 import { initializePlayerMovement, updatePosition } from './helpers/playerMovement.js';
 import { createWallWithDoorHole, createCeiling, 
@@ -407,8 +407,8 @@ fbxLoader.load(
 
 //---------------------_Dark Room_----------------------------
 
-const room1Bounds = new THREE.Box3(new THREE.Vector3(-40, -15, -30), new THREE.Vector3(20, 30, 30));
-const room2Bounds = new THREE.Box3(new THREE.Vector3(-40, -15, -60), new THREE.Vector3(50, 80, 60));
+const room1Bounds = new THREE.Box3(new THREE.Vector3(-70, -35, -50), new THREE.Vector3(70, 55, 50));
+const room2Bounds = new THREE.Box3(new THREE.Vector3(-70, -15, -90), new THREE.Vector3(70, 80, 90));
 
 const restrictedZones = [room1Bounds, room2Bounds];
 
@@ -417,9 +417,13 @@ scene.add(stars);
 const planets = generatePlanets(100, restrictedZones);
 scene.add(planets);
 
-const pointLight4 = new THREE.PointLight(0xffffff, 1.0, 1000);
-pointLight4.position.set(-50, 2, 0);
-scene.add(pointLight4);
+const sun = generateSun(restrictedZones);
+scene.add(sun);
+
+
+// const pointLight4 = new THREE.PointLight(0xffffff, 1.0, 1000);
+// pointLight4.position.set(-50, 2, 0);
+// scene.add(pointLight4);
 
 // const cubeGeometry = new THREE.BoxGeometry(10, 10, 10);
 // const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
@@ -434,6 +438,7 @@ scene.add(pointLight4);
 function animate() {
   requestAnimationFrame(animate);
   animateStatueRotation();
+  animatePlanets(planets, sun);  // Add this line
 
   if (isInsideSunnyRoom(camera, sunnyRoomBoundary)) {
       if(spotLightSunnyRoom3.intensity === 0) {
@@ -451,7 +456,7 @@ function animate() {
   renderer.render(scene, camera);
 }
 
-
 animate();
+
 
 

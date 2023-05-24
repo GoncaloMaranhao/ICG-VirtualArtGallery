@@ -45,11 +45,11 @@ export function generatePlanets(numPlanets, restrictedZones) {
 
     for(let i = 0; i < numPlanets; i++) {
         const radius = THREE.MathUtils.randFloat(10, 50);
-        const color = new THREE.Color(Math.random() * 0xffffff);
+        const color = new THREE.Color(Math.random() * 0x11111);
 
         const geometry = new THREE.SphereGeometry(radius, 64, 64);
 
-        const texturePath = 'path_to_your_texture.png';  // Update path
+        const texturePath = '../assets/textures/castle_brick_07_diff_1k.jpg';  // Update path
         const bumpMapPath = 'path_to_your_bump_map.png'; // Update path
         const texture = texturePath ? textureLoader.load(texturePath) : null;
         const bumpMap = bumpMapPath ? textureLoader.load(bumpMapPath) : null;
@@ -100,4 +100,44 @@ export function generatePlanets(numPlanets, restrictedZones) {
     return planets;
 }
 
+export function generateSun(restrictedZones) {
+    const radius = 200; // Adjust size as needed
+    const texturePath = '../assets/textures/castle_brick_07_diff_1k.jpg';  // Update path
+    const glowTexturePath = 'plank_flooring_02_diff_1k.jpg'; // Update path
 
+    // Create the Sun sphere
+    const geometry = new THREE.SphereGeometry(radius, 64, 64);
+    const texture = texturePath ? textureLoader.load(texturePath) : null;
+    const material = new THREE.MeshBasicMaterial({
+        map: texture,
+        color: 0xffffff,
+    });
+    const sun = new THREE.Mesh(geometry, material);
+
+    const position = generatePosition(restrictedZones);
+    sun.position.copy(position);
+
+
+    const spriteMaterial = new THREE.SpriteMaterial({
+        map: new THREE.TextureLoader().load(glowTexturePath),
+        color: 0xffffee,
+        transparent: false,
+        blending: THREE.AdditiveBlending
+    });
+
+    const sprite = new THREE.Sprite(spriteMaterial);
+    sprite.scale.set(radius*2, radius*2, 1.0);
+    sun.add(sprite); 
+
+    return sun;
+}
+
+export function animatePlanets(planets, sun) {
+    planets.children.forEach((planet) => {
+        // Calculate axis from planet to sun
+        const axis = new THREE.Vector3().subVectors(sun.position, planet.position).normalize();
+
+        // Apply rotation around axis
+        planet.rotateOnAxis(axis, planet.rotationSpeed);
+    });
+}
