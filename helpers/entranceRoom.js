@@ -66,8 +66,18 @@ export function createWallWithDoorHole(scene, x, y, z, rotationY, color, width, 
   // otherwise even when the door is open I can't go through because the wall itself has collision
   const wallBounds = [];
 
-  const leftWallBounds = new THREE.Box3(new THREE.Vector3(x, y, z), new THREE.Vector3(x + (width - doorWidth) / 2, y + height, z + depth));
-  const rightWallBounds = new THREE.Box3(new THREE.Vector3(x + (width + doorWidth) / 2, y, z), new THREE.Vector3(x + width, y + height, z + depth));
+  const leftWallBounds = new THREE.Box3(new THREE.Vector3(0, y, z), new THREE.Vector3((width - doorWidth) / 2, y + height, z + depth));
+  const rightWallBounds = new THREE.Box3(new THREE.Vector3((width + doorWidth) / 2, y, z), new THREE.Vector3(width, y + height, z + depth));
+
+  const rotationMatrix = new THREE.Matrix4().makeRotationY(rotationY);
+
+  leftWallBounds.min.applyMatrix4(rotationMatrix);
+  leftWallBounds.max.applyMatrix4(rotationMatrix);
+  rightWallBounds.min.applyMatrix4(rotationMatrix);
+  rightWallBounds.max.applyMatrix4(rotationMatrix);
+
+  leftWallBounds.translate(new THREE.Vector3(x, 0, 0));
+  rightWallBounds.translate(new THREE.Vector3(x, 0, 0));
 
   createBoundingBoxWireframe(scene, leftWallBounds);
   createBoundingBoxWireframe(scene, rightWallBounds);
@@ -77,6 +87,62 @@ export function createWallWithDoorHole(scene, x, y, z, rotationY, color, width, 
 
   return wallBounds;
 }
+
+export function createRotatedWallWithDoorHole(scene, x, y, z, rotationY, color, width, height, depth, doorWidth, doorHeight) {
+  const wallMaterial = new THREE.MeshLambertMaterial({ color: color });
+
+  const wallShape = new THREE.Shape();
+  wallShape.moveTo(0, 0);
+  wallShape.lineTo(0, height);
+  wallShape.lineTo(width, height);
+  wallShape.lineTo(width, 0);
+  wallShape.lineTo(0, 0);
+
+  const doorHoleShape = new THREE.Path();
+  const doorHoleX = (width - doorWidth) / 2;
+  const doorHoleY = 0;
+  doorHoleShape.moveTo(doorHoleX, doorHoleY);
+  doorHoleShape.lineTo(doorHoleX, doorHoleY + doorHeight);
+  doorHoleShape.lineTo(doorHoleX + doorWidth, doorHoleY + doorHeight);
+  doorHoleShape.lineTo(doorHoleX + doorWidth, doorHoleY);
+  doorHoleShape.lineTo(doorHoleX, doorHoleY);
+
+  wallShape.holes.push(doorHoleShape);
+
+  const geometry = new THREE.ExtrudeGeometry(wallShape, {
+    depth: depth,
+    bevelEnabled: false,
+  });
+
+  const wall = new THREE.Mesh(geometry, wallMaterial);
+  wall.position.set(x, y, z);
+  wall.rotation.y = rotationY;
+  wall.castShadow = true;
+  wall.receiveShadow = true;
+  scene.add(wall);
+
+  const wallBounds = [];
+
+  const leftWallBounds = new THREE.Box3(new THREE.Vector3(0, 0, 0), new THREE.Vector3((width - doorWidth) / 2, height, depth));
+  const rightWallBounds = new THREE.Box3(new THREE.Vector3((width + doorWidth) / 2, 0, 0), new THREE.Vector3(width, height, depth));
+
+  // Rotate bounding boxes to match the wall's rotation
+  leftWallBounds.applyMatrix4(new THREE.Matrix4().makeRotationY(rotationY));
+  rightWallBounds.applyMatrix4(new THREE.Matrix4().makeRotationY(rotationY));
+
+  // Translate bounding boxes to the wall's position
+  leftWallBounds.translate(new THREE.Vector3(x, y, z));
+  rightWallBounds.translate(new THREE.Vector3(x, y, z));
+
+  createBoundingBoxWireframe(scene, leftWallBounds);
+  createBoundingBoxWireframe(scene, rightWallBounds);
+
+  wallBounds.push(leftWallBounds);
+  wallBounds.push(rightWallBounds);
+
+  return wallBounds;
+}
+
 
 export function createCeiling(scene, x, y, z, material, width, height, depth) {
   const geometry = new THREE.BoxGeometry(width, height, depth);
