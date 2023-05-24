@@ -79,6 +79,8 @@ function boxIntersect(box1, box2) {
          box1.min.z <= box2.max.z && box1.max.z >= box2.min.z;
 }
 
+// in playerMovement.js
+
 export function checkCollision(position, direction) {
   const speed = 0.1;
   const tempBox = playerBox.clone();
@@ -87,10 +89,10 @@ export function checkCollision(position, direction) {
   for (let obj of collidableObjects) {
       let bounds = obj;
       if ('isDoor' in obj && obj.isDoor) { // Check if object is a door
-          if (obj.isClosed) { // Only check for collisions if door is closed
+          if (!obj.isClosed) { // Only check for collisions if door is open
               bounds = obj.boundingBox;
           } else {
-              continue; // Skip this iteration if door is open
+              continue; // Skip this iteration if door is closed
           }
       }
       if (boxIntersect(tempBox, bounds)) {
@@ -99,5 +101,7 @@ export function checkCollision(position, direction) {
   }
   return false;
 }
+
+
 
 
