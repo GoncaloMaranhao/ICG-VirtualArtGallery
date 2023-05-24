@@ -90,7 +90,7 @@ leftWallBounds.forEach(bounds => collidableObjects.push(bounds));
 
 const rightWallBounds = createRotatedWallWithDoorHole(scene, floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x0000ff,
                        floorWidth, ceilingPositionY + 19.1, 0.1, doorWidth * 2, doorHeight + 0.1);
-frontWallBounds.forEach(bounds => collidableObjects.push(bounds));
+                       rightWallBounds.forEach(bounds => collidableObjects.push(bounds));
 // back wall, no hole
 createWallWithDoorHole(scene, floorWidth / 2, 0, floorWidth / 2, Math.PI, 0x123456,
                        floorWidth, ceilingPositionY, 0.1, 0, 0);
