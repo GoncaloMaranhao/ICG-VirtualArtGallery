@@ -3,6 +3,7 @@ import { FBXLoader } from './threejs/FBXLoader.js';
 import { GLTFLoader } from './threejs/GLTFLoader.js';
 import { DRACOLoader } from './threejs//DRACOLoader.js';
 import './helpers/eventListeners.js';
+import { generateStars, generatePlanets } from './helpers/darkRoom.js';
 import { initializeEventListener } from './helpers/eventListeners.js';
 import { initializePlayerMovement, updatePosition } from './helpers/playerMovement.js';
 import { createWallWithDoorHole, createCeiling, 
@@ -341,12 +342,6 @@ window.addEventListener('statueFacingCorrectDirection', function (event) {
   }
 });
 
-// const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-// const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0xffff00 });
-// const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-// cube.position.set(13, ceilingPositionY + 2, 0);
-// cube.castShadow = true;
-// scene.add(cube);
 
 const gardenPosition = { x: 30, y: 0.5, z: 0 };
 createGarden(scene, gardenPosition, 8, 4, 100, 0.1, Math.PI / 2);
@@ -371,44 +366,67 @@ fbxLoader.load(
   (error) => console.error(error)
 );
 
-fbxLoader.load(
-  './assets/models/chubbyAngel.fbx',
-  (fbx) => {
-    fbx.scale.set(0.15, 0.15, 0.15);
-    fbx.position.set(30, 0, -3);
-    models.push(fbx);
-    fbx.traverse(function(node) {
-      if (node.isMesh) {
-        node.castShadow = true;
-      }
-    });
-    scene.add(fbx);
-  },
-  undefined, 
-  (error) => console.error(error)
-);
+// fbxLoader.load(
+//   './assets/models/chubbyAngel.fbx',
+//   (fbx) => {
+//     fbx.scale.set(0.15, 0.15, 0.15);
+//     fbx.position.set(30, 0, -3);
+//     models.push(fbx);
+//     fbx.traverse(function(node) {
+//       if (node.isMesh) {
+//         node.castShadow = true;
+//       }
+//     });
+//     scene.add(fbx);
+//   },
+//   undefined, 
+//   (error) => console.error(error)
+// );
 
-gltfLoader.load(
-  './assets/models/ScholarStatue.glb',
-  (gltf) => {
-    const model = gltf.scene;
+// gltfLoader.load(
+//   './assets/models/ScholarStatue.glb',
+//   (gltf) => {
+//     const model = gltf.scene;
 
-    model.scale.set(0.002, 0.002, 0.002);
-    model.position.set(33, 0, 0);
+//     model.scale.set(0.002, 0.002, 0.002);
+//     model.position.set(33, 0, 0);
 
-    models.push(model);
+//     models.push(model);
 
-    model.traverse(function(node) {
-      if (node.isMesh) {
-        node.castShadow = true;
-      }
-    });
+//     model.traverse(function(node) {
+//       if (node.isMesh) {
+//         node.castShadow = true;
+//       }
+//     });
 
-    scene.add(model);
-  },
-  undefined, 
-  (error) => console.error(error)
-);
+//     scene.add(model);
+//   },
+//   undefined, 
+//   (error) => console.error(error)
+// );
+
+//---------------------_Dark Room_----------------------------
+
+const room1Bounds = new THREE.Box3(new THREE.Vector3(-40, -15, -30), new THREE.Vector3(20, 30, 30));
+const room2Bounds = new THREE.Box3(new THREE.Vector3(-40, -15, -60), new THREE.Vector3(50, 80, 60));
+
+const restrictedZones = [room1Bounds, room2Bounds];
+
+const stars = generateStars(1000, restrictedZones);
+scene.add(stars);
+const planets = generatePlanets(100, restrictedZones);
+scene.add(planets);
+
+const pointLight4 = new THREE.PointLight(0xffffff, 1.0, 1000);
+pointLight4.position.set(-50, 2, 0);
+scene.add(pointLight4);
+
+// const cubeGeometry = new THREE.BoxGeometry(10, 10, 10);
+// const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
+// const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+// cube.position.set(-5, 1, 0);
+// cube.castShadow = true;
+// scene.add(cube);
 
 //---------------------Animate------------------
 
