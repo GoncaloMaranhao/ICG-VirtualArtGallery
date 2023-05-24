@@ -70,7 +70,7 @@ export let sunnyRoomDoor;
 sunnyRoomDoor = createDoor(scene, floorWidth / 2,    0.13, 0, -Math.PI / 2, 
           darkWoodMaterial, doorWidth, doorHeight, doorDepth);
           sunnyRoomDoor.boundingBox = new THREE.Box3().setFromObject(sunnyRoomDoor);
-          collidableObjects.push(sunnyRoomDoor);;
+          collidableObjects.push(sunnyRoomDoor);
 
 
 const frontDoor = createDoor(scene, 0, 0.13, -floorWidth / 2, 0, 
@@ -310,7 +310,8 @@ spotLightSunnyRoom3.castShadow = true;
 spotLightSunnyRoom3.shadow.bias = -0.001;
 scene.add(spotLightSunnyRoom3);
 
-const sunnyRoomBoundary = new THREE.Box3(
+export let sunnyRoomBoundary;
+sunnyRoomBoundary = new THREE.Box3(
   new THREE.Vector3(sunnyFloorWidth/2, 0, sunnyFloorDepth / 2),
   new THREE.Vector3(sunnyFloorWidth * 1.5, sunnyRoomHeight / 2, sunnyFloorDepth* 1.5)
 );
@@ -319,10 +320,12 @@ let translationVector = new THREE.Vector3(-5, 0.1, -25);
 sunnyRoomBoundary.min.add(translationVector);
 sunnyRoomBoundary.max.add(translationVector);
 
+
+
 const sunnyRoomBoundaryHelper = new THREE.Box3Helper(sunnyRoomBoundary, 0xff0000);
 scene.add(sunnyRoomBoundaryHelper);
 
-function isInsideSunnyRoom(camera, boundary) {
+export function isInsideSunnyRoom(camera, boundary) {
   const cameraPosition = camera.position;
   return boundary.containsPoint(cameraPosition);
 }

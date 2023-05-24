@@ -43,9 +43,6 @@ export function openDoor(doorGroup) {
   requestAnimationFrame(animateDoor);
 }
 
-
-// if (doorGroup.isAnimating) return;
-
 // I need to make another similar function to the one before so that the door automatically 
 // closes when the player entere the sunny room
 // I have no idea why the previous function doesn't work for this
