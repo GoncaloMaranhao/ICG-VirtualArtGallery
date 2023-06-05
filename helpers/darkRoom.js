@@ -18,6 +18,24 @@ function generatePosition(restrictedZones) {
     }
 }
 
+function generatePositionForStars(restrictedZones) {
+    while (true) {
+        const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(1000));
+        const position = new THREE.Vector3(x, y, z);
+
+        let isInRestrictedZone = false;
+        for (const zone of restrictedZones) {
+            if (zone.containsPoint(position)) {
+                isInRestrictedZone = true;
+                break;
+            }
+        }
+        if (!isInRestrictedZone) {
+            return position;
+        }
+    }
+}
+
 
 export function generateStars(numStars, restrictedZones) {
     const stars = new THREE.Group();
@@ -27,7 +45,7 @@ export function generateStars(numStars, restrictedZones) {
         const material = new THREE.MeshBasicMaterial({color: 0xffffff});
         const star = new THREE.Mesh(geometry, material);
 
-        const position = generatePosition(restrictedZones);
+        const position = generatePositionForStars(restrictedZones);
 
         star.position.copy(position);
         stars.add(star);
@@ -100,7 +118,7 @@ export function generatePlanets(numPlanets, restrictedZones) {
     return planets;
 }
 
-export function generateSun(restrictedZones) {
+export function generateSun() {
     const radius = 200; 
     const texturePath = '../assets/textures/castle_brick_07_diff_1k.jpg';  
     const glowTexturePath = 'plank_flooring_02_diff_1k.jpg'; 
@@ -113,7 +131,8 @@ export function generateSun(restrictedZones) {
     });
     const sun = new THREE.Mesh(geometry, material);
 
-    const position = generatePosition(restrictedZones);
+
+    const position = new THREE.Vector3(-1000, 405, 0); 
     sun.position.copy(position);
 
 
@@ -130,6 +149,7 @@ export function generateSun(restrictedZones) {
 
     return sun;
 }
+
 
 export function animatePlanets(planets, sun) {
     const center = sun.position;

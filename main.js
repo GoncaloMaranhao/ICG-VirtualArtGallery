@@ -39,6 +39,7 @@ const fbxLoader = new FBXLoader();
 const gltfLoader = new GLTFLoader();
 gltfLoader.setDRACOLoader(dracoLoader);
 
+//For collisions
 export let collidableObjects = [];
 
 //--------------------------_Entrance Room_----------------------
@@ -117,6 +118,8 @@ scene.add(spotLight);
 
 //--------------------------_Sunny Room_----------------------
 
+
+//----This pointLight are all to remove when the project is done
 const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 50);
 sunnyPointLight.castShadow = true;
 sunnyPointLight.receiveShadow = true;
@@ -135,6 +138,7 @@ scene.add(sunnyPointLight2);
 const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 50);
 sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
 scene.add(sunnyPointLight3);
+//----------------------------------------------------
 
 //---------------------_SunnyRoomStrucuture_----------------------
 
@@ -366,71 +370,77 @@ fbxLoader.load(
   (error) => console.error(error)
 );
 
-// fbxLoader.load(
-//   './assets/models/chubbyAngel.fbx',
-//   (fbx) => {
-//     fbx.scale.set(0.15, 0.15, 0.15);
-//     fbx.position.set(30, 0, -3);
-//     models.push(fbx);
-//     fbx.traverse(function(node) {
-//       if (node.isMesh) {
-//         node.castShadow = true;
-//       }
-//     });
-//     scene.add(fbx);
-//   },
-//   undefined, 
-//   (error) => console.error(error)
-// );
+fbxLoader.load(
+  './assets/models/chubbyAngel.fbx',
+  (fbx) => {
+    fbx.scale.set(0.15, 0.15, 0.15);
+    fbx.position.set(30, 0, -3);
+    models.push(fbx);
+    fbx.traverse(function(node) {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(fbx);
+  },
+  undefined, 
+  (error) => console.error(error)
+);
 
-// gltfLoader.load(
-//   './assets/models/ScholarStatue.glb',
-//   (gltf) => {
-//     const model = gltf.scene;
+gltfLoader.load(
+  './assets/models/ScholarStatue.glb',
+  (gltf) => {
+    const model = gltf.scene;
 
-//     model.scale.set(0.002, 0.002, 0.002);
-//     model.position.set(33, 0, 0);
+    model.scale.set(0.002, 0.002, 0.002);
+    model.position.set(33, 0, 0);
 
-//     models.push(model);
+    models.push(model);
 
-//     model.traverse(function(node) {
-//       if (node.isMesh) {
-//         node.castShadow = true;
-//       }
-//     });
+    model.traverse(function(node) {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
 
-//     scene.add(model);
-//   },
-//   undefined, 
-//   (error) => console.error(error)
-// );
+    scene.add(model);
+  },
+  undefined, 
+  (error) => console.error(error)
+);
 
 //---------------------_Dark Room_----------------------------
 
-const room1Bounds = new THREE.Box3(new THREE.Vector3(-70, -35, -50), new THREE.Vector3(70, 55, 50));
-const room2Bounds = new THREE.Box3(new THREE.Vector3(-70, -15, -90), new THREE.Vector3(70, 80, 90));
+const planets1Bounds = new THREE.Box3(new THREE.Vector3(1000, 10, -10), new THREE.Vector3(-10, 10, 10));
+const planets2Bounds = new THREE.Box3(new THREE.Vector3(-10, 10, -10), new THREE.Vector3(-10, 10, 10));
 
-const restrictedZones = [room1Bounds, room2Bounds];
+const stars1Bounds = new THREE.Box3(new THREE.Vector3(-70, -35, -50), new THREE.Vector3(70, 55, 50));
+const stars2Bounds = new THREE.Box3(new THREE.Vector3(-70, -15, -90), new THREE.Vector3(70, 80, 90));
 
-const stars = generateStars(1000, restrictedZones);
+const restrictedZonesForStarts = [stars1Bounds, stars2Bounds];
+const restrictedZones = [planets1Bounds, planets2Bounds];
+
+const stars = generateStars(1000, restrictedZonesForStarts);
 scene.add(stars);
-const planets = generatePlanets(100, restrictedZones);
+const planets = generatePlanets(10, restrictedZones);
 scene.add(planets);
 
 const sun = generateSun(restrictedZones);
 scene.add(sun);
 
 
-// const pointLight4 = new THREE.PointLight(0xffffff, 1.0, 1000);
-// pointLight4.position.set(-50, 2, 0);
-// scene.add(pointLight4);
 
-// const cubeGeometry = new THREE.BoxGeometry(10, 10, 10);
-// const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
-// const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-// cube.position.set(-5, 1, 0);
-// cube.castShadow = true;
-// scene.add(cube);
+
+const pointLight4 = new THREE.PointLight(0xffffff, 1.0, 1000);
+pointLight4.position.set(-700, 15, -10);
+scene.add(pointLight4);
+
+const cubeGeometry = new THREE.BoxGeometry(10, 10, 10);
+const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
+const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+cube.position.set(-700, 10, -10);
+cube.castShadow = true;
+scene.add(cube);
 
 //---------------------Animate------------------
 
@@ -438,7 +448,7 @@ scene.add(sun);
 function animate() {
   requestAnimationFrame(animate);
   animateStatueRotation();
-  animatePlanets(planets, sun);  // Add this line
+  animatePlanets(planets, sun);
 
   if (isInsideSunnyRoom(camera, sunnyRoomBoundary)) {
       if(spotLightSunnyRoom3.intensity === 0) {

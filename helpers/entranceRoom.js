@@ -14,6 +14,7 @@ export function createFloor(floorWidth, floorHeight, floorDepth, floorMaterial, 
   return floor;
 }
 
+// Helper to see the collision Boxes
 function createBoundingBoxWireframe(scene, boundingBox) {
   const size = boundingBox.getSize(new THREE.Vector3());
   const center = boundingBox.getCenter(new THREE.Vector3());
@@ -62,8 +63,9 @@ export function createWallWithDoorHole(scene, x, y, z, rotationY, color, width, 
   wall.receiveShadow = true;
   scene.add(wall);
 
-  // This if for collision detection, basically I'm removing the door hole from being detected for collision
-  // otherwise even when the door is open I can't go through because the wall itself has collision
+  // This is for collision detection, basically I'm removing the door hole from being detected for collision
+  // otherwise even when the door is open I can't go through because the wall itself has collision.
+  // Bascially, I made a wall with a hole in it but THREE.Box3 (that I use for collision) is not aware of the hole 
   const wallBounds = [];
 
   const leftWallBounds = new THREE.Box3(new THREE.Vector3(0, y, z), new THREE.Vector3((width - doorWidth) / 2, y + height, z + depth));
@@ -81,8 +83,8 @@ export function createWallWithDoorHole(scene, x, y, z, rotationY, color, width, 
   leftWallBounds.translate(new THREE.Vector3(x, 0, 0));
   rightWallBounds.translate(new THREE.Vector3(x, 0, 0));
 
-  createBoundingBoxWireframe(scene, leftWallBounds);
-  createBoundingBoxWireframe(scene, rightWallBounds);
+  // createBoundingBoxWireframe(scene, leftWallBounds);
+  // createBoundingBoxWireframe(scene, rightWallBounds);
 
   wallBounds.push(leftWallBounds);
   wallBounds.push(rightWallBounds);
@@ -91,7 +93,7 @@ export function createWallWithDoorHole(scene, x, y, z, rotationY, color, width, 
 }
 
 // This function is basically the same as before but I need to do another one because of collision.
-// The problem is that THREE.Box3 doesn't support "normal" rotation, which means I can't match the rotation «
+// The problem is that THREE.Box3 doesn't support "normal" rotation, which means I can't match the rotation
 // of the left and right wall (that are made in main.js) by rotating the bounding boxes.
 // This function is to create the left and right door (in main.js) and support their collision with the same logic as the previous function.
 // I didn't find a better way to do this, but this is not very elegant.
@@ -140,8 +142,8 @@ export function createRotatedWallWithDoorHole(scene, x, y, z, rotationY, color, 
   leftWallBounds.translate(new THREE.Vector3(x, y, z));
   rightWallBounds.translate(new THREE.Vector3(x, y, z));
 
-  createBoundingBoxWireframe(scene, leftWallBounds);
-  createBoundingBoxWireframe(scene, rightWallBounds);
+  // createBoundingBoxWireframe(scene, leftWallBounds);
+  // createBoundingBoxWireframe(scene, rightWallBounds);
 
   wallBounds.push(leftWallBounds);
   wallBounds.push(rightWallBounds);

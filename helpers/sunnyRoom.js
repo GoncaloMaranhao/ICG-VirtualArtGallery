@@ -185,17 +185,3 @@ export function createCircularWindow(radius, position, rotation, color, material
 
   return circle;
 }
-
-// export function createFresco(scene, position, width, height, texturePath) {
-//   const textureLoader = new THREE.TextureLoader();
-//   const frescoTexture = textureLoader.load(texturePath);
-//   const frescoMaterial = new THREE.MeshPhongMaterial({ map: frescoTexture });
-//   const frescoGeometry = new THREE.PlaneGeometry(width, height);
-//   const fresco = new THREE.Mesh(frescoGeometry, frescoMaterial);
-
-//   fresco.castShadow = true;
-//   fresco.receiveShadow = true;
-  
-//   fresco.position.set(position.x, position.y, position.z);
-//   scene.add(fresco);
-// }

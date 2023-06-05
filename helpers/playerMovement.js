@@ -32,7 +32,7 @@ export function updatePosition(camera) {
   const left = new THREE.Vector3();
 
   camera.getWorldDirection(forward);
-  forward.y = 0;
+  //forward.y = 0;
   forward.normalize();
 
   right.copy(forward).cross(camera.up);
@@ -79,7 +79,6 @@ function boxIntersect(box1, box2) {
          box1.min.z <= box2.max.z && box1.max.z >= box2.min.z;
 }
 
-// in playerMovement.js
 
 export function checkCollision(position, direction) {
   const speed = 0.1;
@@ -88,11 +87,11 @@ export function checkCollision(position, direction) {
 
   for (let obj of collidableObjects) {
       let bounds = obj;
-      if ('isDoor' in obj && obj.isDoor) { // Check if object is a door
-          if (!obj.isClosed) { // Only check for collisions if door is open
+      if ('isDoor' in obj && obj.isDoor) {
+          if (!obj.isClosed) { 
               bounds = obj.boundingBox;
           } else {
-              continue; // Skip this iteration if door is closed
+              continue; 
           }
       }
       if (boxIntersect(tempBox, bounds)) {
