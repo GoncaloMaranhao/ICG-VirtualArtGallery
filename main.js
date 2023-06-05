@@ -75,7 +75,7 @@ sunnyRoomDoor = createDoor(scene, floorWidth / 2,    0.13, 0, -Math.PI / 2,
           collidableObjects.push(sunnyRoomDoor);
 
 
-const frontDoor = createDoor(scene, 0, 0.13, -floorWidth / 2, 0, 
+export let frontDoor = createDoor(scene, 0, 0.13, -floorWidth / 2, 0, 
           darkWoodMaterial, doorWidth, doorHeight, doorDepth);
           frontDoor.boundingBox = new THREE.Box3().setFromObject(frontDoor);
           collidableObjects.push(frontDoor);
@@ -121,6 +121,7 @@ scene.add(spotLight);
 
 //--------------------------_Sunny Room_----------------------
 
+// -> This lights are to remove when delivering the project
 // const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 50);
 // sunnyPointLight.castShadow = true;
 // sunnyPointLight.receiveShadow = true;
@@ -129,21 +130,21 @@ scene.add(spotLight);
 // scene.add(sunnyPointLight);
 
 
-// const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
-// pointLight.position.set(0, 2, 0);
-// scene.add(pointLight);
+const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
+pointLight.position.set(0, 2, 0);
+scene.add(pointLight);
 
-// const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 50);
-// sunnyPointLight2.position.set(floorWidth + 10, 2, 0);
-// scene.add(sunnyPointLight2);
+const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 50);
+sunnyPointLight2.position.set(floorWidth + 10, 2, 0);
+scene.add(sunnyPointLight2);
 
-// const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 50);
-// sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
-// scene.add(sunnyPointLight3);
+const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 50);
+sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
+scene.add(sunnyPointLight3);
 
-// const sunnyPointLight4 = new THREE.PointLight(0xffffff, 1.0, 1000);
-// sunnyPointLight4.position.set(-50, 2, 0);
-// scene.add(sunnyPointLight4);
+const sunnyPointLight4 = new THREE.PointLight(0xffffff, 1.0, 1000);
+sunnyPointLight4.position.set(-50, 2, 0);
+scene.add(sunnyPointLight4);
 
 
 
@@ -235,6 +236,11 @@ scene.add(window2);
 const positionPaintingX = 12.7;
 const positionPaintingY = 2;
 const positionPaintingZ = 3.5;
+
+const normalPaitingwidth = 2;
+const normalPaitingHeight = 3;
+const normalPaitingFrameThickness = 0.1;
+
 const positionPainting = new THREE.Vector3(positionPaintingX, positionPaintingY, positionPaintingZ);
 const rotationPaintingVertical = new THREE.Vector3(0, Math.PI / 2, 0);
 const rotationPaintingVerticalInverse = new THREE.Vector3(0, - Math.PI / 2, 0);
@@ -262,49 +268,65 @@ createPainting(scene, positionPainting, rotationPaintingVertical,
     description: "The Mona Lisa is a half-length portrait painting by Italian artist Leonardo da Vinci."
   }
 );
+
+
+
 positionPainting.z = positionPaintingZ - 7.5;
-createPainting(scene, positionPainting, rotationPaintingVertical, 2, 3, 0.1, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingVertical, normalPaitingwidth, normalPaitingHeight, normalPaitingFrameThickness, './assets/textures/151090.jpg');
 positionPainting.z = positionPaintingZ - 11;
-createPainting(scene, positionPainting, rotationPaintingVertical, 2, 3, 0.1, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingVertical, 2, normalPaitingHeight, normalPaitingFrameThickness, './assets/textures/151090.jpg');
 positionPainting.y = positionPaintingY + 8;
 positionPainting.z = positionPaintingZ - 4;
-createPainting(scene, positionPainting, rotationPaintingVertical, 10, 9, 0.1, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingVertical, 10, 9, normalPaitingFrameThickness, './assets/textures/151090.jpg');
 
 //Left wall
 positionPainting.x = positionPaintingX + 6;
 positionPainting.y = positionPaintingY + 1;
 positionPainting.z = positionPaintingZ - 15.1;
-createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 4, 6, 0.1, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/151090.jpg');
 positionPainting.x = positionPaintingX + 13;
-createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 4, 6, 0.1, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/151090.jpg');
 positionPainting.x = positionPaintingX + 21;
-createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 4, 6, 0.1, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/151090.jpg');
 positionPainting.x = positionPaintingX + 30;
-createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 4, 6, 0.1, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/151090.jpg');
+positionPainting.x = positionPaintingX + 10;
+positionPainting.y = positionPaintingY + 9;
+positionPainting.z = positionPaintingZ - 13;
+createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 10, 9, normalPaitingFrameThickness, './assets/textures/151090.jpg');
+positionPainting.x = positionPaintingX + 23;
+createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 10, 9, normalPaitingFrameThickness, './assets/textures/151090.jpg');
 
 //Right Wall
 positionPainting.x = positionPaintingX + 6;
 positionPainting.y = positionPaintingY + 1;
 positionPainting.z = positionPaintingZ + 8.15;
-createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 4, 6, 0.1, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/151090.jpg');
 positionPainting.x = positionPaintingX + 13;
-createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 4, 6, 0.1, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/151090.jpg');
 positionPainting.x = positionPaintingX + 21;
-createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 4, 6, 0.1, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/151090.jpg');
 positionPainting.x = positionPaintingX + 30;
-createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 4, 6, 0.1, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/151090.jpg');
+positionPainting.x = positionPaintingX + 10;
+positionPainting.y = positionPaintingY + 9;
+positionPainting.z = positionPaintingZ + 6;
+createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 10, 9, normalPaitingFrameThickness, './assets/textures/151090.jpg');
+positionPainting.x = positionPaintingX + 23;
+createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 10, 9, normalPaitingFrameThickness, './assets/textures/151090.jpg');
+
 
 //Front wall
 positionPainting.x = positionPaintingX + 36.6;
 positionPainting.y = positionPaintingY + 1;
 positionPainting.z = positionPaintingZ + 5;
-createPainting(scene, positionPainting, rotationPaintingVerticalInverse, 3, 4, 0.1, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingVerticalInverse, normalPaitingwidth + 1, normalPaitingHeight + 1, normalPaitingFrameThickness, './assets/textures/151090.jpg');
 positionPainting.z = positionPaintingZ;
-createPainting(scene, positionPainting, rotationPaintingVerticalInverse, 3, 4, 0.1, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingVerticalInverse, normalPaitingwidth + 1, normalPaitingHeight + 1, normalPaitingFrameThickness, './assets/textures/151090.jpg');
 positionPainting.z = positionPaintingZ -5;
-createPainting(scene, positionPainting, rotationPaintingVerticalInverse, 3, 4, 0.1, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingVerticalInverse, normalPaitingwidth + 1, normalPaitingHeight + 1, normalPaitingFrameThickness, './assets/textures/151090.jpg');
 positionPainting.z = positionPaintingZ -10;
-createPainting(scene, positionPainting, rotationPaintingVerticalInverse, 3, 4, 0.1, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingVerticalInverse, normalPaitingwidth + 1, normalPaitingHeight + 1, normalPaitingFrameThickness, './assets/textures/151090.jpg');
 
 
 //---------------------------_SunnyRoomLight_--------------------------------
@@ -337,8 +359,8 @@ let translationVector = new THREE.Vector3(-7.4, 0.1, -25);
 sunnyRoomBoundary.min.add(translationVector);
 sunnyRoomBoundary.max.add(translationVector);
 
-const sunnyRoomBoundaryHelper = new THREE.Box3Helper(sunnyRoomBoundary, 0xff0000);
-scene.add(sunnyRoomBoundaryHelper);
+// const sunnyRoomBoundaryHelper = new THREE.Box3Helper(sunnyRoomBoundary, 0xff0000);
+// scene.add(sunnyRoomBoundaryHelper);
 
 export function isInsideSunnyRoom(camera, boundary) {
   const cameraPosition = camera.position;
@@ -362,62 +384,62 @@ createGarden(scene, gardenPosition, 8, 4, 100, 0.1, Math.PI / 2);
 
 export let models = [];
 
-fbxLoader.load(
-  './assets/models/StatuePot.fbx',
-  (fbx) => {
-    fbx.scale.set(0.05, 0.05, 0.05);
-    fbx.position.set(30, 0, 3.1);
-    models.push(fbx);
-    fbx.traverse(function(node) {
-      if (node.isMesh) {
-        node.castShadow = true;
-        node.material = material;
-      }
-    });
-    scene.add(fbx);
-  },
-  undefined, 
-  (error) => console.error(error)
-);
+// fbxLoader.load(
+//   './assets/models/StatuePot.fbx',
+//   (fbx) => {
+//     fbx.scale.set(0.05, 0.05, 0.05);
+//     fbx.position.set(30, 0, 3.1);
+//     models.push(fbx);
+//     fbx.traverse(function(node) {
+//       if (node.isMesh) {
+//         node.castShadow = true;
+//         node.material = material;
+//       }
+//     });
+//     scene.add(fbx);
+//   },
+//   undefined, 
+//   (error) => console.error(error)
+// );
 
-fbxLoader.load(
-  './assets/models/chubbyAngel.fbx',
-  (fbx) => {
-    fbx.scale.set(0.15, 0.15, 0.15);
-    fbx.position.set(30, 0, -3);
-    models.push(fbx);
-    fbx.traverse(function(node) {
-      if (node.isMesh) {
-        node.castShadow = true;
-      }
-    });
-    scene.add(fbx);
-  },
-  undefined, 
-  (error) => console.error(error)
-);
+// fbxLoader.load(
+//   './assets/models/chubbyAngel.fbx',
+//   (fbx) => {
+//     fbx.scale.set(0.15, 0.15, 0.15);
+//     fbx.position.set(30, 0, -3);
+//     models.push(fbx);
+//     fbx.traverse(function(node) {
+//       if (node.isMesh) {
+//         node.castShadow = true;
+//       }
+//     });
+//     scene.add(fbx);
+//   },
+//   undefined, 
+//   (error) => console.error(error)
+// );
 
-gltfLoader.load(
-  './assets/models/ScholarStatue.glb',
-  (gltf) => {
-    const model = gltf.scene;
+// gltfLoader.load(
+//   './assets/models/ScholarStatue.glb',
+//   (gltf) => {
+//     const model = gltf.scene;
 
-    model.scale.set(0.002, 0.002, 0.002);
-    model.position.set(33, 0, 0);
+//     model.scale.set(0.002, 0.002, 0.002);
+//     model.position.set(33, 0, 0);
 
-    models.push(model);
+//     models.push(model);
 
-    model.traverse(function(node) {
-      if (node.isMesh) {
-        node.castShadow = true;
-      }
-    });
+//     model.traverse(function(node) {
+//       if (node.isMesh) {
+//         node.castShadow = true;
+//       }
+//     });
 
-    scene.add(model);
-  },
-  undefined, 
-  (error) => console.error(error)
-);
+//     scene.add(model);
+//   },
+//   undefined, 
+//   (error) => console.error(error)
+// );
 
 //---------------------_Dark Room_----------------------------
 
@@ -445,43 +467,74 @@ spotLightDarkRoomDoor.target.position.set(-13, 0, 0);
 scene.add(spotLightDarkRoomDoor);
 scene.add(spotLightDarkRoomDoor.target);
 
+//Dark Room boundary box
+export let darkRoomBoundary;
+darkRoomBoundary = new THREE.Box3(
+  new THREE.Vector3(sunnyFloorWidth/2, 0, sunnyFloorDepth / 2),
+  new THREE.Vector3(sunnyFloorWidth * 1.5, sunnyRoomHeight / 2, sunnyFloorDepth* 1.5)
+);
 
-// const cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
-// const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
-// const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-// cube.position.set(-floorWidth / 2, 2, 0);
-// cube.castShadow = true;
-// scene.add(cube);
+let translationVectorDarkRoom = new THREE.Vector3(-73, 0.1, -25);
+darkRoomBoundary.min.add(translationVectorDarkRoom);
+darkRoomBoundary.max.add(translationVectorDarkRoom);
+
+// const darkRoomBoundaryHelper = new THREE.Box3Helper(darkRoomBoundary, 0xff0000);
+// scene.add(darkRoomBoundaryHelper);
+
+export function isInsideDarkRoom(camera, darkRoomBoundary) {
+  const cameraPosition = camera.position;
+  return darkRoomBoundary.containsPoint(cameraPosition);
+}
+
+
+
+
 
 
 //Black walls for collision in DarkRoom, the extra parameters are to take out the shininess because I don't want the walls to be seen
 let darkRoomFrontWallPosition = new THREE.Vector3(-floorWidth * 1.5, 0, 0);
-const darkRoomFrontWall = createSimpleWall(darkRoomFrontWallPosition, floorWidth, 2, 0.1, 0x000000, Math.PI / 2, undefined, false);
+const darkRoomFrontWall = createSimpleWall(darkRoomFrontWallPosition, floorWidth, 2, 0.1, 0xff0000, Math.PI / 2, undefined, false);
 scene.add(darkRoomFrontWall);
 darkRoomFrontWall.updateMatrixWorld(true);
 darkRoomFrontWall.boundingBox = new THREE.Box3().setFromObject(darkRoomFrontWall);
 collidableObjects.push(darkRoomFrontWall);
 
 let darkRoomLeftWallPosition = new THREE.Vector3(-floorWidth, 0, floorWidth / 2);
-const darkRoomLeftWall = createSimpleWall(darkRoomLeftWallPosition, floorWidth, 2, 0.1, 0x000000, Math.PI, undefined, false);
+const darkRoomLeftWall = createSimpleWall(darkRoomLeftWallPosition, floorWidth, 2, 0.1, 0xff0000, Math.PI, undefined, false);
 scene.add(darkRoomLeftWall);
 darkRoomLeftWall.updateMatrixWorld(true);
 darkRoomLeftWall.boundingBox = new THREE.Box3().setFromObject(darkRoomLeftWall);
 collidableObjects.push(darkRoomLeftWall);
 
 let darkRoomRightWallPosition = new THREE.Vector3(-floorWidth, 0, -floorWidth / 2);
-const darkRoomRightWall = createSimpleWall(darkRoomRightWallPosition, floorWidth, 2, 0.1, 0x000000, Math.PI, undefined, false);
+const darkRoomRightWall = createSimpleWall(darkRoomRightWallPosition, floorWidth, 2, 0.1, 0xff0000, Math.PI, undefined, false);
 scene.add(darkRoomRightWall);
 darkRoomRightWall.updateMatrixWorld(true);
 darkRoomRightWall.boundingBox = new THREE.Box3().setFromObject(darkRoomRightWall);
 collidableObjects.push(darkRoomRightWall);
 
 //Dark Room Paitings
+positionPainting.x = positionPaintingX + 6;
+positionPainting.y = positionPaintingY + 1;
+positionPainting.z = positionPaintingZ - 15.1;
+
+// Back wall
+createPainting(
+  scene, positionPainting, rotationPaintingVertical, 2, 3, 0.1, './assets/textures/151090.jpg') 
+
+
+  // const cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
+// const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+// const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+// cube.position.set(-floorWidth / 2, 2, 0);
+// scene.add(cube);
+  
 
 
 //---------------------Animate------------------
 
 let enteredSunnyRoom = false;
+export let enteredDarkRoom = false;
 
 function animate() {
   requestAnimationFrame(animate);
@@ -506,6 +559,9 @@ function animate() {
   }
   if (sun) {
     sun.rotation.y += 0.001;
+  }
+  if (isInsideDarkRoom(camera, darkRoomBoundary)) {
+    enteredDarkRoom == true;
   }
 
   updatePosition(camera);

@@ -107,36 +107,36 @@ export function createWallWithTwoWindows(position, wallWidth, wallHeight, wallDe
   circularWindowRadius, circularWindowPosition, 
   color, rotationY, material) {
 
-const shape = new THREE.Shape();
-shape.moveTo(-wallWidth / 2, 0);
-shape.lineTo(wallWidth / 2, 0);
-shape.lineTo(wallWidth / 2, wallHeight);
-shape.lineTo(-wallWidth / 2, wallHeight);
-
-const rectHolePath = new THREE.Path();
-rectHolePath.moveTo(rectWindowPosition.x - rectWindowWidth / 2, rectWindowPosition.y - rectWindowHeight / 2);
-rectHolePath.lineTo(rectWindowPosition.x + rectWindowWidth / 2, rectWindowPosition.y - rectWindowHeight / 2);
-rectHolePath.lineTo(rectWindowPosition.x + rectWindowWidth / 2, rectWindowPosition.y + rectWindowHeight / 2);
-rectHolePath.lineTo(rectWindowPosition.x - rectWindowWidth / 2, rectWindowPosition.y + rectWindowHeight / 2);
-shape.holes.push(rectHolePath);
-
-const circularHolePath = new THREE.Path();
-circularHolePath.absarc(circularWindowPosition.x, circularWindowPosition.y, circularWindowRadius, 0, Math.PI * 2, false);
-shape.holes.push(circularHolePath);
-
-const geometry = new THREE.ExtrudeGeometry(shape, { depth: wallDepth, bevelEnabled: false });
-
-if (!material) {
-material = new THREE.MeshPhongMaterial({ color, side: THREE.DoubleSide });
-}
-
-const mesh = new THREE.Mesh(geometry, material);
-mesh.position.set(position.x, position.y, position.z);
-mesh.rotation.y = rotationY;
-mesh.castShadow = true;
-mesh.receiveShadow = true;
-
-return mesh;
+  const shape = new THREE.Shape();
+  shape.moveTo(-wallWidth / 2, 0);
+  shape.lineTo(wallWidth / 2, 0);
+  shape.lineTo(wallWidth / 2, wallHeight);
+  shape.lineTo(-wallWidth / 2, wallHeight);
+    
+  const rectHolePath = new THREE.Path();
+  rectHolePath.moveTo(rectWindowPosition.x - rectWindowWidth / 2, rectWindowPosition.y - rectWindowHeight / 2);
+  rectHolePath.lineTo(rectWindowPosition.x + rectWindowWidth / 2, rectWindowPosition.y - rectWindowHeight / 2);
+  rectHolePath.lineTo(rectWindowPosition.x + rectWindowWidth / 2, rectWindowPosition.y + rectWindowHeight / 2);
+  rectHolePath.lineTo(rectWindowPosition.x - rectWindowWidth / 2, rectWindowPosition.y + rectWindowHeight / 2);
+  shape.holes.push(rectHolePath);
+    
+  const circularHolePath = new THREE.Path();
+  circularHolePath.absarc(circularWindowPosition.x, circularWindowPosition.y, circularWindowRadius, 0, Math.PI * 2, false);
+  shape.holes.push(circularHolePath);
+    
+  const geometry = new THREE.ExtrudeGeometry(shape, { depth: wallDepth, bevelEnabled: false });
+    
+  if (!material) {
+  material = new THREE.MeshPhongMaterial({ color, side: THREE.DoubleSide });
+  }
+  
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.position.set(position.x, position.y, position.z);
+  mesh.rotation.y = rotationY;
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  
+  return mesh;
 }
 
 export function createGarden(scene, position, outerRadius, innerRadius, flowerCount, thickness, rotationX = Math.PI / 2) {

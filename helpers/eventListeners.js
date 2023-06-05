@@ -1,7 +1,9 @@
 import * as THREE from '../threejs/three.module.js';
-import { camera, scene, models, sunnyRoomDoor, isInsideSunnyRoom, sunnyRoomBoundary } from '../main.js';
+import { camera, scene, models, sunnyRoomDoor, isInsideSunnyRoom, 
+         sunnyRoomBoundary, frontDoor, isInsideDarkRoom, enteredDarkRoom } from '../main.js';
 import { openDoor, startStatueRotation } from './animations.js';
 
+// Lock the door when the player enters the sunnyRoom
 document.addEventListener('keydown', (event) => {
   if (event.code === 'KeyE') {
     const doorRaycaster = new THREE.Raycaster();
@@ -14,7 +16,6 @@ document.addEventListener('keydown', (event) => {
 
       if (firstIntersectedObject.parent.parent.isDoor) {
         if (isInsideSunnyRoom(camera, sunnyRoomBoundary) && firstIntersectedObject.parent.parent === sunnyRoomDoor) {
-          // Alert the player that the door is locked
           alert("The door is locked!");
         } else {
           openDoor(firstIntersectedObject.parent.parent);
@@ -24,6 +25,7 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
+//Rotate statues
 export function initializeEventListener() {
   const raycaster = new THREE.Raycaster();
   const direction = new THREE.Vector2(0, 0);
@@ -41,6 +43,7 @@ export function initializeEventListener() {
   });
 }
 
+// See paiting information
 window.addEventListener('keydown', function (event) {
   if (event.key === 'x') {
     const raycaster = new THREE.Raycaster();
