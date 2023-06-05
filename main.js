@@ -102,30 +102,12 @@ const rightWallBounds = createRotatedWallWithDoorHole(scene, floorWidth / 2, 0, 
 rightWallBounds.forEach(bounds => collidableObjects.push(bounds));
 
 // back wall, no hole
-let backWallEntranceRoomPosition = new THREE.Vector3(0, 0, floorWidth / 2);
-const backWallEntranceRoom = createSimpleWall(backWallEntranceRoomPosition, floorWidth, ceilingPositionY + 7, 0.1, 0x123456, Math.PI);
+let backWallEntranceRoomPosition = new THREE.Vector3(0, ceilingPositionY / 2, floorWidth / 2);
+const backWallEntranceRoom = createSimpleWall(backWallEntranceRoomPosition, floorWidth, ceilingPositionY, 0.1, 0x123456, Math.PI);
 scene.add(backWallEntranceRoom);
 backWallEntranceRoom.updateMatrixWorld(true);
 backWallEntranceRoom.boundingBox = new THREE.Box3().setFromObject(backWallEntranceRoom);
 collidableObjects.push(backWallEntranceRoom);
-
-
-// const backWallBounds = createWallWithDoorHole(scene, floorWidth / 2, 0, floorWidth / 2, Math.PI, 0x123456,
-//                        floorWidth, ceilingPositionY, 0.1, 0, 0);
-// backWallBounds.forEach(bounds => collidableObjects.push(bounds));
-
-// backWallBounds.updateMatrixWorld(true);
-// backWallBounds.boundingBox = new THREE.Box3().setFromObject(backWallBounds);
-// collidableObjects.push(backWallBounds);
-
-
-// let darkRoomRightWallPosition = new THREE.Vector3(-floorWidth, 0, -floorWidth / 2);
-// const darkRoomRightWall = createSimpleWall(darkRoomRightWallPosition, floorWidth, 2, 0.1, 0xff0000, Math.PI);
-// scene.add(darkRoomRightWall);
-// darkRoomRightWall.updateMatrixWorld(true);
-// darkRoomRightWall.boundingBox = new THREE.Box3().setFromObject(darkRoomRightWall);
-// collidableObjects.push(darkRoomRightWall);
-
 
 const spotLight = new THREE.SpotLight(0xffffff, 1);
 spotLight.position.set(0, ceilingHeight + 10, 0);
@@ -351,7 +333,7 @@ sunnyRoomBoundary = new THREE.Box3(
   new THREE.Vector3(sunnyFloorWidth * 1.5, sunnyRoomHeight / 2, sunnyFloorDepth* 1.5)
 );
 
-let translationVector = new THREE.Vector3(-5, 0.1, -25);
+let translationVector = new THREE.Vector3(-7, 0.1, -25);
 sunnyRoomBoundary.min.add(translationVector);
 sunnyRoomBoundary.max.add(translationVector);
 
@@ -380,62 +362,62 @@ createGarden(scene, gardenPosition, 8, 4, 100, 0.1, Math.PI / 2);
 
 export let models = [];
 
-fbxLoader.load(
-  './assets/models/StatuePot.fbx',
-  (fbx) => {
-    fbx.scale.set(0.05, 0.05, 0.05);
-    fbx.position.set(30, 0, 3.1);
-    models.push(fbx);
-    fbx.traverse(function(node) {
-      if (node.isMesh) {
-        node.castShadow = true;
-        node.material = material;
-      }
-    });
-    scene.add(fbx);
-  },
-  undefined, 
-  (error) => console.error(error)
-);
+// fbxLoader.load(
+//   './assets/models/StatuePot.fbx',
+//   (fbx) => {
+//     fbx.scale.set(0.05, 0.05, 0.05);
+//     fbx.position.set(30, 0, 3.1);
+//     models.push(fbx);
+//     fbx.traverse(function(node) {
+//       if (node.isMesh) {
+//         node.castShadow = true;
+//         node.material = material;
+//       }
+//     });
+//     scene.add(fbx);
+//   },
+//   undefined, 
+//   (error) => console.error(error)
+// );
 
-fbxLoader.load(
-  './assets/models/chubbyAngel.fbx',
-  (fbx) => {
-    fbx.scale.set(0.15, 0.15, 0.15);
-    fbx.position.set(30, 0, -3);
-    models.push(fbx);
-    fbx.traverse(function(node) {
-      if (node.isMesh) {
-        node.castShadow = true;
-      }
-    });
-    scene.add(fbx);
-  },
-  undefined, 
-  (error) => console.error(error)
-);
+// fbxLoader.load(
+//   './assets/models/chubbyAngel.fbx',
+//   (fbx) => {
+//     fbx.scale.set(0.15, 0.15, 0.15);
+//     fbx.position.set(30, 0, -3);
+//     models.push(fbx);
+//     fbx.traverse(function(node) {
+//       if (node.isMesh) {
+//         node.castShadow = true;
+//       }
+//     });
+//     scene.add(fbx);
+//   },
+//   undefined, 
+//   (error) => console.error(error)
+// );
 
-gltfLoader.load(
-  './assets/models/ScholarStatue.glb',
-  (gltf) => {
-    const model = gltf.scene;
+// gltfLoader.load(
+//   './assets/models/ScholarStatue.glb',
+//   (gltf) => {
+//     const model = gltf.scene;
 
-    model.scale.set(0.002, 0.002, 0.002);
-    model.position.set(33, 0, 0);
+//     model.scale.set(0.002, 0.002, 0.002);
+//     model.position.set(33, 0, 0);
 
-    models.push(model);
+//     models.push(model);
 
-    model.traverse(function(node) {
-      if (node.isMesh) {
-        node.castShadow = true;
-      }
-    });
+//     model.traverse(function(node) {
+//       if (node.isMesh) {
+//         node.castShadow = true;
+//       }
+//     });
 
-    scene.add(model);
-  },
-  undefined, 
-  (error) => console.error(error)
-);
+//     scene.add(model);
+//   },
+//   undefined, 
+//   (error) => console.error(error)
+// );
 
 //---------------------_Dark Room_----------------------------
 
@@ -450,7 +432,7 @@ const restrictedZones = [planets1Bounds, planets2Bounds];
 
 const stars = generateStars(1000, restrictedZonesForStarts);
 scene.add(stars);
-const planets = generatePlanets(100, restrictedZones);
+const planets = generatePlanets(10, restrictedZones);
 scene.add(planets);
 
 const sun = generateSun(restrictedZones);
@@ -509,6 +491,9 @@ function animate() {
       spotLightSunnyRoom.intensity = 0;
       spotLightSunnyRoom2.intensity = 0;
       spotLightSunnyRoom3.intensity = 0;
+  }
+  if (sun) {
+    sun.rotation.y += 0.001;
   }
 
   updatePosition(camera);

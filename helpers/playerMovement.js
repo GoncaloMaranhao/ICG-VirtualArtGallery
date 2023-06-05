@@ -24,7 +24,7 @@ document.addEventListener("keyup", (event) => {
 });
 
 export function updatePosition(camera) {
-  const speed = 0.1;
+  const speed = 0.5;
 
   const forward = new THREE.Vector3();
   const right = new THREE.Vector3();
@@ -32,7 +32,7 @@ export function updatePosition(camera) {
   const left = new THREE.Vector3();
 
   camera.getWorldDirection(forward);
-  forward.y = 0;
+  //forward.y = 0;
   forward.normalize();
 
   right.copy(forward).cross(camera.up);

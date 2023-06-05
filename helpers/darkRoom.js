@@ -61,36 +61,45 @@ export function generatePlanets(numPlanets, restrictedZones) {
     const planets = new THREE.Group();
 
     for(let i = 0; i < numPlanets; i++) {
-        const radius = THREE.MathUtils.randFloat(10, 50);
-        const color = new THREE.Color(Math.random() * 0x11111);
+        const radius = THREE.MathUtils.randFloat(10, 100);
+        const color = new THREE.Color(Math.random() * 0xffffff);  // Ensures brighter colors
 
         const geometry = new THREE.SphereGeometry(radius, 64, 64);
 
         const texturePath = '../assets/textures/castle_brick_07_diff_1k.jpg'; 
         const bumpMapPath = 'path_to_your_bump_map.png'; 
+        const glowTexturePath = 'plank_flooring_02_diff_1k.jpg';  
+
         const texture = texturePath ? textureLoader.load(texturePath) : null;
         const bumpMap = bumpMapPath ? textureLoader.load(bumpMapPath) : null;
         
         const materialOptions = {
             color: color,
-            bumpScale: 0.05, 
         };
 
         if (texture) {
             materialOptions.map = texture;
         }
 
-        if (bumpMap) {
-            materialOptions.bumpMap = bumpMap;
-        }
-
-        const material = new THREE.MeshStandardMaterial(materialOptions);
+        const material = new THREE.MeshBasicMaterial(materialOptions);
 
         const planet = new THREE.Mesh(geometry, material);
+
+        const spriteMaterial = new THREE.SpriteMaterial({
+            map: new THREE.TextureLoader().load(glowTexturePath),
+            color: color,
+            transparent: false,
+            blending: THREE.AdditiveBlending
+        });
+        const sprite = new THREE.Sprite(spriteMaterial);
+        sprite.scale.set(radius * 2, radius * 2, 1.0);
+        planet.add(sprite); 
+
+        
         const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(1000));
         const position = generatePosition(restrictedZones);
         position.y = 605/2 + THREE.MathUtils.randFloatSpread(50); 
-        const scaleFactor = 1.5; 
+        const scaleFactor = 1; //Closer or farther away from the sun 
         planet.orbitRadius = scaleFactor * position.distanceTo(new THREE.Vector3(0, 0, 0)); 
         planet.angle = Math.random() * Math.PI * 2; 
 
@@ -110,6 +119,11 @@ export function generatePlanets(numPlanets, restrictedZones) {
         });
         const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
         planet.add(atmosphere);
+
+        // const light = new THREE.PointLight(0xffffff, 1, 3000);
+        // light.position.set(0, 0, 0);
+        // planet.add(light);
+
         
         if (Math.random() > 0.7) { // 30% chance to have a ring
             const ringSize = THREE.MathUtils.randFloat(1.2, 1.5);
