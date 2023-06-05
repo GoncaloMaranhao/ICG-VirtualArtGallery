@@ -86,7 +86,7 @@ export function checkCollision(position, direction) {
   tempBox.translate(direction.clone().multiplyScalar(speed));
 
   for (let obj of collidableObjects) {
-      let bounds = obj;
+    let bounds = obj.boundingBox || obj;
       if ('isDoor' in obj && obj.isDoor) {
           if (!obj.isClosed) { 
               bounds = obj.boundingBox;
@@ -94,6 +94,10 @@ export function checkCollision(position, direction) {
               continue; 
           }
       }
+      if (!bounds.min || !bounds.max) {
+        console.error('Invalid bounds:', bounds);
+        continue;
+    }
       if (boxIntersect(tempBox, bounds)) {
           return true;
       }

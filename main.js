@@ -10,7 +10,7 @@ import { createWallWithDoorHole, createCeiling,
          createDoor, createFloor, createRotatedWallWithDoorHole} from './helpers/entranceRoom.js';
 import { createCircularWindow, createGarden, createSunnyRoom, createWallWithTwoWindows, createWindow  } from './helpers/sunnyRoom.js';
 import { hasRequiredRotations, closeDoor, startStatueRotation, animateStatueRotation, openDoor } from './helpers/animations.js';
-import { createPainting  } from './helpers/general.js';
+import { createSimpleWall, createPainting  } from './helpers/general.js';
 
 export const scene = new THREE.Scene();
 
@@ -119,7 +119,7 @@ scene.add(spotLight);
 //--------------------------_Sunny Room_----------------------
 
 
-//----This pointLight are all to remove when the project is done
+//----This lights are all to remove when the project is done
 const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 50);
 sunnyPointLight.castShadow = true;
 sunnyPointLight.receiveShadow = true;
@@ -138,9 +138,10 @@ scene.add(sunnyPointLight2);
 const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 50);
 sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
 scene.add(sunnyPointLight3);
+
+
 //----------------------------------------------------
 
-//---------------------_SunnyRoomStrucuture_----------------------
 
 const sunnyFloorTexture = textureLoader.load('./assets/textures/red_sandstone_pavement_diff_1k.jpg');
 const sunnyFloorMaterial = new THREE.MeshPhongMaterial({ map: sunnyFloorTexture });
@@ -428,19 +429,43 @@ scene.add(planets);
 const sun = generateSun(restrictedZones);
 scene.add(sun);
 
+const sunnyPointLight4 = new THREE.PointLight(0xffffff, 1.0, 1000);
+sunnyPointLight3.position.set(-50, 2, 0);
+scene.add(sunnyPointLight4);
+
+// const cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
+// const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
+// const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+// cube.position.set(-30, 0, -10);
+// cube.castShadow = true;
+// scene.add(cube);
+
+  // let width = 50; // Width of the wall
+  // let height = 10; // Height of the wall
+  // let depth = 1; // Depth of the wall
+  // let color = 0xff0000; // Color of the wall in hexadecimal (Red)
+  // let rotationY = Math.PI / 4; // Rotation of the wall in radians (45 degrees)
+  
+  // const leftWallBounds = createRotatedWallWithDoorHole(scene, -floorWidth / 2, 0, floorWidth / 2, 
+                          // Math.PI / 2, 0x00ff00,
+  //                      floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight + 0.1);
+
+  // createWallWithDoorHole(scene, x, y, z, rotationY, color, width, height, depth, doorWidth, doorHeight) {
+    let wall123Position = new THREE.Vector3(-floorWidth * 2, 0, floorWidth/ 8); // Position of the wall
+    const wall123 = createSimpleWall(wall123Position, floorWidth, 5, 0.1, 0xff0000, Math.PI / 2);
+    scene.add(wall123);
+    wall123.updateMatrixWorld(true); // Force updating the object's world matrix
+    wall123.boundingBox = new THREE.Box3().setFromObject(wall123);
+    collidableObjects.push(wall123);
+    
+  
+  
+
+// const rightWallBounds = createRotatedWallWithDoorHole(scene, floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x0000ff,
+//                        floorWidth, ceilingPositionY + 19.1, 0.1, doorWidth * 2, doorHeight + 0.1);
+// rightWallBounds.forEach(bounds => collidableObjects.push(bounds));
 
 
-
-const pointLight4 = new THREE.PointLight(0xffffff, 1.0, 1000);
-pointLight4.position.set(-700, 15, -10);
-scene.add(pointLight4);
-
-const cubeGeometry = new THREE.BoxGeometry(10, 10, 10);
-const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
-const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-cube.position.set(-700, 10, -10);
-cube.castShadow = true;
-scene.add(cube);
 
 //---------------------Animate------------------
 
