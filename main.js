@@ -103,7 +103,7 @@ rightWallBounds.forEach(bounds => collidableObjects.push(bounds));
 
 // back wall, no hole
 let backWallEntranceRoomPosition = new THREE.Vector3(0, ceilingPositionY / 2, floorWidth / 2);
-const backWallEntranceRoom = createSimpleWall(backWallEntranceRoomPosition, floorWidth, ceilingPositionY, 0.1, 0x123456, Math.PI);
+const backWallEntranceRoom = createSimpleWall(backWallEntranceRoomPosition, floorWidth, ceilingPositionY, 0.1, 0x123456, Math.PI, undefined, false);
 scene.add(backWallEntranceRoom);
 backWallEntranceRoom.updateMatrixWorld(true);
 backWallEntranceRoom.boundingBox = new THREE.Box3().setFromObject(backWallEntranceRoom);
@@ -121,29 +121,29 @@ scene.add(spotLight);
 
 //--------------------------_Sunny Room_----------------------
 
-const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 50);
-sunnyPointLight.castShadow = true;
-sunnyPointLight.receiveShadow = true;
-sunnyPointLight.position.set(floorWidth, 2, 0);
-sunnyPointLight.shadow.bias = -0.005;
-scene.add(sunnyPointLight);
+// const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 50);
+// sunnyPointLight.castShadow = true;
+// sunnyPointLight.receiveShadow = true;
+// sunnyPointLight.position.set(floorWidth, 2, 0);
+// sunnyPointLight.shadow.bias = -0.005;
+// scene.add(sunnyPointLight);
 
 
-const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
-pointLight.position.set(0, 2, 0);
-scene.add(pointLight);
+// const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
+// pointLight.position.set(0, 2, 0);
+// scene.add(pointLight);
 
-const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 50);
-sunnyPointLight2.position.set(floorWidth + 10, 2, 0);
-scene.add(sunnyPointLight2);
+// const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 50);
+// sunnyPointLight2.position.set(floorWidth + 10, 2, 0);
+// scene.add(sunnyPointLight2);
 
-const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 50);
-sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
-scene.add(sunnyPointLight3);
+// const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 50);
+// sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
+// scene.add(sunnyPointLight3);
 
-const sunnyPointLight4 = new THREE.PointLight(0xffffff, 1.0, 1000);
-sunnyPointLight4.position.set(-50, 2, 0);
-scene.add(sunnyPointLight4);
+// const sunnyPointLight4 = new THREE.PointLight(0xffffff, 1.0, 1000);
+// sunnyPointLight4.position.set(-50, 2, 0);
+// scene.add(sunnyPointLight4);
 
 
 
@@ -333,7 +333,7 @@ sunnyRoomBoundary = new THREE.Box3(
   new THREE.Vector3(sunnyFloorWidth * 1.5, sunnyRoomHeight / 2, sunnyFloorDepth* 1.5)
 );
 
-let translationVector = new THREE.Vector3(-7, 0.1, -25);
+let translationVector = new THREE.Vector3(-7.4, 0.1, -25);
 sunnyRoomBoundary.min.add(translationVector);
 sunnyRoomBoundary.max.add(translationVector);
 
@@ -362,62 +362,62 @@ createGarden(scene, gardenPosition, 8, 4, 100, 0.1, Math.PI / 2);
 
 export let models = [];
 
-// fbxLoader.load(
-//   './assets/models/StatuePot.fbx',
-//   (fbx) => {
-//     fbx.scale.set(0.05, 0.05, 0.05);
-//     fbx.position.set(30, 0, 3.1);
-//     models.push(fbx);
-//     fbx.traverse(function(node) {
-//       if (node.isMesh) {
-//         node.castShadow = true;
-//         node.material = material;
-//       }
-//     });
-//     scene.add(fbx);
-//   },
-//   undefined, 
-//   (error) => console.error(error)
-// );
+fbxLoader.load(
+  './assets/models/StatuePot.fbx',
+  (fbx) => {
+    fbx.scale.set(0.05, 0.05, 0.05);
+    fbx.position.set(30, 0, 3.1);
+    models.push(fbx);
+    fbx.traverse(function(node) {
+      if (node.isMesh) {
+        node.castShadow = true;
+        node.material = material;
+      }
+    });
+    scene.add(fbx);
+  },
+  undefined, 
+  (error) => console.error(error)
+);
 
-// fbxLoader.load(
-//   './assets/models/chubbyAngel.fbx',
-//   (fbx) => {
-//     fbx.scale.set(0.15, 0.15, 0.15);
-//     fbx.position.set(30, 0, -3);
-//     models.push(fbx);
-//     fbx.traverse(function(node) {
-//       if (node.isMesh) {
-//         node.castShadow = true;
-//       }
-//     });
-//     scene.add(fbx);
-//   },
-//   undefined, 
-//   (error) => console.error(error)
-// );
+fbxLoader.load(
+  './assets/models/chubbyAngel.fbx',
+  (fbx) => {
+    fbx.scale.set(0.15, 0.15, 0.15);
+    fbx.position.set(30, 0, -3);
+    models.push(fbx);
+    fbx.traverse(function(node) {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    scene.add(fbx);
+  },
+  undefined, 
+  (error) => console.error(error)
+);
 
-// gltfLoader.load(
-//   './assets/models/ScholarStatue.glb',
-//   (gltf) => {
-//     const model = gltf.scene;
+gltfLoader.load(
+  './assets/models/ScholarStatue.glb',
+  (gltf) => {
+    const model = gltf.scene;
 
-//     model.scale.set(0.002, 0.002, 0.002);
-//     model.position.set(33, 0, 0);
+    model.scale.set(0.002, 0.002, 0.002);
+    model.position.set(33, 0, 0);
 
-//     models.push(model);
+    models.push(model);
 
-//     model.traverse(function(node) {
-//       if (node.isMesh) {
-//         node.castShadow = true;
-//       }
-//     });
+    model.traverse(function(node) {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
 
-//     scene.add(model);
-//   },
-//   undefined, 
-//   (error) => console.error(error)
-// );
+    scene.add(model);
+  },
+  undefined, 
+  (error) => console.error(error)
+);
 
 //---------------------_Dark Room_----------------------------
 
@@ -438,12 +438,18 @@ scene.add(planets);
 const sun = generateSun(restrictedZones);
 scene.add(sun);
 
-//Light to see the door 
+//Light to see the door
+const spotLightDarkRoomDoor = new THREE.SpotLight(0xff0000, 0); 
+spotLightDarkRoomDoor.position.set(-10, 4, 0); 
+spotLightDarkRoomDoor.target.position.set(-13, 0, 0); 
+scene.add(spotLightDarkRoomDoor);
+scene.add(spotLightDarkRoomDoor.target);
+
 
 // const cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
 // const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
 // const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-// cube.position.set(-30, 0, -10);
+// cube.position.set(-floorWidth / 2, 2, 0);
 // cube.castShadow = true;
 // scene.add(cube);
 
@@ -475,6 +481,7 @@ collidableObjects.push(darkRoomRightWall);
 
 //---------------------Animate------------------
 
+let enteredSunnyRoom = false;
 
 function animate() {
   requestAnimationFrame(animate);
@@ -482,6 +489,7 @@ function animate() {
   animatePlanets(planets, sun);
 
   if (isInsideSunnyRoom(camera, sunnyRoomBoundary)) {
+    enteredSunnyRoom = true; 
       if(spotLightSunnyRoom3.intensity === 0) {
           spotLightSunnyRoom.intensity = 1;
           spotLightSunnyRoom2.intensity = 1;
@@ -491,6 +499,10 @@ function animate() {
       spotLightSunnyRoom.intensity = 0;
       spotLightSunnyRoom2.intensity = 0;
       spotLightSunnyRoom3.intensity = 0;
+  }
+
+  if(enteredSunnyRoom == true){
+    spotLightDarkRoomDoor.intensity = 1; 
   }
   if (sun) {
     sun.rotation.y += 0.001;

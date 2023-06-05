@@ -123,7 +123,7 @@ export function startStatueRotation(object) {
     canPressR = false;
     setTimeout(() => {
       canPressR = true;
-    }, 1000);  // 2s delay
+    }, 1000);  // 1s delay
   }
 }
 

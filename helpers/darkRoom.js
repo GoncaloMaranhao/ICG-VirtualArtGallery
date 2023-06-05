@@ -99,7 +99,7 @@ export function generatePlanets(numPlanets, restrictedZones) {
         const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(1000));
         const position = generatePosition(restrictedZones);
         position.y = 605/2 + THREE.MathUtils.randFloatSpread(50); 
-        const scaleFactor = 1.5; //Closer or farther away from the sun 
+        const scaleFactor = 2; //Closer or farther away from the sun 
         planet.orbitRadius = scaleFactor * position.distanceTo(new THREE.Vector3(0, 0, 0)); 
         planet.angle = Math.random() * Math.PI * 2; 
 

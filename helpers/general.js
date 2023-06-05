@@ -17,7 +17,7 @@ export function createSimpleWall(position, width, height, depth, color, rotation
   mesh.position.set(position.x, position.y, position.z);
   mesh.rotation.y = rotationY;
   mesh.castShadow = false; 
-  mesh.receiveShadow = false;
+  mesh.receiveShadow = true;
 
   return mesh;
 }
