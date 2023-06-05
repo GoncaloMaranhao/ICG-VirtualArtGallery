@@ -384,62 +384,58 @@ createGarden(scene, gardenPosition, 8, 4, 100, 0.1, Math.PI / 2);
 
 export let models = [];
 
-// fbxLoader.load(
-//   './assets/models/StatuePot.fbx',
-//   (fbx) => {
-//     fbx.scale.set(0.05, 0.05, 0.05);
-//     fbx.position.set(30, 0, 3.1);
-//     models.push(fbx);
-//     fbx.traverse(function(node) {
-//       if (node.isMesh) {
-//         node.castShadow = true;
-//         node.material = material;
-//       }
-//     });
-//     scene.add(fbx);
-//   },
-//   undefined, 
-//   (error) => console.error(error)
-// );
+gltfLoader.load(
+   './assets/models/Statue.glb',
+   (gltf) => {
+    const model = gltf.scene
+    model.scale.set(2, 2, 2);
+    model.position.set(30, 1.5, 3.1);
+    models.push(model);
+    model.traverse(function(node) {
+       if (node.isMesh) {
+         node.castShadow = true;
+       }
+     });
+     scene.add(model);
+   },
+   undefined, 
+   (error) => console.error(error)
+ )
+ gltfLoader.load(
+   './assets/models/StatueA.glb',
+   (gltf) => {
+    const model = gltf.scene
+    model.scale.set(2.25, 2.25, 2.25);
+    model.position.set(30, 2, -3);
+    models.push(model);
+    model.traverse(function(node) {
+       if (node.isMesh) {
+         node.castShadow = true;
+       }
+     });
+     scene.add(model);
+   },
+   undefined, 
+   (error) => console.error(error)
+ );
 
-// fbxLoader.load(
-//   './assets/models/chubbyAngel.fbx',
-//   (fbx) => {
-//     fbx.scale.set(0.15, 0.15, 0.15);
-//     fbx.position.set(30, 0, -3);
-//     models.push(fbx);
-//     fbx.traverse(function(node) {
-//       if (node.isMesh) {
-//         node.castShadow = true;
-//       }
-//     });
-//     scene.add(fbx);
-//   },
-//   undefined, 
-//   (error) => console.error(error)
-// );
-
-// gltfLoader.load(
-//   './assets/models/ScholarStatue.glb',
-//   (gltf) => {
-//     const model = gltf.scene;
-
-//     model.scale.set(0.002, 0.002, 0.002);
-//     model.position.set(33, 0, 0);
-
-//     models.push(model);
-
-//     model.traverse(function(node) {
-//       if (node.isMesh) {
-//         node.castShadow = true;
-//       }
-//     });
-
-//     scene.add(model);
-//   },
-//   undefined, 
-//   (error) => console.error(error)
-// );
+ gltfLoader.load(
+   './assets/models/StatueB.glb',
+   (gltf) => {
+     const model = gltf.scene
+     model.scale.set(0.8, 0.8, 0.8);
+     model.position.set(33, 1.2, 0)
+     models.push(model)
+     model.traverse(function(node) {
+       if (node.isMesh) {
+         node.castShadow = true;
+       }
+     })
+     scene.add(model);
+   },
+   undefined, 
+   (error) => console.error(error)
+ );
 
 //---------------------_Dark Room_----------------------------
 
@@ -514,19 +510,24 @@ darkRoomRightWall.boundingBox = new THREE.Box3().setFromObject(darkRoomRightWall
 collidableObjects.push(darkRoomRightWall);
 
 //Dark Room Paitings
-positionPainting.x = positionPaintingX + 6;
+positionPainting.x = positionPaintingX -50;
 positionPainting.y = positionPaintingY + 1;
-positionPainting.z = positionPaintingZ - 15.1;
+positionPainting.z = positionPaintingZ - 14;
 
-// Back wall
-createPainting(
-  scene, positionPainting, rotationPaintingVertical, 2, 3, 0.1, './assets/textures/151090.jpg') 
+createPainting(scene, positionPainting, rotationPaintingVertical, 2, 3, 0.1, './assets/textures/151090.jpg') 
+positionPainting.z = positionPaintingZ - 10;
+createPainting(scene, positionPainting, rotationPaintingVertical, 2, 3, 0.1, './assets/textures/151090.jpg') 
+positionPainting.z = positionPaintingZ + 5;
+createPainting(scene, positionPainting, rotationPaintingVertical, 2, 3, 0.1, './assets/textures/151090.jpg') 
+positionPainting.z = positionPaintingZ + 1;
+createPainting(scene, positionPainting, rotationPaintingVertical, 2, 3, 0.1, './assets/textures/151090.jpg') 
 
 
-  // const cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
+
+//   const cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
 // const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 // const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-// cube.position.set(-floorWidth / 2, 2, 0);
+// cube.position.set(-30, 2, 0);
 // scene.add(cube);
   
 
