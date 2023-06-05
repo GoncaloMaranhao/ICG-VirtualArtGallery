@@ -187,6 +187,7 @@ export function createDoor(scene, x, y, z, rotationY, material, width, height, d
   rightDoor.position.set(-width / 2, height/2, 0);
 
   const handleMaterial = new THREE.MeshPhongMaterial({ color: 0x800080 });
+  
   const leftDoorHandle = createDoorHandle(-width / 32 + handleOffset, height / 32, depth / 2 + 0.01, 0, handleMaterial);
   const rightDoorHandle = createDoorHandle(width / 32 - handleOffset, height / 32, depth / 2 + 0.01, 0, handleMaterial);
 
@@ -222,6 +223,7 @@ function createDoorHandle(x, y, z, rotationY, material) {
   );
   handle.rotation.y = rotationY;
   handle.position.set(x, y, z);
+  handle.receiveShadow = true;
   return handle;
 }
 

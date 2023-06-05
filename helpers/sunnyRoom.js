@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { FBXLoader } from '../threejs/FBXLoader.js';
-
+import { collidableObjects } from '../main.js';
 
 function createVaultedWall(width, height, depth, segments, doorWidth, doorHeight) {
 
@@ -54,6 +54,24 @@ export function createSunnyRoom(width, height, depth, segments, doorWidth, doorH
   wall.rotation.y = Math.PI / 2;
   wall.position.x = 0;
   group.add(wall);
+
+  // Invisible walls for collision because I can't find another way to add collision to such a complex shape (vaultedWall) 
+  const boxGeometry = new THREE.BoxGeometry(wallWidth, depth, 0.1);
+  const boxMaterial = new THREE.MeshBasicMaterial({visible: false});
+  const boundingBox = new THREE.Mesh(boxGeometry, boxMaterial);
+
+  boundingBox.position.set(30, 0, 12);
+  group.add(boundingBox);
+  boundingBox.updateMatrixWorld(true);
+  boundingBox.boundingBox = new THREE.Box3().setFromObject(boundingBox);
+  collidableObjects.push(boundingBox);
+
+  const boundingBox2 = new THREE.Mesh(boxGeometry, boxMaterial);
+  boundingBox2.position.set(30,0,-12);
+  group.add(boundingBox2);
+  boundingBox2.updateMatrixWorld(true);
+  boundingBox2.boundingBox = new THREE.Box3().setFromObject(boundingBox2);
+  collidableObjects.push(boundingBox2);
 
   return group;
 }

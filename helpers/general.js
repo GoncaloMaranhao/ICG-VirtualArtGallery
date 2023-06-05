@@ -2,11 +2,15 @@ import * as THREE from '../threejs/three.module.js';
 
 const textureLoader = new THREE.TextureLoader();
 
-export function createSimpleWall(position, width, height, depth, color, rotationY, material) {
+export function createSimpleWall(position, width, height, depth, color, rotationY, material, shiny = true) {
   const geometry = new THREE.BoxGeometry(width, height, depth);
 
   if (!material) {
-    material = new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide });
+    if (shiny) {
+      material = new THREE.MeshPhongMaterial({ color, side: THREE.DoubleSide });
+    } else {
+      material = new THREE.MeshLambertMaterial({ color, side: THREE.DoubleSide });
+    }
   }
 
   const mesh = new THREE.Mesh(geometry, material);
@@ -17,6 +21,7 @@ export function createSimpleWall(position, width, height, depth, color, rotation
 
   return mesh;
 }
+
 
 export function createPainting(scene, position, rotation, width, height, frameThickness, imagePath, paintingInfo) {
   const frameGeometry = new THREE.BoxGeometry(width + 2 * frameThickness, height + 2 * frameThickness, frameThickness);

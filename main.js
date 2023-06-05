@@ -77,9 +77,9 @@ sunnyRoomDoor = createDoor(scene, floorWidth / 2,    0.13, 0, -Math.PI / 2,
 
 const frontDoor = createDoor(scene, 0, 0.13, -floorWidth / 2, 0, 
           darkWoodMaterial, doorWidth, doorHeight, doorDepth);
+          frontDoor.boundingBox = new THREE.Box3().setFromObject(frontDoor);
+          collidableObjects.push(frontDoor);
 
-
-          
 const ceilingPositionY = 7;
 const ceilingWidth = floorWidth / 2;
 const ceilingHeight = 0.1;
@@ -102,8 +102,29 @@ const rightWallBounds = createRotatedWallWithDoorHole(scene, floorWidth / 2, 0, 
 rightWallBounds.forEach(bounds => collidableObjects.push(bounds));
 
 // back wall, no hole
-createWallWithDoorHole(scene, floorWidth / 2, 0, floorWidth / 2, Math.PI, 0x123456,
-                       floorWidth, ceilingPositionY, 0.1, 0, 0);
+let backWallEntranceRoomPosition = new THREE.Vector3(0, 0, floorWidth / 2);
+const backWallEntranceRoom = createSimpleWall(backWallEntranceRoomPosition, floorWidth, ceilingPositionY + 7, 0.1, 0x123456, Math.PI);
+scene.add(backWallEntranceRoom);
+backWallEntranceRoom.updateMatrixWorld(true);
+backWallEntranceRoom.boundingBox = new THREE.Box3().setFromObject(backWallEntranceRoom);
+collidableObjects.push(backWallEntranceRoom);
+
+
+// const backWallBounds = createWallWithDoorHole(scene, floorWidth / 2, 0, floorWidth / 2, Math.PI, 0x123456,
+//                        floorWidth, ceilingPositionY, 0.1, 0, 0);
+// backWallBounds.forEach(bounds => collidableObjects.push(bounds));
+
+// backWallBounds.updateMatrixWorld(true);
+// backWallBounds.boundingBox = new THREE.Box3().setFromObject(backWallBounds);
+// collidableObjects.push(backWallBounds);
+
+
+// let darkRoomRightWallPosition = new THREE.Vector3(-floorWidth, 0, -floorWidth / 2);
+// const darkRoomRightWall = createSimpleWall(darkRoomRightWallPosition, floorWidth, 2, 0.1, 0xff0000, Math.PI);
+// scene.add(darkRoomRightWall);
+// darkRoomRightWall.updateMatrixWorld(true);
+// darkRoomRightWall.boundingBox = new THREE.Box3().setFromObject(darkRoomRightWall);
+// collidableObjects.push(darkRoomRightWall);
 
 
 const spotLight = new THREE.SpotLight(0xffffff, 1);
@@ -118,14 +139,13 @@ scene.add(spotLight);
 
 //--------------------------_Sunny Room_----------------------
 
-
-//----This lights are all to remove when the project is done
 const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 50);
 sunnyPointLight.castShadow = true;
 sunnyPointLight.receiveShadow = true;
 sunnyPointLight.position.set(floorWidth, 2, 0);
 sunnyPointLight.shadow.bias = -0.005;
 scene.add(sunnyPointLight);
+
 
 const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
 pointLight.position.set(0, 2, 0);
@@ -139,8 +159,10 @@ const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 50);
 sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
 scene.add(sunnyPointLight3);
 
+const sunnyPointLight4 = new THREE.PointLight(0xffffff, 1.0, 1000);
+sunnyPointLight4.position.set(-50, 2, 0);
+scene.add(sunnyPointLight4);
 
-//----------------------------------------------------
 
 
 const sunnyFloorTexture = textureLoader.load('./assets/textures/red_sandstone_pavement_diff_1k.jpg');
@@ -163,7 +185,9 @@ const sunnyRoomDepth = floorDepth * 2;
 const segments = 16;
 const sunnyRoom = createSunnyRoom(sunnyRoomWidth, sunnyRoomHeight, sunnyRoomDepth, segments, doorWidth, doorHeight);
 sunnyRoom.position.set(floorWidth / 2,0 ,floorWidth / 2 );
+
 scene.add(sunnyRoom);
+
 
 
 const wallPosition = { x: 49.5, y: 0.05 , z: 0 };
@@ -181,10 +205,15 @@ const circularWindowPosition = { x: 0, y: 18 };
 const wallColor = 0x654321;
 const wallRotationY = Math.PI / 2; 
 
-scene.add(createWallWithTwoWindows(wallPosition, wallWidth, wallHeight, wallDepth, 
-                                   rectWindowWidth, rectWindowHeight, rectWindowPosition, 
-                                   circularWindowRadius, circularWindowPosition, 
-                                   wallColor, wallRotationY, null));
+const sunnyRoomFrontWall = createWallWithTwoWindows(wallPosition, wallWidth, wallHeight, wallDepth, 
+                           rectWindowWidth, rectWindowHeight, rectWindowPosition, 
+                           circularWindowRadius, circularWindowPosition, 
+                           wallColor, wallRotationY, null);
+scene.add(sunnyRoomFrontWall);
+sunnyRoomFrontWall.updateMatrixWorld(true);
+sunnyRoomFrontWall.boundingBox = new THREE.Box3().setFromObject(sunnyRoomFrontWall);
+collidableObjects.push(sunnyRoomFrontWall);
+
 
 const paneMaterial = new THREE.MeshPhongMaterial({
  color: 0xFFFFFF, 
@@ -326,8 +355,6 @@ let translationVector = new THREE.Vector3(-5, 0.1, -25);
 sunnyRoomBoundary.min.add(translationVector);
 sunnyRoomBoundary.max.add(translationVector);
 
-
-
 const sunnyRoomBoundaryHelper = new THREE.Box3Helper(sunnyRoomBoundary, 0xff0000);
 scene.add(sunnyRoomBoundaryHelper);
 
@@ -429,9 +456,7 @@ scene.add(planets);
 const sun = generateSun(restrictedZones);
 scene.add(sun);
 
-const sunnyPointLight4 = new THREE.PointLight(0xffffff, 1.0, 1000);
-sunnyPointLight3.position.set(-50, 2, 0);
-scene.add(sunnyPointLight4);
+//Light to see the door 
 
 // const cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
 // const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
@@ -440,44 +465,30 @@ scene.add(sunnyPointLight4);
 // cube.castShadow = true;
 // scene.add(cube);
 
-  // const leftWallBounds = createRotatedWallWithDoorHole(scene, -floorWidth / 2, 0, floorWidth / 2, 
-                          // Math.PI / 2, 0x00ff00,
-  //                      floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight + 0.1);
 
-  // createWallWithDoorHole(scene, x, y, z, rotationY, color, width, height, depth, doorWidth, doorHeight) {
-
-//Black walls for collision in DarkRoom
+//Black walls for collision in DarkRoom, the extra parameters are to take out the shininess because I don't want the walls to be seen
 let darkRoomFrontWallPosition = new THREE.Vector3(-floorWidth * 1.5, 0, 0);
-const darkRoomFrontWall = createSimpleWall(darkRoomFrontWallPosition, floorWidth, 2, 0.1, 0x000000, Math.PI / 2);
+const darkRoomFrontWall = createSimpleWall(darkRoomFrontWallPosition, floorWidth, 2, 0.1, 0x000000, Math.PI / 2, undefined, false);
 scene.add(darkRoomFrontWall);
 darkRoomFrontWall.updateMatrixWorld(true);
 darkRoomFrontWall.boundingBox = new THREE.Box3().setFromObject(darkRoomFrontWall);
 collidableObjects.push(darkRoomFrontWall);
 
 let darkRoomLeftWallPosition = new THREE.Vector3(-floorWidth, 0, floorWidth / 2);
-const darkRoomLeftWall = createSimpleWall(darkRoomLeftWallPosition, floorWidth, 2, 0.1, 0x000000, Math.PI);
+const darkRoomLeftWall = createSimpleWall(darkRoomLeftWallPosition, floorWidth, 2, 0.1, 0x000000, Math.PI, undefined, false);
 scene.add(darkRoomLeftWall);
 darkRoomLeftWall.updateMatrixWorld(true);
 darkRoomLeftWall.boundingBox = new THREE.Box3().setFromObject(darkRoomLeftWall);
 collidableObjects.push(darkRoomLeftWall);
 
 let darkRoomRightWallPosition = new THREE.Vector3(-floorWidth, 0, -floorWidth / 2);
-const darkRoomRightWall = createSimpleWall(darkRoomRightWallPosition, floorWidth, 2, 0.1, 0x000000, Math.PI);
+const darkRoomRightWall = createSimpleWall(darkRoomRightWallPosition, floorWidth, 2, 0.1, 0x000000, Math.PI, undefined, false);
 scene.add(darkRoomRightWall);
 darkRoomRightWall.updateMatrixWorld(true);
 darkRoomRightWall.boundingBox = new THREE.Box3().setFromObject(darkRoomRightWall);
 collidableObjects.push(darkRoomRightWall);
 
-// const leftWallBounds = createRotatedWallWithDoorHole(scene, -floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x00ff00,
-//                        floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight + 0.1);
-    
-  
-  
-
-// const rightWallBounds = createRotatedWallWithDoorHole(scene, floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x0000ff,
-//                        floorWidth, ceilingPositionY + 19.1, 0.1, doorWidth * 2, doorHeight + 0.1);
-// rightWallBounds.forEach(bounds => collidableObjects.push(bounds));
-
+//Dark Room Paitings
 
 
 //---------------------Animate------------------

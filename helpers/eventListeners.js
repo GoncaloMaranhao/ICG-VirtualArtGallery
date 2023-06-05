@@ -42,7 +42,7 @@ export function initializeEventListener() {
 }
 
 window.addEventListener('keydown', function (event) {
-  if (event.key === 'i') {
+  if (event.key === 'x') {
     const raycaster = new THREE.Raycaster();
     const direction = new THREE.Vector2(0, 0);
     raycaster.setFromCamera(direction, camera);
