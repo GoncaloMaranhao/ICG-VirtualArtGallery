@@ -6,7 +6,7 @@ export function createSimpleWall(position, width, height, depth, color, rotation
   const geometry = new THREE.BoxGeometry(width, height, depth);
 
   if (!material) {
-    material = new THREE.MeshPhongMaterial({ color, side: THREE.DoubleSide });
+    material = new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide });
   }
 
   const mesh = new THREE.Mesh(geometry, material);

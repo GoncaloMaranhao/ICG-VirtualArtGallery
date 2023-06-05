@@ -440,23 +440,36 @@ scene.add(sunnyPointLight4);
 // cube.castShadow = true;
 // scene.add(cube);
 
-  // let width = 50; // Width of the wall
-  // let height = 10; // Height of the wall
-  // let depth = 1; // Depth of the wall
-  // let color = 0xff0000; // Color of the wall in hexadecimal (Red)
-  // let rotationY = Math.PI / 4; // Rotation of the wall in radians (45 degrees)
-  
   // const leftWallBounds = createRotatedWallWithDoorHole(scene, -floorWidth / 2, 0, floorWidth / 2, 
                           // Math.PI / 2, 0x00ff00,
   //                      floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight + 0.1);
 
   // createWallWithDoorHole(scene, x, y, z, rotationY, color, width, height, depth, doorWidth, doorHeight) {
-    let wall123Position = new THREE.Vector3(-floorWidth * 2, 0, floorWidth/ 8); // Position of the wall
-    const wall123 = createSimpleWall(wall123Position, floorWidth, 5, 0.1, 0xff0000, Math.PI / 2);
-    scene.add(wall123);
-    wall123.updateMatrixWorld(true); // Force updating the object's world matrix
-    wall123.boundingBox = new THREE.Box3().setFromObject(wall123);
-    collidableObjects.push(wall123);
+
+//Black walls for collision in DarkRoom
+let darkRoomFrontWallPosition = new THREE.Vector3(-floorWidth * 1.5, 0, 0);
+const darkRoomFrontWall = createSimpleWall(darkRoomFrontWallPosition, floorWidth, 2, 0.1, 0x000000, Math.PI / 2);
+scene.add(darkRoomFrontWall);
+darkRoomFrontWall.updateMatrixWorld(true);
+darkRoomFrontWall.boundingBox = new THREE.Box3().setFromObject(darkRoomFrontWall);
+collidableObjects.push(darkRoomFrontWall);
+
+let darkRoomLeftWallPosition = new THREE.Vector3(-floorWidth, 0, floorWidth / 2);
+const darkRoomLeftWall = createSimpleWall(darkRoomLeftWallPosition, floorWidth, 2, 0.1, 0x000000, Math.PI);
+scene.add(darkRoomLeftWall);
+darkRoomLeftWall.updateMatrixWorld(true);
+darkRoomLeftWall.boundingBox = new THREE.Box3().setFromObject(darkRoomLeftWall);
+collidableObjects.push(darkRoomLeftWall);
+
+let darkRoomRightWallPosition = new THREE.Vector3(-floorWidth, 0, -floorWidth / 2);
+const darkRoomRightWall = createSimpleWall(darkRoomRightWallPosition, floorWidth, 2, 0.1, 0x000000, Math.PI);
+scene.add(darkRoomRightWall);
+darkRoomRightWall.updateMatrixWorld(true);
+darkRoomRightWall.boundingBox = new THREE.Box3().setFromObject(darkRoomRightWall);
+collidableObjects.push(darkRoomRightWall);
+
+// const leftWallBounds = createRotatedWallWithDoorHole(scene, -floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x00ff00,
+//                        floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight + 0.1);
     
   
   
