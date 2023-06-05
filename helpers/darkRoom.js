@@ -88,7 +88,7 @@ export function generatePlanets(numPlanets, restrictedZones) {
         const spriteMaterial = new THREE.SpriteMaterial({
             map: new THREE.TextureLoader().load(glowTexturePath),
             color: color,
-            transparent: false,
+            transparent: true,
             blending: THREE.AdditiveBlending
         });
         const sprite = new THREE.Sprite(spriteMaterial);
@@ -99,14 +99,13 @@ export function generatePlanets(numPlanets, restrictedZones) {
         const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(1000));
         const position = generatePosition(restrictedZones);
         position.y = 605/2 + THREE.MathUtils.randFloatSpread(50); 
-        const scaleFactor = 1; //Closer or farther away from the sun 
+        const scaleFactor = 1.5; //Closer or farther away from the sun 
         planet.orbitRadius = scaleFactor * position.distanceTo(new THREE.Vector3(0, 0, 0)); 
         planet.angle = Math.random() * Math.PI * 2; 
 
         planet.position.copy(position);
-        // planet.position.set(x, y, z);
         
-        planet.rotationSpeed = Math.random() * 0.02;
+        planet.rotationSpeed = Math.random() * 0.002;
         
         planet.rotationAxis = new THREE.Vector3(Math.random(), Math.random(), Math.random()).normalize();
         
@@ -119,13 +118,8 @@ export function generatePlanets(numPlanets, restrictedZones) {
         });
         const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
         planet.add(atmosphere);
-
-        // const light = new THREE.PointLight(0xffffff, 1, 3000);
-        // light.position.set(0, 0, 0);
-        // planet.add(light);
-
         
-        if (Math.random() > 0.7) { // 30% chance to have a ring
+        if (Math.random() > 0.6) { // 40% chance to have a ring
             const ringSize = THREE.MathUtils.randFloat(1.2, 1.5);
             const ringThickness = THREE.MathUtils.randFloat(0.1, 0.3);
             const ringGeometry = new THREE.RingGeometry(radius * ringSize, radius * ringSize + radius * ringThickness, 64);            const ringMaterial = new THREE.MeshBasicMaterial({ 
