@@ -32,7 +32,7 @@ export function updatePosition(camera) {
   const left = new THREE.Vector3();
 
   camera.getWorldDirection(forward);
-  //forward.y = 0;
+  forward.y = 0;
   forward.normalize();
 
   right.copy(forward).cross(camera.up);

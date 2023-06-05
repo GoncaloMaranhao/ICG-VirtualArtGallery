@@ -422,7 +422,7 @@ const restrictedZones = [planets1Bounds, planets2Bounds];
 
 const stars = generateStars(1000, restrictedZonesForStarts);
 scene.add(stars);
-const planets = generatePlanets(10, restrictedZones);
+const planets = generatePlanets(100, restrictedZones);
 scene.add(planets);
 
 const sun = generateSun(restrictedZones);
