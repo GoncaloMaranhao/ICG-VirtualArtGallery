@@ -122,29 +122,29 @@ scene.add(spotLight);
 //--------------------------_Sunny Room_----------------------
 
 // -> This lights are to remove when delivering the project
-const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 50);
-sunnyPointLight.castShadow = true;
-sunnyPointLight.receiveShadow = true;
-sunnyPointLight.position.set(floorWidth, 2, 0);
-sunnyPointLight.shadow.bias = -0.005;
-scene.add(sunnyPointLight);
+// const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 50);
+// sunnyPointLight.castShadow = true;
+// sunnyPointLight.receiveShadow = true;
+// sunnyPointLight.position.set(floorWidth, 2, 0);
+// sunnyPointLight.shadow.bias = -0.005;
+// scene.add(sunnyPointLight);
 
 
-const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
-pointLight.position.set(0, 2, 0);
-scene.add(pointLight);
+// const pointLight4 = new THREE.PointLight(0xffffff, 1.0, 100);
+// pointLight4.position.set(0, 2, 0);
+// scene.add(pointLight4);
 
-const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 50);
-sunnyPointLight2.position.set(floorWidth + 10, 2, 0);
-scene.add(sunnyPointLight2);
+// const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 50);
+// sunnyPointLight2.position.set(floorWidth + 10, 2, 0);
+// scene.add(sunnyPointLight2);
 
-const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 50);
-sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
-scene.add(sunnyPointLight3);
+// const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 50);
+// sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
+// scene.add(sunnyPointLight3);
 
-const sunnyPointLight4 = new THREE.PointLight(0xffffff, 1.0, 1000);
-sunnyPointLight4.position.set(-50, 2, 0);
-scene.add(sunnyPointLight4);
+// const sunnyPointLight4 = new THREE.PointLight(0xffffff, 1.0, 1000);
+// sunnyPointLight4.position.set(-50, 2, 0);
+// scene.add(sunnyPointLight4);
 
 
 
@@ -604,10 +604,59 @@ darkRoomRightWall.updateMatrixWorld(true);
 darkRoomRightWall.boundingBox = new THREE.Box3().setFromObject(darkRoomRightWall);
 collidableObjects.push(darkRoomRightWall);
 
+//-------------------------___Final Room___------------------------------------------
+let finalFrontWallPosition = new THREE.Vector3(1, 2, -21);
+const finalFrontWall = createSimpleWall(finalFrontWallPosition, floorWidth / 2, 7, 0.1, 0xff0000, Math.PI, undefined, false);
+scene.add(finalFrontWall);
+finalFrontWall.updateMatrixWorld(true);
+finalFrontWall.boundingBox = new THREE.Box3().setFromObject(finalFrontWall);
+collidableObjects.push(finalFrontWall);
+
+let finalLeftWallPosition = new THREE.Vector3(-5, 2, -17);
+const finalLeftWall = createSimpleWall(finalLeftWallPosition, 9, 7, 0.1, 0xff0000, Math.PI / 2, undefined, false);
+scene.add(finalLeftWall);
+finalLeftWall.updateMatrixWorld(true);
+finalLeftWall.boundingBox = new THREE.Box3().setFromObject(darkRoomLeftWall);
+collidableObjects.push(finalLeftWall);
+
+let finalRightWallPosition = new THREE.Vector3(6, 2, -17);
+const finalRightWall = createSimpleWall(finalRightWallPosition, 9, 7, 0.1, 0xff0000, Math.PI / 2, undefined, false);
+scene.add(finalRightWall);
+finalRightWall.updateMatrixWorld(true);
+finalRightWall.boundingBox = new THREE.Box3().setFromObject(darkRoomRightWall);
+collidableObjects.push(finalRightWall);
+
+const floorFinalPosition = new THREE.Vector3(0.5, 0, -15.5);
+
+const floorFinal = createFloor(11, 0.1, 11, floorMaterial, floorFinalPosition);
+scene.add(floorFinal);
+floorFinal.updateMatrixWorld(true);
+floorFinal.boundingBox = new THREE.Box3().setFromObject(floorFinal);
+collidableObjects.push(floorFinal);
+
+const pointLight = new THREE.PointLight(0xffffff, 1.0, 12);
+pointLight.position.set(0.5, 1, -18.5);
+scene.add(pointLight);
+
+const rotationPainting = new THREE.Vector3(0, 0, Math.PI / 2);
+
+positionPainting.x = 0;
+positionPainting.y = 2;
+positionPainting.z = -21;
+createPainting(scene, positionPainting, rotationPainting, normalPaitingwidth + 1, 
+  normalPaitingHeight + 1, normalPaitingFrameThickness, './assets/textures/final.jpg', {
+    name: "ICG-VirtualArtGallery",
+    artist: "Gonçalo Maranhão",
+    year: "2023",
+    description: "Thank you for playing, this is a project made my Gonçalo Maranhão in the context of the class of Introduction to Computer Graphics in University of Aveiro, you can check the code at https://github.com/GoncaloMaranhao/ICG-VirtualArtGallery. If you have come directly towards this room I advise you to go to the room that you can see at the beginning to start the exploration. Remember that you can press the 'e' button to open or close doors and most importantly the 'x' button to see a painting's information."
+    }
+  );
+
+
 //   const cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
 // const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 // const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-// cube.position.set(-30, 2, 0);
+// cube.position.set(0.5, 5, -15.5);
 // scene.add(cube);
   
 
