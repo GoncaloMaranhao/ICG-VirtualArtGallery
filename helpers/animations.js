@@ -123,7 +123,7 @@ export function startStatueRotation(object) {
     canPressR = false;
     setTimeout(() => {
       canPressR = true;
-    }, 1000);  // 1s delay
+    }, 1000);  // 1s delay to prevent weird bugs when a player tries to rotate a statue right having rotated another statue
   }
 }
 

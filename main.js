@@ -31,9 +31,6 @@ initializeEventListener(camera, startStatueRotation);
 
 const textureLoader = new THREE.TextureLoader();
 
-// const texture = textureLoader.load('assets/textures/Statue_Remeshed_Diffuse1K.png');
-// const material = new THREE.MeshPhongMaterial({ map: texture });
-
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath('./threejs/draco/draco/');
 
@@ -122,33 +119,6 @@ spotLight.shadow.bias = -0.005;
 scene.add(spotLight);
 
 //--------------------------_Sunny Room_----------------------
-
-// -> This lights are to remove when delivering the project
-// const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 50);
-// sunnyPointLight.castShadow = true;
-// sunnyPointLight.receiveShadow = true;
-// sunnyPointLight.position.set(floorWidth, 2, 0);
-// sunnyPointLight.shadow.bias = -0.005;
-// scene.add(sunnyPointLight);
-
-
-// const pointLight4 = new THREE.PointLight(0xffffff, 1.0, 100);
-// pointLight4.position.set(0, 2, 0);
-// scene.add(pointLight4);
-
-// const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 50);
-// sunnyPointLight2.position.set(floorWidth + 10, 2, 0);
-// scene.add(sunnyPointLight2);
-
-// const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 50);
-// sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
-// scene.add(sunnyPointLight3);
-
-// const sunnyPointLight4 = new THREE.PointLight(0xffffff, 1.0, 1000);
-// sunnyPointLight4.position.set(-50, 2, 0);
-// scene.add(sunnyPointLight4);
-
-
 
 const sunnyFloorTexture = textureLoader.load('./assets/textures/Substance_Graph_BaseColor.jpg');
 const sunnyFloorMaterial = new THREE.MeshPhongMaterial({ map: sunnyFloorTexture });
@@ -479,7 +449,6 @@ window.addEventListener('statueFacingCorrectDirection', function (event) {
   }
 });
 
-
 const gardenPosition = { x: 30, y: 0.5, z: 0 };
 createGarden(scene, gardenPosition, 8, 4, 100, 0.1, Math.PI / 2);
 
@@ -653,15 +622,6 @@ createPainting(scene, positionPainting, rotationPainting, normalPaitingwidth + 1
     description: "Thank you for playing, this is a project made my Gonçalo Maranhão in the context of the class of Introduction to Computer Graphics in University of Aveiro, you can check the code at https://github.com/GoncaloMaranhao/ICG-VirtualArtGallery. If you have come directly towards this room I advise you to go to the room that you can see at the beginning to start the exploration. Remember that you can press the 'e' button to open or close doors and most importantly the 'x' button to see a painting's information."
     }
   );
-
-
-//   const cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
-// const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-// const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-// cube.position.set(0.5, 5, -15.5);
-// scene.add(cube);
-  
-
 
 //---------------------Animate------------------
 

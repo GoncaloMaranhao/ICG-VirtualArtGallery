@@ -1,6 +1,6 @@
 import * as THREE from '../threejs/three.module.js';
 import { camera, scene, models, sunnyRoomDoor, isInsideSunnyRoom, 
-         sunnyRoomBoundary, frontDoor, isInsideDarkRoom, enteredDarkRoom } from '../main.js';
+         sunnyRoomBoundary} from '../main.js';
 import { openDoor, startStatueRotation } from './animations.js';
 
 // Lock the door when the player enters the sunnyRoom

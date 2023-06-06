@@ -10,25 +10,31 @@ function createVaultedWall(width, height, depth, segments, doorWidth, doorHeight
   width += widthScale;
   height += heightScale;
 
+  // Create a curve to represent the vaulted shape of the wall
   const curve = new THREE.QuadraticBezierCurve(
     new THREE.Vector2(0, 0),
     new THREE.Vector2(width / 2, height),
     new THREE.Vector2(width, 0)
   );
-
+  
+  // Get points along the curve
   const points = curve.getPoints(segments);
 
   const geometry = new THREE.BufferGeometry();
+  // holds the coordinates for each vertex
   const vertices = [];
+  // holds the indices that define each triangular face
   const indices = [];
 
   points.forEach((point) => {
     if (point.x > 0 && point.x < doorWidth && point.y < doorHeight) {
       return;
     }
+  // push each point's coordinates to the vertices array twice, once for the front and once for the back
     vertices.push(point.x, point.y, 0);
     vertices.push(point.x, point.y, depth);
   });
+    // creating the faces of the wall
   for (let i = 0; i < vertices.length / 3 - 2; i += 2) {
     indices.push(i, i + 1, i + 2);
     indices.push(i + 1, i + 3, i + 2);
@@ -36,6 +42,7 @@ function createVaultedWall(width, height, depth, segments, doorWidth, doorHeight
 
   geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
   geometry.setIndex(indices);
+  // this is to fix the lightning
   geometry.computeVertexNormals();
 
   const material = new THREE.MeshPhongMaterial({ color: 0x654321, side: THREE.DoubleSide });
@@ -142,7 +149,6 @@ const loader2 = new THREE.TextureLoader();
 const texturePath = './assets/textures/green-artificial-grass-textured-background.jpg';
 
 export function createGarden(scene, position, outerRadius, innerRadius, flowerCount, thickness, rotationX = Math.PI / 2) {
-  // Load the texture
   const texture = loader2.load(texturePath);
 
   const gardenShape = new THREE.Shape()
@@ -157,7 +163,6 @@ export function createGarden(scene, position, outerRadius, innerRadius, flowerCo
   
   const gardenGeometry = new THREE.ExtrudeGeometry(gardenShape, { depth: thickness, bevelEnabled: false });
   
-  // Use the loaded texture in the material
   const gardenMaterial = new THREE.MeshPhongMaterial({ map: texture });
   
   const garden = new THREE.Mesh(gardenGeometry, gardenMaterial);

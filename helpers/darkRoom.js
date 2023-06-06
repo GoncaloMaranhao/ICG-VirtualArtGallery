@@ -78,16 +78,15 @@ export function generatePlanets(numPlanets, restrictedZones) {
 
         const planet = new THREE.Mesh(geometry, material);
 
-        // Create a slightly larger sphere for the glow effect
+        // Create a slightly larger sphere for the glow effect ( this is to fix the weird rectangle bug that happens at certain angles )
         const glowGeometry = new THREE.SphereGeometry(radius * 1.05, 64, 64);
         const glowMaterial = new THREE.MeshBasicMaterial({
             color: color,
             transparent: true,
-            opacity: 0,  // Adjust to get the desired effect
+            opacity: 0,  
         });
         const glowMesh = new THREE.Mesh(glowGeometry, glowMaterial);
 
-        // Add the glow mesh to the planet
         planet.add(glowMesh);
 
         const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(1000));
@@ -135,7 +134,6 @@ export function generatePlanets(numPlanets, restrictedZones) {
     return planets;
 }
 
-
 export function generateSun() {
     const radius = 400; 
     const texturePath = './assets/textures/venus_surface.jpg';  
@@ -164,8 +162,6 @@ export function generateSun() {
 
     return sun;
 }
-
-
 
 export function animatePlanets(planets, sun) {
     const center = sun.position;
