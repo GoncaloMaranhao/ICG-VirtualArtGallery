@@ -93,7 +93,7 @@ export function createWallWithDoorHole(scene, x, y, z, rotationY, color, width, 
 }
 
 const loader = new THREE.TextureLoader();
-const texturePath = '../assets/textures/Bark_007_BaseColor.jpg'; // Replace this with the path to your texture file
+const texturePath = './assets/textures/Bark_007_BaseColor.jpg'; // Replace this with the path to your texture file
 
 
 // This function is basically the same as before but I need to do another one because of collision.

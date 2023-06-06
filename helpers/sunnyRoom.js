@@ -139,7 +139,7 @@ export function createWallWithTwoWindows(position, wallWidth, wallHeight, wallDe
   return mesh;
 }
 const loader2 = new THREE.TextureLoader();
-const texturePath = '../assets/textures/green-artificial-grass-textured-background.jpg';
+const texturePath = './assets/textures/green-artificial-grass-textured-background.jpg';
 
 export function createGarden(scene, position, outerRadius, innerRadius, flowerCount, thickness, rotationX = Math.PI / 2) {
   // Load the texture

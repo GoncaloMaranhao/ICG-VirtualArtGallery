@@ -66,7 +66,7 @@ export function generatePlanets(numPlanets, restrictedZones) {
 
         const geometry = new THREE.SphereGeometry(radius, 64, 64);
 
-        const texturePath = '../assets/textures/2k_jupiter.jpg'; 
+        const texturePath = './assets/textures/2k_jupiter.jpg'; 
         const texture = texturePath ? textureLoader.load(texturePath) : null;
 
         const materialOptions = {
