@@ -363,7 +363,7 @@ createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse,
   );
 positionPainting.x = positionPaintingX + 10;
 positionPainting.y = positionPaintingY + 9;
-positionPainting.z = positionPaintingZ + 5;
+positionPainting.z = positionPaintingZ + 5.2;
 createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse2, 10, 9, normalPaitingFrameThickness, './assets/textures/michelan.webp');
 positionPainting.x = positionPaintingX + 23;
 createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse2, 10, 9, normalPaitingFrameThickness, './assets/textures/the-persistence-of-mem.jpg');
@@ -629,7 +629,7 @@ createPainting(scene, positionPainting, rotationPainting, normalPaitingwidth + 1
     name: "ICG-VirtualArtGallery",
     artist: "Gonçalo Maranhão",
     year: "2023",
-    description: "Thank you for playing, this is a project made my Gonçalo Maranhão in the context of the class of Introduction to Computer Graphics in University of Aveiro, you can check the code at https://github.com/GoncaloMaranhao/ICG-VirtualArtGallery. If you have come directly towards this room I advise you to go to the room that you can see at the beginning to start the exploration. Remember that you can press the 'e' button to open or close doors and most importantly the 'x' button to see a painting's information."
+    description: "Thank you for playing, this is a project made by Gonçalo Maranhão in the context of the class of Introduction to Computer Graphics in University of Aveiro, you can check the code at https://github.com/GoncaloMaranhao/ICG-VirtualArtGallery. If you have come directly towards this room I advise you to go to the room that you can see at the beginning to start the exploration. Remember that you can press the 'e' button to open or close doors and most importantly the 'x' button to see a painting's information."
     }
   );
 
