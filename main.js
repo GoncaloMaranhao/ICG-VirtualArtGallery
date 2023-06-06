@@ -29,8 +29,8 @@ initializeEventListener(camera, startStatueRotation);
 
 const textureLoader = new THREE.TextureLoader();
 
-const texture = textureLoader.load('assets/textures/Statue_Remeshed_Diffuse1K.png');
-const material = new THREE.MeshPhongMaterial({ map: texture });
+// const texture = textureLoader.load('assets/textures/Statue_Remeshed_Diffuse1K.png');
+// const material = new THREE.MeshPhongMaterial({ map: texture });
 
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath('./threejs/draco/draco/');
@@ -122,29 +122,29 @@ scene.add(spotLight);
 //--------------------------_Sunny Room_----------------------
 
 // -> This lights are to remove when delivering the project
-// const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 50);
-// sunnyPointLight.castShadow = true;
-// sunnyPointLight.receiveShadow = true;
-// sunnyPointLight.position.set(floorWidth, 2, 0);
-// sunnyPointLight.shadow.bias = -0.005;
-// scene.add(sunnyPointLight);
+const sunnyPointLight = new THREE.PointLight(0xffffff, 1.0, 50);
+sunnyPointLight.castShadow = true;
+sunnyPointLight.receiveShadow = true;
+sunnyPointLight.position.set(floorWidth, 2, 0);
+sunnyPointLight.shadow.bias = -0.005;
+scene.add(sunnyPointLight);
 
 
-// const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
-// pointLight.position.set(0, 2, 0);
-// scene.add(pointLight);
+const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
+pointLight.position.set(0, 2, 0);
+scene.add(pointLight);
 
-// const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 50);
-// sunnyPointLight2.position.set(floorWidth + 10, 2, 0);
-// scene.add(sunnyPointLight2);
+const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 50);
+sunnyPointLight2.position.set(floorWidth + 10, 2, 0);
+scene.add(sunnyPointLight2);
 
-// const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 50);
-// sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
-// scene.add(sunnyPointLight3);
+const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 50);
+sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
+scene.add(sunnyPointLight3);
 
-// const sunnyPointLight4 = new THREE.PointLight(0xffffff, 1.0, 1000);
-// sunnyPointLight4.position.set(-50, 2, 0);
-// scene.add(sunnyPointLight4);
+const sunnyPointLight4 = new THREE.PointLight(0xffffff, 1.0, 1000);
+sunnyPointLight4.position.set(-50, 2, 0);
+scene.add(sunnyPointLight4);
 
 
 
@@ -549,7 +549,7 @@ const restrictedZones = [planets1Bounds, planets2Bounds];
 
 const stars = generateStars(1000, restrictedZonesForStarts);
 scene.add(stars);
-const planets = generatePlanets(10, restrictedZones);
+const planets = generatePlanets(100, restrictedZones);
 scene.add(planets);
 
 const sun = generateSun(restrictedZones);
@@ -603,21 +603,6 @@ scene.add(darkRoomRightWall);
 darkRoomRightWall.updateMatrixWorld(true);
 darkRoomRightWall.boundingBox = new THREE.Box3().setFromObject(darkRoomRightWall);
 collidableObjects.push(darkRoomRightWall);
-
-//Dark Room Paitings
-positionPainting.x = positionPaintingX -50;
-positionPainting.y = positionPaintingY + 1;
-positionPainting.z = positionPaintingZ - 14;
-
-createPainting(scene, positionPainting, rotationPaintingVertical, 2, 3, 0.1, './assets/textures/151090.jpg') 
-positionPainting.z = positionPaintingZ - 10;
-createPainting(scene, positionPainting, rotationPaintingVertical, 2, 3, 0.1, './assets/textures/151090.jpg') 
-positionPainting.z = positionPaintingZ + 5;
-createPainting(scene, positionPainting, rotationPaintingVertical, 2, 3, 0.1, './assets/textures/151090.jpg') 
-positionPainting.z = positionPaintingZ + 1;
-createPainting(scene, positionPainting, rotationPaintingVertical, 2, 3, 0.1, './assets/textures/151090.jpg') 
-
-
 
 //   const cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
 // const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
