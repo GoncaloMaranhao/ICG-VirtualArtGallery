@@ -3,7 +3,7 @@ export function openDoor(doorGroup) {
   const leftDoorPivot = doorGroup.children[0];
   const rightDoorPivot = doorGroup.children[1];
 
-  const animationDuration = 1000;
+  const animationDuration = 2000;
   const startTime = performance.now(); 
   const isOpen = leftDoorPivot.rotation.y <= -1;
 

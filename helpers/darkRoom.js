@@ -38,7 +38,6 @@ function generatePositionForStars(restrictedZones) {
     }
 }
 
-
 export function generateStars(numStars, restrictedZones) {
     const stars = new THREE.Group();
 
@@ -55,7 +54,6 @@ export function generateStars(numStars, restrictedZones) {
     
     return stars;
 }
-
 
 export function generatePlanets(numPlanets, restrictedZones) {
     const planets = new THREE.Group();
@@ -92,7 +90,7 @@ export function generatePlanets(numPlanets, restrictedZones) {
         const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(1000));
         const position = generatePosition(restrictedZones);
         position.y = 605/2 + THREE.MathUtils.randFloatSpread(50); 
-        const scaleFactor = 2; 
+        const scaleFactor = 2; // CLoser or further from the sun
         planet.orbitRadius = scaleFactor * position.distanceTo(new THREE.Vector3(0, 0, 0)); 
         planet.angle = Math.random() * Math.PI * 2;
 
@@ -102,6 +100,7 @@ export function generatePlanets(numPlanets, restrictedZones) {
         
         planet.rotationAxis = new THREE.Vector3(Math.random(), Math.random(), Math.random()).normalize();
 
+        // This is to fix the rectangle associated with the planets
         const atmosphereGeometry = new THREE.SphereGeometry(radius * 1.01, 64, 64);
         const atmosphereMaterial = new THREE.MeshPhongMaterial({
             color: color,
@@ -112,7 +111,7 @@ export function generatePlanets(numPlanets, restrictedZones) {
         const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
         planet.add(atmosphere);
         
-        if (Math.random() > 0.6) {
+        if (Math.random() > 0.6) { // 40% chance to produce a ring
             const ringSize = THREE.MathUtils.randFloat(1.2, 1.5);
             const ringThickness = THREE.MathUtils.randFloat(0.1, 0.3);
             const ringGeometry = new THREE.RingGeometry(radius * ringSize, radius * ringSize + radius * ringThickness, 64);
@@ -125,6 +124,7 @@ export function generatePlanets(numPlanets, restrictedZones) {
             planet.add(ring);
         }
 
+        // elliptical movement
         planet.orbitRadiusX = planet.orbitRadius * THREE.MathUtils.randFloat(0.5, 1.5);
         planet.orbitRadiusZ = planet.orbitRadius;
 

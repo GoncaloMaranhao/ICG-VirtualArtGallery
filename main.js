@@ -125,7 +125,6 @@ const sunnyFloorMaterial = new THREE.MeshPhongMaterial({ map: sunnyFloorTexture 
 sunnyFloorMaterial.castShadow = true;
 sunnyFloorMaterial.receiveShadow = true;
 
-
 const sunnyFloorWidth = 40;
 const sunnyFloorHeight = 0.1;
 const sunnyFloorDepth = sunnyFloorWidth - 15;
@@ -142,8 +141,6 @@ const sunnyRoom = createSunnyRoom(sunnyRoomWidth, sunnyRoomHeight, sunnyRoomDept
 sunnyRoom.position.set(floorWidth / 2,0 ,floorWidth / 2 );
 
 scene.add(sunnyRoom);
-
-
 
 const wallPosition = { x: 49.5, y: 0.05 , z: 0 };
 const wallWidth = sunnyFloorWidth / 1.5;
@@ -531,7 +528,7 @@ const restrictedZones = [planets1Bounds, planets2Bounds];
 
 const stars = generateStars(1000, restrictedZonesForStarts);
 scene.add(stars);
-const planets = generatePlanets(10, restrictedZones);
+const planets = generatePlanets(100, restrictedZones);
 scene.add(planets);
 
 const sun = generateSun(restrictedZones);
@@ -637,6 +634,7 @@ createPainting(scene, positionPainting, rotationPainting, normalPaitingwidth + 1
 //---------------------Animate------------------
 
 let enteredSunnyRoom = false;
+let doorClosed = false;  // Track if door has been closed
 export let enteredDarkRoom = false;
 
 function animate() {
@@ -646,15 +644,18 @@ function animate() {
 
   if (isInsideSunnyRoom(camera, sunnyRoomBoundary)) {
     enteredSunnyRoom = true; 
-      if(spotLightSunnyRoom3.intensity === 0) {
-          spotLightSunnyRoom.intensity = 1;
-          spotLightSunnyRoom2.intensity = 1;
-          closeDoor(sunnyRoomDoor);
-      }
+    if(spotLightSunnyRoom3.intensity === 0) {
+        spotLightSunnyRoom.intensity = 1;
+        spotLightSunnyRoom2.intensity = 1;
+        if (!doorClosed) {  // Only close the door if it hasn't been closed yet
+            closeDoor(sunnyRoomDoor);
+            doorClosed = true;  // Door has been closed
+        }
+    }
   } else {
-      spotLightSunnyRoom.intensity = 0;
-      spotLightSunnyRoom2.intensity = 0;
-      spotLightSunnyRoom3.intensity = 0;
+    spotLightSunnyRoom.intensity = 0;
+    spotLightSunnyRoom2.intensity = 0;
+    spotLightSunnyRoom3.intensity = 0;
   }
 
   if(enteredSunnyRoom == true){
@@ -664,7 +665,7 @@ function animate() {
     sun.rotation.y += 0.001;
   }
   if (isInsideDarkRoom(camera, darkRoomBoundary)) {
-    enteredDarkRoom == true;
+    enteredDarkRoom = true;  // Should be =, not ==
   }
 
   updatePosition(camera);
@@ -672,6 +673,7 @@ function animate() {
 }
 
 animate();
+
 
 
 

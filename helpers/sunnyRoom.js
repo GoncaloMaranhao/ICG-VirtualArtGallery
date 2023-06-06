@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { FBXLoader } from '../threejs/FBXLoader.js';
+import { GLTFLoader } from '../threejs/GLTFLoader.js';
 import { collidableObjects } from '../main.js';
 
 function createVaultedWall(width, height, depth, segments, doorWidth, doorHeight) {
@@ -173,25 +174,37 @@ export function createGarden(scene, position, outerRadius, innerRadius, flowerCo
   
   scene.add(garden);
   
-  const loader = new FBXLoader();
-  loader.load('./assets/models/Flowers.fbx',
-    (flowerModel) => {
+  const loader = new GLTFLoader();
+  loader.load(
+    './assets/models/Flowers2.glb',
+    (gltf) => {
       for (let i = 0; i < flowerCount; i++) {
-        let flower = flowerModel.clone();
-        
-        flowerModel.traverse(function (node) {
+        let flower = gltf.scene.clone();
+  
+        flower.traverse(function (node) {
           if (node instanceof THREE.Mesh) {
             node.castShadow = true;
             node.receiveShadow = true;
+            if (node.material) {
+              if (node.material instanceof THREE.MeshPhongMaterial) {
+                node.material.shininess = 10;
+              }
+              if (node.material instanceof THREE.MeshStandardMaterial) {
+                node.material.roughness = 0.8; 
+              }
+            }
           }
         });
-        
-        const scale = 0.01; 
+        const scale = 1;
         flower.scale.set(scale, scale, scale);
-          
+  
         let angle = Math.random() * Math.PI * 2;
         let rad = outerRadius - 1.9;
-        flower.position.set(rad * Math.cos(angle) + position.x - 1.5, position.y, rad * Math.sin(angle) + position.z + 0.5);
+        flower.position.set(
+          rad * Math.cos(angle) + position.x - 1.5,
+          position.y,
+          rad * Math.sin(angle) + position.z + 0.5
+        );
         scene.add(flower);
       }
     },
@@ -200,6 +213,7 @@ export function createGarden(scene, position, outerRadius, innerRadius, flowerCo
       console.error(err);
     }
   );
+  
 }
 
 export function createCircularWindow(radius, position, rotation, color, material) {
