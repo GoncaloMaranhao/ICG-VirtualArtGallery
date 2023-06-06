@@ -138,7 +138,7 @@ export function generatePlanets(numPlanets, restrictedZones) {
 
 export function generateSun() {
     const radius = 400; 
-    const texturePath = '../assets/textures/venus_surface.jpg';  
+    const texturePath = './assets/textures/venus_surface.jpg';  
 
     const geometry = new THREE.SphereGeometry(radius, 64, 64);
     const texture = texturePath ? textureLoader.load(texturePath) : null;
