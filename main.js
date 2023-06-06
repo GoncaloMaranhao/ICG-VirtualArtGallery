@@ -240,7 +240,7 @@ createPainting(
     name: "A Sunday Afternoon on the Island of La Grande Jatte",
     artist: "Georges Seurat",
     year: "1886",
-    description: "The Starry Night is an oil on canvas painting by Dutch Post-Impressionist painter Vincent van Gogh."
+    description: "Georges Seurat’s masterpiece, evoking the Paris of La Belle Epoque, is actually depicting a working-class suburban scene well outside the city’s center. Seurat often made this milieu his subject, which differed from the bourgeois portrayals of his Impressionist contemporaries. Seurat abjured the capture-the-moment approach of Manet, Monet and Degas, going instead for the sense of timeless permanence found in Greek sculpture. And that is exactly what you get in this frieze-like processional of figures whose stillness is in keeping with Seurat’s aim of creating a classical landscape in modern form."
   }
 );
 
