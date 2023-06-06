@@ -130,21 +130,21 @@ scene.add(spotLight);
 // scene.add(sunnyPointLight);
 
 
-const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
-pointLight.position.set(0, 2, 0);
-scene.add(pointLight);
+// const pointLight = new THREE.PointLight(0xffffff, 1.0, 100);
+// pointLight.position.set(0, 2, 0);
+// scene.add(pointLight);
 
-const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 50);
-sunnyPointLight2.position.set(floorWidth + 10, 2, 0);
-scene.add(sunnyPointLight2);
+// const sunnyPointLight2 = new THREE.PointLight(0xffffff, 1.0, 50);
+// sunnyPointLight2.position.set(floorWidth + 10, 2, 0);
+// scene.add(sunnyPointLight2);
 
-const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 50);
-sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
-scene.add(sunnyPointLight3);
+// const sunnyPointLight3 = new THREE.PointLight(0xffffff, 1.0, 50);
+// sunnyPointLight3.position.set(floorWidth + 15, 2, 0);
+// scene.add(sunnyPointLight3);
 
-const sunnyPointLight4 = new THREE.PointLight(0xffffff, 1.0, 1000);
-sunnyPointLight4.position.set(-50, 2, 0);
-scene.add(sunnyPointLight4);
+// const sunnyPointLight4 = new THREE.PointLight(0xffffff, 1.0, 1000);
+// sunnyPointLight4.position.set(-50, 2, 0);
+// scene.add(sunnyPointLight4);
 
 
 
@@ -245,7 +245,9 @@ const positionPainting = new THREE.Vector3(positionPaintingX, positionPaintingY,
 const rotationPaintingVertical = new THREE.Vector3(0, Math.PI / 2, 0);
 const rotationPaintingVerticalInverse = new THREE.Vector3(0, - Math.PI / 2, 0);
 const rotationPaintingHorizontalTilt = new THREE.Vector3(Math.PI / 16, 0, Math.PI / 2);
+const rotationPaintingHorizontalTilt2 = new THREE.Vector3(Math.PI / 8, 0, Math.PI / 2);
 const rotationPaintingHorizontalTiltInverse = new THREE.Vector3(-Math.PI / 14, Math.PI, Math.PI / 2);
+const rotationPaintingHorizontalTiltInverse2 = new THREE.Vector3(-Math.PI / 8, Math.PI, Math.PI / 2);
 
 // Back wall
 createPainting(
@@ -261,20 +263,33 @@ createPainting(
 
 positionPainting.z = positionPaintingZ + 3.5;
 createPainting(scene, positionPainting, rotationPaintingVertical, 
-  2, 3, 0.1, './assets/textures/151090.jpg', {
-    name: "Mona Lisa",
-    artist: "Leonardo da Vinci",
-    year: "1517",
-    description: "The Mona Lisa is a half-length portrait painting by Italian artist Leonardo da Vinci."
+  2, 3, 0.1, './assets/textures/123.jpg', {
+    name: "Girl with a Pearl Earring",
+    artist: "Johannes Vermeer",
+    year: "1665",
+    description: "Johannes Vermeer’s 1665 study of a young woman is startlingly real and startlingly modern, almost as if it were a photograph. This gets into the debate over whether or not Vermeer employed a pre-photographic device called a camera obscura to create the image. Leaving that aside, the sitter is unknown, though it’s been speculated that she might have been Vermeer's maid. He portrays her looking over her shoulder, locking her eyes with the viewer as if attempting to establish an intimate connection across the centuries. Technically speaking, Girl isn’t a portrait, but rather an example of the Dutch genre called a tronie—a headshot meant more as still life of facial features than as an attempt to capture a likeness."
   }
 );
 
 
-
 positionPainting.z = positionPaintingZ - 7.5;
-createPainting(scene, positionPainting, rotationPaintingVertical, normalPaitingwidth, normalPaitingHeight, normalPaitingFrameThickness, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingVertical, normalPaitingwidth, 
+  normalPaitingHeight, normalPaitingFrameThickness, './assets/textures/Starry-Night.webp', {
+  name: "The Starry Night",
+  artist: "Vincent van Gogh", 
+  year: "1889",
+  description: "Vincent Van Gogh’s most popular painting, The Starry Night was created by Van Gogh at the asylum in Saint-Rémy, where he’d committed himself in 1889. Indeed, The Starry Night seems to reflect his turbulent state of mind at the time, as the night sky comes alive with swirls and orbs of frenetically applied brush marks springing from the yin and yang of his personal demons and awe of nature."
+  }
+);
 positionPainting.z = positionPaintingZ - 11;
-createPainting(scene, positionPainting, rotationPaintingVertical, 2, normalPaitingHeight, normalPaitingFrameThickness, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingVertical, 2, normalPaitingHeight, 
+  normalPaitingFrameThickness, './assets/textures/the-kiss-.jpg', {
+    name: "The Kiss", 
+    artist: "Gustav Klimt",
+    year: "1907",
+    description: "Opulently gilded and extravagantly patterned, The Kiss, Gustav Klimt’s fin-de-siècle portrayal of intimacy, is a mix of Symbolism and Vienna Jugendstil, the Austrian variant of Art Nouveau. Klimt depicts his subjects as mythical figures made modern by luxuriant surfaces of up-to-the moment graphic motifs. The work is a highpoint of the artist’s Golden Phase between 1899 and 1910 when he often used gold leaf—a technique inspired by a 1903 trip to the Basilica di San Vitale in Ravenna, Italy, where he saw the church’s famed Byzantine mosaics."
+  }
+);
 positionPainting.y = positionPaintingY + 8;
 positionPainting.z = positionPaintingZ - 4;
 createPainting(scene, positionPainting, rotationPaintingVertical, 10, 9, normalPaitingFrameThickness, './assets/textures/151090.jpg');
@@ -283,50 +298,134 @@ createPainting(scene, positionPainting, rotationPaintingVertical, 10, 9, normalP
 positionPainting.x = positionPaintingX + 6;
 positionPainting.y = positionPaintingY + 1;
 positionPainting.z = positionPaintingZ - 15.1;
-createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 
+  normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/zqh.jpeg', {
+    name: "The Harvesters",
+    artist: "Pieter Bruegel", 
+    year: "1565",
+    description: "Bruegel’s fanfare for the common man is considered one of the defining works of Western art. This composition was one of six created on the theme of the seasons. The time is probably early September. A group of peasants on the left cut and bundle ripened wheat, while the on the right, another group takes their midday meal. One figure is sacked out under a tree with his pants unbuttoned. This attention to detail continues throughout the painting as a procession of ever-granular observations receding into space. It was extraordinary for a time when landscapes served mostly as backdrops for religious paintings."
+    }
+  );
 positionPainting.x = positionPaintingX + 13;
-createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 
+  normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/Édouard_Mane.jpg', {
+    name: "Le Déjeuner sur l’herbe",
+    artist: "Édouard Manet", 
+    year: "1863",
+    description: "Manet’s scene of picnicking Parisians caused a scandal when it debuted at the Salon des Refusés, the alternative exhibition made up of works rejected by the jurors of the annual Salon—the official art exhibition of the Académie des Beaux-Arts that set artistic standards in France. The most vociferous objections to Manet’s work centered on the depiction of a nude woman in the company of men dressed in contemporary clothes. Based on motifs borrowed from such Renaissance greats as Raphael and Giorgione, Le Déjeuner was a cheeky send up of classical figuration—an insolent mash-up of modern life and painting tradition."
+    }
+  );
 positionPainting.x = positionPaintingX + 21;
-createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 
+  normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/guernica.jpg', {
+    name: "Guernica",
+    artist: "Pablo Picasso", 
+    year: "1937",
+    description: "Perhaps Picasso’s best-known painting, Guernica is an antiwar cris de coeur occasioned by the 1937 bombing of the eponymous Basque city during the Spanish Civil War by German and Italian aircraft allied with Fascist leader Francisco Franco. The leftist government that opposed him commissioned Picasso to created the painting for the Spanish Pavillion at 1937 World’s Fair in Paris. When it closed, Guernica went on an international tour, before winding up at the Museum of Modern Art in New York. Picasso loaned the painting to MoMA with the stipulation that it be returned to his native Spain once democracy was restored—which it was in 1981, six years after Franco's death in 1975 (Picasso himself died two years before that.) Today, the painting is housed at the Museo Nacional Centro de Arte Reina Sofía in Madrid."
+    }
+  );
 positionPainting.x = positionPaintingX + 30;
-createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 
+  normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/Liberty-jpg', {
+    name: "Liberty Leading the People",
+    artist: "Eugène Delacroix", 
+    year: "1830",
+    description: "Commemorating the July Revolution of 1830, which toppled King Charles X of France, Liberty Leading the People has become synonymous with the revolutionary spirit all over the world. Combining allegory with contemporary elements, the painting is a thrilling example of the Romantic style, going for the gut with its titular character brandishing the French Tricolor as members of different classes unite behind her to storm a barricade strewn with the bodies of fallen comrades. The image has inspired other works of art and literature, including the Statue of Liberty and Victor Hugo’s novel Les Misérables."
+    }
+  );
 positionPainting.x = positionPaintingX + 10;
 positionPainting.y = positionPaintingY + 9;
-positionPainting.z = positionPaintingZ - 13;
-createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 10, 9, normalPaitingFrameThickness, './assets/textures/151090.jpg');
+positionPainting.z = positionPaintingZ - 11.5;
+createPainting(scene, positionPainting, rotationPaintingHorizontalTilt2, 10, 9, normalPaitingFrameThickness, './assets/textures/impression-sunrise.jpg');
 positionPainting.x = positionPaintingX + 23;
-createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 10, 9, normalPaitingFrameThickness, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingHorizontalTilt2, 10, 9, normalPaitingFrameThickness, './assets/textures/JEAN_.jpg');
 
 //Right Wall
 positionPainting.x = positionPaintingX + 6;
 positionPainting.y = positionPaintingY + 1;
 positionPainting.z = positionPaintingZ + 8.15;
-createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 
+  normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/edward-hopper-nighthawks-1942-i116339.jpg', {
+    name: "Nighthawks",
+    artist: "Edward Hopper", 
+    year: "1942",
+    description: "An iconic depiction of urban isolation, Nighthawks depicts a quarter of characters at night inside a greasy spoon with an expansive wraparound window that almost takes up the entire facade of the diner. Its brightly lit interior—the only source of illumination for the scene—floods the sidewalk and the surrounding buildings, which are otherwise dark. The restaurant's glass exterior creates a display-case effect that heightens the sense that the subjects (three customers and a counterman) are alone together. It's a study of alienation as the figures studiously ignore each other while losing themselves in a state of reverie or exhaustion. The diner was based on a long-demolished one in Hopper's Greenwich Village neighborhood, and some art historians have suggested that the painting as a whole may have been inspired by Vincent van Gogh’s Café Terrace at Night, which was on exhibit at a gallery Hopper frequented at same time he painted Nighthawks Also of note: The redheaded woman on the far right is the artist's wife Jo, who frequently modeled for him."
+    }
+  );
 positionPainting.x = positionPaintingX + 13;
-createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 
+  normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg', {
+    name: "Wanderer above the Sea of Fog",
+    artist: "Caspar David Friedrich", 
+    year: "1819",
+    description: "The worship of nature, or more precisely, the feeling of awe it inspired, was a signature of the Romantic style in art, and there is no better example on that score than this image of a hiker in the mountains, pausing on a rocky outcrop to take in his surroundings. His back is turned towards the viewer as if he were too enthralled with the landscape to turn around, but his pose offers a kind of over-the-shoulder view that draws us into vista as if we were seeing it through his eyes."
+    }
+  );
 positionPainting.x = positionPaintingX + 21;
-createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 
+  normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/Diego-Velazquez-Las-Meninas-detail-1656.jpg', {
+    name: "Las Meninas",
+    artist: "Diego Rodríguez de Silva", 
+    year: "1830",
+    description: "A painting of a painting within a painting, Velázquez masterpiece consists of different themes rolled into one: A portrait of Spain’s royal family and retinue in Velázquez’s studio; a self-portrait; an almost art-for-art’s-sake display of bravura brush work; and an interior scene, offering glimpses into Velázquez’s working life. Las Meninas is also a treatise on the nature of seeing, as well as a riddle confounding viewers about what exactly they’re looking at. It’s the visual art equivalent of breaking the fourth wall—or in this case, the studio’s far wall on which there hangs a mirror reflecting the faces of the Spanish King and Queen. Immediately this suggests that the royal couple is on our side of the picture plane, raising the question of where we are in relationship to them. Meanwhile, Velázquez’s full length rendering of himself at his easel begs the question of whether he’s looking in a mirror to paint the picture. In other words, are the subjects of Las Meninas (all of whom are fixing their gaze outside of the frame), looking at us, or looking at themselves?"
+    }
+  );
 positionPainting.x = positionPaintingX + 30;
-createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 
+  normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/Liberty-jpg', {
+    name: "Liberty Leading the People",
+    artist: "Eugène Delacroix", 
+    year: "1897",
+    description: "Commemorating the July Revolution of 1830, which toppled King Charles X of France, Liberty Leading the People has become synonymous with the revolutionary spirit all over the world. Combining allegory with contemporary elements, the painting is a thrilling example of the Romantic style, going for the gut with its titular character brandishing the French Tricolor as members of different classes unite behind her to storm a barricade strewn with the bodies of fallen comrades. The image has inspired other works of art and literature, including the Statue of Liberty and Victor Hugo’s novel Les Misérables."
+    }
+  );
 positionPainting.x = positionPaintingX + 10;
 positionPainting.y = positionPaintingY + 9;
-positionPainting.z = positionPaintingZ + 6;
-createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 10, 9, normalPaitingFrameThickness, './assets/textures/151090.jpg');
+positionPainting.z = positionPaintingZ + 5;
+createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse2, 10, 9, normalPaitingFrameThickness, './assets/textures/michelan.webp');
 positionPainting.x = positionPaintingX + 23;
-createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 10, 9, normalPaitingFrameThickness, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse2, 10, 9, normalPaitingFrameThickness, './assets/textures/the-persistence-of-mem.jpg');
 
 
 //Front wall
 positionPainting.x = positionPaintingX + 36.6;
 positionPainting.y = positionPaintingY + 1;
 positionPainting.z = positionPaintingZ + 5;
-createPainting(scene, positionPainting, rotationPaintingVerticalInverse, normalPaitingwidth + 1, normalPaitingHeight + 1, normalPaitingFrameThickness, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingVerticalInverse, normalPaitingwidth + 1, 
+  normalPaitingHeight + 1, normalPaitingFrameThickness, './assets/textures/Sandro_Botticell.jpg', {
+    name: "The Birth of Venus",
+    artist: "Sandro Botticelli",
+    year: "1486",
+    description: "Botticelli’s The Birth of Venus was the first full-length, non-religious nude since antiquity, and was made for Lorenzo de Medici. It’s claimed that the figure of the Goddess of Love is modeled after one Simonetta Cattaneo Vespucci, whose favors were allegedly shared by Lorenzo and his younger brother, Giuliano. Venus is seen being blown ashore on a giant clamshell by the wind gods Zephyrus and Aura as the personification of spring awaits on land with a cloak. Unsurprisingly, Venus attracted the ire of Savonarola, the Dominican monk who led a fundamentalist crackdown on the secular tastes of the Florentines. His campaign included the infamous “Bonfire of the Vanities” of 1497, in which “profane” objects—cosmetics, artworks, books—were burned on a pyre. The Birth of Venus was itself scheduled for incineration, but somehow escaped destruction. Botticelli, though, was so freaked out by the incident that he gave up painting for a while."
+    }
+  );
 positionPainting.z = positionPaintingZ;
-createPainting(scene, positionPainting, rotationPaintingVerticalInverse, normalPaitingwidth + 1, normalPaitingHeight + 1, normalPaitingFrameThickness, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingVerticalInverse, 
+  normalPaitingwidth + 1, normalPaitingHeight + 1, normalPaitingFrameThickness, './assets/textures/The_Arnolfin.jpg', {
+    name: "The Arnolfini Portrait",
+    artist: "Jan van Eyck",
+    year: "1434",
+    description: "One of the most significant works produced during the Northern Renaissance, this composition is believed to be one of the first paintings executed in oils. A full-length double portrait, it reputedly portrays an Italian merchant and a woman who may or may not be his bride. In 1934, the celebrated art historian Erwin Panofsky proposed that the painting is actually a wedding contract. What can be reliably said is that the piece is one of the first depictions of an interior using orthogonal perspective to create a sense of space that seems contiguous with the viewer’s own; it feels like a painting you could step into."
+    }
+  );
 positionPainting.z = positionPaintingZ -5;
-createPainting(scene, positionPainting, rotationPaintingVerticalInverse, normalPaitingwidth + 1, normalPaitingHeight + 1, normalPaitingFrameThickness, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingVerticalInverse, 
+  normalPaitingwidth + 1, normalPaitingHeight + 1, normalPaitingFrameThickness, './assets/textures/asdzxcv.jpg', {
+    name: "The Garden of Earthly Delights",
+    artist: "Hieronymus Bosch,",
+    year: "1515",
+    description: "This fantastical triptych is generally considered a distant forerunner to Surrealism. In truth, it’s the expression of a late medieval artist who believed that God and the Devil, Heaven and Hell were real. Of the three scenes depicted, the left panel shows Christ presenting Eve to Adam, while the right one features the depredations of Hell; less clear is whether the center panel depicts Heaven. In Bosch’s perfervid vision of Hell, an enormous set of ears wielding a phallic knife attacks the damned, while a bird-beaked bug king with a chamber pot for a crown sits on its throne, devouring the doomed before promptly defecating them out again. This riot of symbolism has been largely impervious to interpretation, which may account for its widespread appeal."
+    }
+  );
 positionPainting.z = positionPaintingZ -10;
-createPainting(scene, positionPainting, rotationPaintingVerticalInverse, normalPaitingwidth + 1, normalPaitingHeight + 1, normalPaitingFrameThickness, './assets/textures/151090.jpg');
+createPainting(scene, positionPainting, rotationPaintingVerticalInverse, 
+  normalPaitingwidth + 1, normalPaitingHeight + 1, normalPaitingFrameThickness, './assets/textures/579px-.jpg', {
+    name: "Les Demoiselles ",
+    artist: "Pablo Picasso",
+    year: "1889",
+    description: "The ur-canvas of 20th-century art, Les Demoiselles d’Avignon ushered in the modern era by decisively breaking with the representational tradition of Western painting, incorporating allusions to the African masks that Picasso had seen in Paris's ethnographic museum at the Palais du Trocadro. Its compositional DNA also includes El Greco’s The Vision of Saint John (1608–14), now hanging in the Metropolitan Museum of Art. The women being depicted are actually prostitutes in a brothel in the artist's native Barcelona."
+    }
+  );
 
 
 //---------------------------_SunnyRoomLight_--------------------------------
