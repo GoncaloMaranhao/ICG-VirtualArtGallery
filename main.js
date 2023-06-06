@@ -1,3 +1,5 @@
+// Author: Gonçalo Rodrigues Maranhão
+
 import * as THREE from './threejs/three.module.js';
 import { FBXLoader } from './threejs/FBXLoader.js';
 import { GLTFLoader } from './threejs/GLTFLoader.js';
@@ -23,7 +25,7 @@ document.body.appendChild(renderer.domElement);
 export const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.y = 1.7;
 
-alert('PLEASE READ THIS. Here are the instructions. In order to gain control of the camera you must click with your right mouse in the middle of the screen. Then you can move the camera with the mouse and move the player with the w,a,s,d keys. You can open or close doors by pressing the key e and MOST IMPORTANTLY you can see a painting information by pressing the key x. There is a point in this game/exploration where you must read at least one paiting (it has something particular, you would be able to tell just by seeing it) information in order to advance. You can press space to remove these textboxes, you dont have to click the ok button with the mouse. ');
+alert('PLEASE READ THIS. Here are the instructions. In order to gain control of the camera you must click with your right mouse in the middle of the screen. Then you can move the camera with the mouse and move the player with the w,a,s,d keys. You can open or close doors by pressing the key e and MOST IMPORTANTLY you can see a painting information by pressing the key x . There is a point in this game/exploration where you must read at least one paiting (it has something particular, you would be able to tell just by seeing it) information in order to advance. You can press space to remove these textboxes, you dont have to click the ok button with the mouse. ');
 
 initializePlayerMovement(camera, renderer);
 
@@ -120,7 +122,7 @@ scene.add(spotLight);
 
 //--------------------------_Sunny Room_----------------------
 
-const sunnyFloorTexture = textureLoader.load('./assets/textures/Substance_Graph_BaseColor.jpg');
+const sunnyFloorTexture = textureLoader.load('./assets/textures/14124.jpg');
 const sunnyFloorMaterial = new THREE.MeshPhongMaterial({ map: sunnyFloorTexture });
 sunnyFloorMaterial.castShadow = true;
 sunnyFloorMaterial.receiveShadow = true;
@@ -528,7 +530,7 @@ const restrictedZones = [planets1Bounds, planets2Bounds];
 
 const stars = generateStars(1000, restrictedZonesForStarts);
 scene.add(stars);
-const planets = generatePlanets(100, restrictedZones);
+const planets = generatePlanets(30, restrictedZones);
 scene.add(planets);
 
 const sun = generateSun(restrictedZones);
@@ -634,7 +636,7 @@ createPainting(scene, positionPainting, rotationPainting, normalPaitingwidth + 1
 //---------------------Animate------------------
 
 let enteredSunnyRoom = false;
-let doorClosed = false;  // Track if door has been closed
+let doorClosed = false; 
 export let enteredDarkRoom = false;
 
 function animate() {
@@ -647,9 +649,9 @@ function animate() {
     if(spotLightSunnyRoom3.intensity === 0) {
         spotLightSunnyRoom.intensity = 1;
         spotLightSunnyRoom2.intensity = 1;
-        if (!doorClosed) {  // Only close the door if it hasn't been closed yet
+        if (!doorClosed) {  
             closeDoor(sunnyRoomDoor);
-            doorClosed = true;  // Door has been closed
+            doorClosed = true;  
         }
     }
   } else {
@@ -665,7 +667,7 @@ function animate() {
     sun.rotation.y += 0.001;
   }
   if (isInsideDarkRoom(camera, darkRoomBoundary)) {
-    enteredDarkRoom = true;  // Should be =, not ==
+    enteredDarkRoom = true; 
   }
 
   updatePosition(camera);

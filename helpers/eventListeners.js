@@ -1,3 +1,5 @@
+// Author: Gonçalo Rodrigues Maranhão
+
 import * as THREE from '../threejs/three.module.js';
 import { camera, scene, models, sunnyRoomDoor, isInsideSunnyRoom, 
          sunnyRoomBoundary} from '../main.js';
@@ -55,7 +57,9 @@ window.addEventListener('keydown', function (event) {
       const painting = intersects[0].object.parent;  
       const userData = painting.userData;
 
-      alert(`${userData.name}\n${userData.artist}\n${userData.year}\n${userData.description}`);
+      if (userData && userData.name && userData.artist && userData.year && userData.description) {
+        alert(`${userData.name}\n${userData.artist}\n${userData.year}\n${userData.description}`);
+      }
     }
   }
 });

@@ -1,3 +1,5 @@
+// Author: Gonçalo Rodrigues Maranhão
+
 export function openDoor(doorGroup) {
 
   const leftDoorPivot = doorGroup.children[0];

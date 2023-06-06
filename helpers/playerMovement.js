@@ -1,3 +1,5 @@
+// Author: Gonçalo Rodrigues Maranhão
+
 import * as THREE from '../threejs/three.module.js';
 import { PointerLockControls } from '../threejs/PointerLockControls.js';
 import { collidableObjects } from '../main.js';
@@ -78,7 +80,6 @@ function boxIntersect(box1, box2) {
          box1.min.y <= box2.max.y && box1.max.y >= box2.min.y &&
          box1.min.z <= box2.max.z && box1.max.z >= box2.min.z;
 }
-
 
 export function checkCollision(position, direction) {
   const speed = 0.1;

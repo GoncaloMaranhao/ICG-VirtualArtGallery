@@ -1,3 +1,5 @@
+// Author: Gonçalo Rodrigues Maranhão
+
 import * as THREE from '../threejs/three.module.js';
 
 let textureLoader = new THREE.TextureLoader();
@@ -124,7 +126,6 @@ export function generatePlanets(numPlanets, restrictedZones) {
             planet.add(ring);
         }
 
-        // elliptical movement
         planet.orbitRadiusX = planet.orbitRadius * THREE.MathUtils.randFloat(0.5, 1.5);
         planet.orbitRadiusZ = planet.orbitRadius;
 

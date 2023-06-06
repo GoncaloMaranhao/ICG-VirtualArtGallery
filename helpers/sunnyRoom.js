@@ -1,5 +1,6 @@
+// Author: Gonçalo Rodrigues Maranhão
+
 import * as THREE from 'three';
-import { FBXLoader } from '../threejs/FBXLoader.js';
 import { GLTFLoader } from '../threejs/GLTFLoader.js';
 import { collidableObjects } from '../main.js';
 

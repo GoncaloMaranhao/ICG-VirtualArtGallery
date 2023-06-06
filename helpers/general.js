@@ -1,3 +1,5 @@
+// Author: Gonçalo Rodrigues Maranhão
+
 import * as THREE from '../threejs/three.module.js';
 
 const textureLoader = new THREE.TextureLoader();
@@ -21,7 +23,6 @@ export function createSimpleWall(position, width, height, depth, color, rotation
 
   return mesh;
 }
-
 
 export function createPainting(scene, position, rotation, width, height, frameThickness, imagePath, paintingInfo) {
   const frameGeometry = new THREE.BoxGeometry(width + 2 * frameThickness, height + 2 * frameThickness, frameThickness);

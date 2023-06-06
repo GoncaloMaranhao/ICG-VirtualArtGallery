@@ -1,5 +1,6 @@
-import * as THREE from '../threejs/three.module.js';
+// Author: Gonçalo Rodrigues Maranhão
 
+import * as THREE from '../threejs/three.module.js';
 
 export function createFloor(floorWidth, floorHeight, floorDepth, floorMaterial, position) {
   const floor = new THREE.Mesh(
