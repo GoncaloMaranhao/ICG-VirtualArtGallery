@@ -23,7 +23,7 @@ document.body.appendChild(renderer.domElement);
 export const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.y = 1.7;
 
-alert('PLEASE READ THIS. Here are the instructions. In order to gain control of the camera you must click with your right mouse in the middle of the screen. Then you can move the camera with the mouse and move the player with the w,a,s,d keys. You can open or close doors by pressing the key e and MOST IMPORTANTLY you can see a painting information by pressing the key x. There is a point in this game/exploration where you must read at least one paiting (it has something particular, you would be able to tell just by seeing it) information in order to advance. ');
+alert('PLEASE READ THIS. Here are the instructions. In order to gain control of the camera you must click with your right mouse in the middle of the screen. Then you can move the camera with the mouse and move the player with the w,a,s,d keys. You can open or close doors by pressing the key e and MOST IMPORTANTLY you can see a painting information by pressing the key x. There is a point in this game/exploration where you must read at least one paiting (it has something particular, you would be able to tell just by seeing it) information in order to advance. You can press space to remove these textboxes, you dont have to click the ok button with the mouse. ');
 
 initializePlayerMovement(camera, renderer);
 
@@ -160,6 +160,7 @@ const circularWindowPosition = { x: 0, y: 18 };
 const wallColor = 0x654321;
 const wallRotationY = Math.PI / 2; 
 
+
 const sunnyRoomFrontWall = createWallWithTwoWindows(wallPosition, wallWidth, wallHeight, wallDepth, 
                            rectWindowWidth, rectWindowHeight, rectWindowPosition, 
                            circularWindowRadius, circularWindowPosition, 
@@ -171,7 +172,7 @@ collidableObjects.push(sunnyRoomFrontWall);
 
 
 const paneMaterial = new THREE.MeshPhongMaterial({
- color: 0xFFFFFF, 
+ color: 0xffffff, 
  transparent: true, 
  opacity: 0
 });
@@ -182,7 +183,17 @@ const windowHeight = rectWindowHeight - 0.1;
 const windowDepth = wallDepth - 0.1;
 const windowFrameColor = 0x652233
 const windowRotationY = Math.PI / 2; 
-scene.add(createWindow(windowPosition, windowWidth, windowHeight, windowDepth, windowFrameColor, windowRotationY, null, paneMaterial));
+
+let textureLoader3 = new THREE.TextureLoader();
+let wallTexture = textureLoader3.load('./assets/textures/wYrREaw-768x1024.jpg');
+
+let wallMaterial = new THREE.MeshPhongMaterial({
+  map: wallTexture, 
+  side: THREE.DoubleSide
+}); 
+
+
+scene.add(createWindow(windowPosition, windowWidth, windowHeight, windowDepth, windowFrameColor, windowRotationY, wallMaterial, paneMaterial));
 
 let radius = 2;
 let position = new THREE.Vector3(49.5, 18, 0);
