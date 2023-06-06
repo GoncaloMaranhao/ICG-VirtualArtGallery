@@ -25,7 +25,7 @@ export function createSimpleWall(position, width, height, depth, color, rotation
 
 export function createPainting(scene, position, rotation, width, height, frameThickness, imagePath, paintingInfo) {
   const frameGeometry = new THREE.BoxGeometry(width + 2 * frameThickness, height + 2 * frameThickness, frameThickness);
-  const frameMaterial = new THREE.MeshPhongMaterial({ color: 0x654321 }); 
+  const frameMaterial = new THREE.MeshPhongMaterial({ color: 0x5A5A5A }); 
   const frame = new THREE.Mesh(frameGeometry, frameMaterial);
   frame.receiveShadow = true;
   frame.castShadow = true;

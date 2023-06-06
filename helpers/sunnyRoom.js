@@ -38,7 +38,7 @@ function createVaultedWall(width, height, depth, segments, doorWidth, doorHeight
   geometry.setIndex(indices);
   geometry.computeVertexNormals();
 
-  const material = new THREE.MeshPhongMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+  const material = new THREE.MeshPhongMaterial({ color: 0x654321, side: THREE.DoubleSide });
   const mesh = new THREE.Mesh(geometry, material);
   mesh.castShadow = true;
   mesh.receiveShadow = true;
@@ -112,34 +112,39 @@ export function createWallWithTwoWindows(position, wallWidth, wallHeight, wallDe
   shape.lineTo(wallWidth / 2, 0);
   shape.lineTo(wallWidth / 2, wallHeight);
   shape.lineTo(-wallWidth / 2, wallHeight);
-    
+
   const rectHolePath = new THREE.Path();
   rectHolePath.moveTo(rectWindowPosition.x - rectWindowWidth / 2, rectWindowPosition.y - rectWindowHeight / 2);
   rectHolePath.lineTo(rectWindowPosition.x + rectWindowWidth / 2, rectWindowPosition.y - rectWindowHeight / 2);
   rectHolePath.lineTo(rectWindowPosition.x + rectWindowWidth / 2, rectWindowPosition.y + rectWindowHeight / 2);
   rectHolePath.lineTo(rectWindowPosition.x - rectWindowWidth / 2, rectWindowPosition.y + rectWindowHeight / 2);
   shape.holes.push(rectHolePath);
-    
+
   const circularHolePath = new THREE.Path();
   circularHolePath.absarc(circularWindowPosition.x, circularWindowPosition.y, circularWindowRadius, 0, Math.PI * 2, false);
   shape.holes.push(circularHolePath);
-    
+
   const geometry = new THREE.ExtrudeGeometry(shape, { depth: wallDepth, bevelEnabled: false });
-    
+
   if (!material) {
   material = new THREE.MeshPhongMaterial({ color, side: THREE.DoubleSide });
   }
-  
+
   const mesh = new THREE.Mesh(geometry, material);
   mesh.position.set(position.x, position.y, position.z);
   mesh.rotation.y = rotationY;
   mesh.castShadow = true;
   mesh.receiveShadow = true;
-  
+
   return mesh;
 }
+const loader2 = new THREE.TextureLoader();
+const texturePath = '../assets/textures/green-artificial-grass-textured-background.jpg';
 
 export function createGarden(scene, position, outerRadius, innerRadius, flowerCount, thickness, rotationX = Math.PI / 2) {
+  // Load the texture
+  const texture = loader2.load(texturePath);
+
   const gardenShape = new THREE.Shape()
     .moveTo(0, 0)
     .absarc(0, 0, outerRadius, 0, Math.PI * 2, false);
@@ -151,7 +156,10 @@ export function createGarden(scene, position, outerRadius, innerRadius, flowerCo
   gardenShape.holes.push(holePath);
   
   const gardenGeometry = new THREE.ExtrudeGeometry(gardenShape, { depth: thickness, bevelEnabled: false });
-  const gardenMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
+  
+  // Use the loaded texture in the material
+  const gardenMaterial = new THREE.MeshPhongMaterial({ map: texture });
+  
   const garden = new THREE.Mesh(gardenGeometry, gardenMaterial);
 
   garden.position.set(position.x, position.y, position.z);

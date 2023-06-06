@@ -44,10 +44,10 @@ export let collidableObjects = [];
 
 //--------------------------_Entrance Room_----------------------
 
-const darkWoodTexture = textureLoader.load('./assets/textures/castle_brick_07_diff_1k.jpg');
+const darkWoodTexture = textureLoader.load('./assets/textures/Wood_027_roughness.jpg');
 const darkWoodMaterial = new THREE.MeshPhongMaterial({ map: darkWoodTexture });
 
-const floorTexture = textureLoader.load('./assets/textures/castle_brick_07_diff_1k.jpg');
+const floorTexture = textureLoader.load('./assets/textures/Wood_027_basecolor.jpg');
 const floorMaterial = new THREE.MeshPhongMaterial({ map: floorTexture });
 floorMaterial.castShadow = true;
 floorMaterial.receiveShadow = true;
@@ -89,21 +89,21 @@ createCeiling(scene, - floorWidth / 4, ceilingPositionY, 0, ceilingMaterial,
               ceilingWidth, ceilingHeight, ceilingDepth );
 
 
-const frontWallBounds = createWallWithDoorHole(scene, -floorWidth / 2, 0, -floorWidth / 2, 0, 0xff0000, 
+const frontWallBounds = createWallWithDoorHole(scene, -floorWidth / 2, 0, -floorWidth / 2, 0, 0x8b0000, 
                        floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight+0.1);
 frontWallBounds.forEach(bounds => collidableObjects.push(bounds));
 
-const leftWallBounds = createRotatedWallWithDoorHole(scene, -floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x00ff00,
+const leftWallBounds = createRotatedWallWithDoorHole(scene, -floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x8b0000,
                        floorWidth, ceilingPositionY, 0.1, doorWidth * 2, doorHeight + 0.1);
 leftWallBounds.forEach(bounds => collidableObjects.push(bounds));
 
-const rightWallBounds = createRotatedWallWithDoorHole(scene, floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x0000ff,
+const rightWallBounds = createRotatedWallWithDoorHole(scene, floorWidth / 2, 0, floorWidth / 2, Math.PI / 2, 0x123456,
                        floorWidth, ceilingPositionY + 19.1, 0.1, doorWidth * 2, doorHeight + 0.1);
 rightWallBounds.forEach(bounds => collidableObjects.push(bounds));
 
 // back wall, no hole
 let backWallEntranceRoomPosition = new THREE.Vector3(0, ceilingPositionY / 2, floorWidth / 2);
-const backWallEntranceRoom = createSimpleWall(backWallEntranceRoomPosition, floorWidth, ceilingPositionY, 0.1, 0x123456, Math.PI, undefined, false);
+const backWallEntranceRoom = createSimpleWall(backWallEntranceRoomPosition, floorWidth, ceilingPositionY, 0.1, 0x0000ff, Math.PI, undefined, false);
 scene.add(backWallEntranceRoom);
 backWallEntranceRoom.updateMatrixWorld(true);
 backWallEntranceRoom.boundingBox = new THREE.Box3().setFromObject(backWallEntranceRoom);
@@ -148,7 +148,7 @@ scene.add(spotLight);
 
 
 
-const sunnyFloorTexture = textureLoader.load('./assets/textures/red_sandstone_pavement_diff_1k.jpg');
+const sunnyFloorTexture = textureLoader.load('./assets/textures/Substance_Graph_BaseColor.jpg');
 const sunnyFloorMaterial = new THREE.MeshPhongMaterial({ map: sunnyFloorTexture });
 sunnyFloorMaterial.castShadow = true;
 sunnyFloorMaterial.receiveShadow = true;
@@ -252,11 +252,11 @@ const rotationPaintingHorizontalTiltInverse2 = new THREE.Vector3(-Math.PI / 8, M
 // Back wall
 createPainting(
   scene, positionPainting, rotationPaintingVertical, 
-  2, 3, 0.1, './assets/textures/151090.jpg',
+  2, 3, 0.1, './assets/textures/1024px-A_Sunday_on_La_Grande_Jatte_by_Georges_Seurat_-_Joy_of_Museums_-_Art_Institute_of_Chicago.jpg',
   {
-    name: "The Starry Night",
-    artist: "Vincent van Gogh",
-    year: "1889",
+    name: "A Sunday Afternoon on the Island of La Grande Jatte",
+    artist: "Georges Seurat",
+    year: "1886",
     description: "The Starry Night is an oil on canvas painting by Dutch Post-Impressionist painter Vincent van Gogh."
   }
 );
@@ -372,11 +372,11 @@ createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse,
   );
 positionPainting.x = positionPaintingX + 30;
 createPainting(scene, positionPainting, rotationPaintingHorizontalTiltInverse, 
-  normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/Liberty-jpg', {
-    name: "Liberty Leading the People",
-    artist: "Eugène Delacroix", 
-    year: "1897",
-    description: "Commemorating the July Revolution of 1830, which toppled King Charles X of France, Liberty Leading the People has become synonymous with the revolutionary spirit all over the world. Combining allegory with contemporary elements, the painting is a thrilling example of the Romantic style, going for the gut with its titular character brandishing the French Tricolor as members of different classes unite behind her to storm a barricade strewn with the bodies of fallen comrades. The image has inspired other works of art and literature, including the Statue of Liberty and Victor Hugo’s novel Les Misérables."
+  normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/Screenshot from 2023-06-06 02-05-30.png', {
+    name: "ICG-VirtualArtGallery",
+    artist: "Gonçalo Maranhão",
+    year: "2023",
+    description: "Hello, it's nice that you found this. You can turn the statues by getting close to them and pressing 'z'. In order to get out of this room you have to rotate each statue ONCE."
     }
   );
 positionPainting.x = positionPaintingX + 10;
@@ -393,9 +393,9 @@ positionPainting.y = positionPaintingY + 1;
 positionPainting.z = positionPaintingZ + 5;
 createPainting(scene, positionPainting, rotationPaintingVerticalInverse, normalPaitingwidth + 1, 
   normalPaitingHeight + 1, normalPaitingFrameThickness, './assets/textures/Sandro_Botticell.jpg', {
-    name: "The Birth of Venus",
-    artist: "Sandro Botticelli",
-    year: "1486",
+    name: "ICG-VirtualArtGallery",
+    artist: "Gonçalo Maranhão",
+    year: "2023",
     description: "Botticelli’s The Birth of Venus was the first full-length, non-religious nude since antiquity, and was made for Lorenzo de Medici. It’s claimed that the figure of the Goddess of Love is modeled after one Simonetta Cattaneo Vespucci, whose favors were allegedly shared by Lorenzo and his younger brother, Giuliano. Venus is seen being blown ashore on a giant clamshell by the wind gods Zephyrus and Aura as the personification of spring awaits on land with a cloak. Unsurprisingly, Venus attracted the ire of Savonarola, the Dominican monk who led a fundamentalist crackdown on the secular tastes of the Florentines. His campaign included the infamous “Bonfire of the Vanities” of 1497, in which “profane” objects—cosmetics, artworks, books—were burned on a pyre. The Birth of Venus was itself scheduled for incineration, but somehow escaped destruction. Botticelli, though, was so freaked out by the incident that he gave up painting for a while."
     }
   );
@@ -582,27 +582,23 @@ export function isInsideDarkRoom(camera, darkRoomBoundary) {
 }
 
 
-
-
-
-
 //Black walls for collision in DarkRoom, the extra parameters are to take out the shininess because I don't want the walls to be seen
 let darkRoomFrontWallPosition = new THREE.Vector3(-floorWidth * 1.5, 0, 0);
-const darkRoomFrontWall = createSimpleWall(darkRoomFrontWallPosition, floorWidth, 2, 0.1, 0xff0000, Math.PI / 2, undefined, false);
+const darkRoomFrontWall = createSimpleWall(darkRoomFrontWallPosition, floorWidth, 2, 0.1, 0x000000, Math.PI / 2, undefined, false);
 scene.add(darkRoomFrontWall);
 darkRoomFrontWall.updateMatrixWorld(true);
 darkRoomFrontWall.boundingBox = new THREE.Box3().setFromObject(darkRoomFrontWall);
 collidableObjects.push(darkRoomFrontWall);
 
 let darkRoomLeftWallPosition = new THREE.Vector3(-floorWidth, 0, floorWidth / 2);
-const darkRoomLeftWall = createSimpleWall(darkRoomLeftWallPosition, floorWidth, 2, 0.1, 0xff0000, Math.PI, undefined, false);
+const darkRoomLeftWall = createSimpleWall(darkRoomLeftWallPosition, floorWidth, 2, 0.1, 0x000000, Math.PI, undefined, false);
 scene.add(darkRoomLeftWall);
 darkRoomLeftWall.updateMatrixWorld(true);
 darkRoomLeftWall.boundingBox = new THREE.Box3().setFromObject(darkRoomLeftWall);
 collidableObjects.push(darkRoomLeftWall);
 
 let darkRoomRightWallPosition = new THREE.Vector3(-floorWidth, 0, -floorWidth / 2);
-const darkRoomRightWall = createSimpleWall(darkRoomRightWallPosition, floorWidth, 2, 0.1, 0xff0000, Math.PI, undefined, false);
+const darkRoomRightWall = createSimpleWall(darkRoomRightWallPosition, floorWidth, 2, 0.1, 0x000000, Math.PI, undefined, false);
 scene.add(darkRoomRightWall);
 darkRoomRightWall.updateMatrixWorld(true);
 darkRoomRightWall.boundingBox = new THREE.Box3().setFromObject(darkRoomRightWall);

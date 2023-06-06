@@ -92,6 +92,10 @@ export function createWallWithDoorHole(scene, x, y, z, rotationY, color, width, 
   return wallBounds;
 }
 
+const loader = new THREE.TextureLoader();
+const texturePath = '../assets/textures/Bark_007_BaseColor.jpg'; // Replace this with the path to your texture file
+
+
 // This function is basically the same as before but I need to do another one because of collision.
 // The problem is that THREE.Box3 doesn't support "normal" rotation, which means I can't match the rotation
 // of the left and right wall (that are made in main.js) by rotating the bounding boxes.
@@ -99,6 +103,8 @@ export function createWallWithDoorHole(scene, x, y, z, rotationY, color, width, 
 // I didn't find a better way to do this, but this is not very elegant.
 export function createRotatedWallWithDoorHole(scene, x, y, z, rotationY, color, width, height, depth, doorWidth, doorHeight) {
   const wallMaterial = new THREE.MeshLambertMaterial({ color: color });
+
+   const texture = loader.load(texturePath);
 
   const wallShape = new THREE.Shape();
   wallShape.moveTo(0, 0);
@@ -186,7 +192,7 @@ export function createDoor(scene, x, y, z, rotationY, material, width, height, d
   rightDoorPivot.add(rightDoor);
   rightDoor.position.set(-width / 2, height/2, 0);
 
-  const handleMaterial = new THREE.MeshPhongMaterial({ color: 0x800080 });
+  const handleMaterial = new THREE.MeshPhongMaterial({ color: 0x402F1D  });
   
   const leftDoorHandle = createDoorHandle(-width / 32 + handleOffset, height / 32, depth / 2 + 0.01, 0, handleMaterial);
   const rightDoorHandle = createDoorHandle(width / 32 - handleOffset, height / 32, depth / 2 + 0.01, 0, handleMaterial);
