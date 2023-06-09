@@ -25,7 +25,7 @@ document.body.appendChild(renderer.domElement);
 export const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.y = 1.7;
 
-alert('PLEASE READ THIS. Here are the instructions. In order to gain control of the camera you must click with your left mouse key in the middle of the screen. Then you can move the camera with the mouse and move the player with the w,a,s,d keys. You can open or close doors by pressing the key e and MOST IMPORTANTLY you can see a painting information by pressing the key x . There is a point in this game/exploration where you must read at least one paiting (it has something particular, you would be able to tell just by seeing it) information in order to advance. You can press space to remove these textboxes, you dont have to click the ok button with the mouse. ');
+alert('PLEASE READ THIS. Here are the instructions. In order to gain control of the camera you must click with your left mouse key in the middle of the screen. Then you can move the camera with the mouse and move the player with the w,a,s,d keys. You can open or close doors by pressing the key e and MOST IMPORTANTLY you can see a painting information by pressing the key x . There is a point in this game/exploration where you must read at least one painting (it has something particular, you would be able to tell just by seeing it) information in order to advance. You can press space to remove these textboxes, you dont have to click the ok button with the mouse. ');
 
 initializePlayerMovement(camera, renderer);
 
