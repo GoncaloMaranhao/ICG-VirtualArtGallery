@@ -306,7 +306,7 @@ createPainting(scene, positionPainting, rotationPaintingHorizontalTilt,
     description: "Perhaps Picasso’s best-known painting, Guernica is an antiwar cris de coeur occasioned by the 1937 bombing of the eponymous Basque city during the Spanish Civil War by German and Italian aircraft allied with Fascist leader Francisco Franco. The leftist government that opposed him commissioned Picasso to created the painting for the Spanish Pavillion at 1937 World’s Fair in Paris. When it closed, Guernica went on an international tour, before winding up at the Museum of Modern Art in New York. Picasso loaned the painting to MoMA with the stipulation that it be returned to his native Spain once democracy was restored—which it was in 1981, six years after Franco's death in 1975 (Picasso himself died two years before that.) Today, the painting is housed at the Museo Nacional Centro de Arte Reina Sofía in Madrid."
     }
   );
-positionPainting.x = positionPaintingX + 30;
+positionPainting.x = positionPaintingX + 29;
 createPainting(scene, positionPainting, rotationPaintingHorizontalTilt, 
   normalPaitingwidth * 2, normalPaitingHeight * 2, normalPaitingFrameThickness, './assets/textures/Liberty-jpg', {
     name: "Liberty Leading the People",
@@ -317,7 +317,7 @@ createPainting(scene, positionPainting, rotationPaintingHorizontalTilt,
   );
 positionPainting.x = positionPaintingX + 10;
 positionPainting.y = positionPaintingY + 9;
-positionPainting.z = positionPaintingZ - 11.5;
+positionPainting.z = positionPaintingZ - 12.3;
 createPainting(scene, positionPainting, rotationPaintingHorizontalTilt2, 10, 9, normalPaitingFrameThickness, './assets/textures/impression-sunrise.jpg');
 positionPainting.x = positionPaintingX + 23;
 createPainting(scene, positionPainting, rotationPaintingHorizontalTilt2, 10, 9, normalPaitingFrameThickness, './assets/textures/JEAN_.jpg');
