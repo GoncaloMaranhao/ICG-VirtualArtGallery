@@ -597,14 +597,14 @@ let finalLeftWallPosition = new THREE.Vector3(-5, 2, -17);
 const finalLeftWall = createSimpleWall(finalLeftWallPosition, 9, 7, 0.1, 0xff0000, Math.PI / 2, undefined, false);
 scene.add(finalLeftWall);
 finalLeftWall.updateMatrixWorld(true);
-finalLeftWall.boundingBox = new THREE.Box3().setFromObject(darkRoomLeftWall);
+finalLeftWall.boundingBox = new THREE.Box3().setFromObject(finalLeftWall);
 collidableObjects.push(finalLeftWall);
 
 let finalRightWallPosition = new THREE.Vector3(6, 2, -17);
 const finalRightWall = createSimpleWall(finalRightWallPosition, 9, 7, 0.1, 0xff0000, Math.PI / 2, undefined, false);
 scene.add(finalRightWall);
 finalRightWall.updateMatrixWorld(true);
-finalRightWall.boundingBox = new THREE.Box3().setFromObject(darkRoomRightWall);
+finalRightWall.boundingBox = new THREE.Box3().setFromObject(finalRightWall);
 collidableObjects.push(finalRightWall);
 
 const floorFinalPosition = new THREE.Vector3(0.5, 0, -15.5);
