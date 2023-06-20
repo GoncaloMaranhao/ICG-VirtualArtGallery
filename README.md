@@ -8,4 +8,4 @@ You can access the project here:
 https://goncalomaranhao.github.io/ICG-VirtualArtGallery/
 
 
-The PraticalGuides branch includes my resolution of the Pratical Guides presented by the Professor.
+The PraticalGuides branch includes my resolution of the Pratical Guides presented by the Professor Joaquim João Estrela Ribeiro Silvestre Madeira.
